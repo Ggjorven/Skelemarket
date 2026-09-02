@@ -36,3 +36,6 @@ You may not copy, modify, distribute, or use any part of this code without expli
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
+
+> ![NOTE]
+> If you use IntelliJ use the [Swing UI Designer Plugin](https://www.jetbrains.com/help/idea/design-gui-using-swing.html#-509p4f_36) to edit the GUI forms
