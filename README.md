@@ -19,7 +19,7 @@
 Ensure you have the following installed on your system:
 - Runtime: [Java JDK 21](./doc/Java-21-help.md)
 
-### Building & Running
+### Building, Testing & Running
 
 Build and run instructions for this project can be found in the [BUILDING.md](BUILDING.md) file. Supported platforms are:
 - **Windows**: IntelliJ, Eclipse, Gradle

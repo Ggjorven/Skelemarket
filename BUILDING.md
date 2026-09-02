@@ -46,6 +46,34 @@
     ./gradlew build
     ```
 
+## Testing
+
+### IntelliJ
+
+1. While still having the project open go to the **Gradle** menu.
+
+2. Now navigate to **Skelemarket** -> **Tasks** -> **verification** -> **test** and double click.
+
+### Eclipse
+
+1. // TODO: ...
+
+### Gradle
+
+#### Windows
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
+    ```sh
+    ./gradlew.bat test
+    ```
+
+#### Linux & MacOS
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
+    ```sh
+    ./gradlew test
+    ```
+
 ## Running
 
 ### IntelliJ
