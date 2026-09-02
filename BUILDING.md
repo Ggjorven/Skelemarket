@@ -24,6 +24,8 @@
 
 6. (Optional) Then in the **Gradle** window click the **Sync** button and it should be resolved.
 
+7. Now while still in the **Gradle** menu navigate to **Skelemarket** -> **Tasks** -> **build** -> **build** and double click.
+
 ### Eclipse
 
 1. // TODO: ...
@@ -48,7 +50,9 @@
 
 ### IntelliJ
 
-1. While still having the project open click // TODO: ...
+1. While still having the project open go to the **Gradle** menu.
+
+2. Now navigate to **Skelemarket** -> **Tasks** -> **application** -> **run** and double click.
 
 ### Eclipse
 
