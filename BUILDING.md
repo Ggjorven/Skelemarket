@@ -8,30 +8,64 @@
     cd Skelemarket
     ```
 
-2. Navigate to the scripts folder:
-    ```sh
-    cd scripts/windows
-    ```
-
-3. (Optional) If you haven't already installed the premake5 build system you can install it like this:
-    ```sh
-    ./install-premake5.bat
-    ```
-
-4. Generate Visual Studio project files:
-    ```sh
-    ./gen-vs2022.bat
-    ```
-
 ## Building
 
-1. Navigate to the root of the directory
-2. Open the Puzzled-Skeleton.sln file
-3. Start building in your desired configuration
-4. Build files can be in the bin/%Config%-windows/Puzzled/ folder.
-5. (Optional) Open a terminal and run the Sandbox project:
+### IntelliJ
+
+1. Open your **IntelliJ** app on your local system.
+
+2. Click the **Open** button and navigate to the location where you just cloned **Skelemarket**.
+
+3. Wait for the project to fully load.
+
+4. (Optional) If you get any errors related to the **JDK** version click on the hamburger menu in the top left and navigate to **File** -> **Project Structure**.
+
+5. (Optional) Then under **SDK** select your local **Java 21** installation (if you can't find it install it with [these instructions](./doc/Java-21-help.md)). Then hit **Ok**.
+
+6. (Optional) Then in the **Gradle** window click the **Sync** button and it should be resolved.
+
+### Eclipse
+
+1. // TODO: ...
+
+### Gradle
+
+#### Windows
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
     ```sh
-    ./Puzzled.exe 
+    ./gradlew.bat build
+    ```
+
+#### Linux & MacOS
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
+    ```sh
+    ./gradlew build
     ```
 
 ## Running
+
+### IntelliJ
+
+1. While still having the project open click // TODO: ...
+
+### Eclipse
+
+1. // TODO: ...
+
+### Gradle
+
+#### Windows
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
+    ```sh
+    ./gradlew.bat run
+    ```
+
+#### Linux & MacOS
+
+1. While you are still in the root of the **Skelemarket** directory you can run:
+    ```sh
+    ./gradlew run
+    ```
