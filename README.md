@@ -1,6 +1,6 @@
 # Skelemarket
 
-**Skelemarket** is a simple supermarket simulation written in Java for school. It includes keeping track of expiry dates, restocking and path finding of customers.
+**Skelemarket** is a simple supermarket simulation written in Java for school using JavaFX. It includes keeping track of expiry dates, restocking and path finding of customers.
 
 ## Preview
 
