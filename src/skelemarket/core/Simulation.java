@@ -1,4 +1,4 @@
-package skelemarket;
+package skelemarket.core;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;

@@ -1,4 +1,4 @@
-package skelemarket;
+package skelemarket.core;
 
 public class Config {
 	public static final int WIDTH = 800;

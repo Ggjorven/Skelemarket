@@ -3,6 +3,8 @@ package skelemarket;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import skelemarket.core.Simulation;
+
 public class Main extends Application {
     private Simulation mSimulation = null;
 
