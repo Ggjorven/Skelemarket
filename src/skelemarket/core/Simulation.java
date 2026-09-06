@@ -53,6 +53,8 @@ public class Simulation {
 				// Update & Render
 				// TODO: Update
 				// TODO: Render
+
+				mRenderer.drawQuad(new Texture("/puzzled-skeleton.png"), new Vec2(0.0f, 0.0f), new Vec2(100.0f, 100.0f));
 			}
 		}.start();
 	}
