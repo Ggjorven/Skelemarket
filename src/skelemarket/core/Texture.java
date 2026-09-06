@@ -15,6 +15,14 @@ public class Texture {
 		mImage = new Image(getClass().getResource(path).toExternalForm());
 	}
 
+	public int getWidth() {
+		return (int)mImage.getWidth();
+	}
+
+	public int getHeight() {
+		return (int)mImage.getHeight();
+	}
+
 	public Image toUnderlying() {
 		return mImage;
 	}
