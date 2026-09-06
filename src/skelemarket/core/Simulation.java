@@ -17,6 +17,9 @@ public class Simulation {
 	private Pane mPane = null;
 	private Scene mScene = null;
 
+	private Renderer mRenderer = null;
+	// TODO: Supermarket
+
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
@@ -31,7 +34,8 @@ public class Simulation {
         stage.setTitle(Config.TITLE);
         stage.show();
 
-		// TODO: Custom renderer
+		mRenderer = new Renderer(mContext);
+		// TODO: Supermarket
 	}
 
 	public void run() {
@@ -40,9 +44,13 @@ public class Simulation {
 
 			@Override
 			public void handle(long now) {
-				double deltaTime = (now - previousTime) / 1_000_000_000.0f;
+				double deltaTime = (now - previousTime) / 1_000_000_000.0;
 				previousTime = now;
 
+				// Clear screen
+				mRenderer.clear();
+
+				// Update & Render
 				// TODO: Update
 				// TODO: Render
 			}
