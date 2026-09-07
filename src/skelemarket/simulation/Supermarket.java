@@ -19,7 +19,7 @@ public class Supermarket {
 	}
 
 	public void update(float deltaTime) {
-		System.out.println(String.format("deltaTime = %f", deltaTime));
+		System.out.println(String.format("deltaTime = %f, FPS = %f", deltaTime, 1 / deltaTime));
 	}
 
 	public void render() {
