@@ -7,6 +7,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import skelemarket.simulation.Supermarket;
+
 public class Simulation {
 	///////////////////////////////////////////////////////////
 	// Variables
@@ -18,7 +20,7 @@ public class Simulation {
 	private Scene mScene = null;
 
 	private Renderer mRenderer = null;
-	// TODO: Supermarket
+	private Supermarket mSupermarket = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -35,7 +37,8 @@ public class Simulation {
         stage.show();
 
 		mRenderer = new Renderer(mContext);
-		// TODO: Supermarket
+
+		mSupermarket = new Supermarket(mRenderer);
 	}
 
 	public void run() {
@@ -51,8 +54,8 @@ public class Simulation {
 				mRenderer.clear();
 
 				// Update & Render
-				// TODO: Update
-				// TODO: Render
+				mSupermarket.update((float)deltaTime);
+				mSupermarket.render();
 
 				mRenderer.drawQuad(new Texture("/puzzled-skeleton.png"), new Vec2(0.0f, 0.0f), new Vec2(100.0f, 100.0f));
 			}
