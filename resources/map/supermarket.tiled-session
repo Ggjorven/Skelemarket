@@ -1,0 +1,23 @@
+{
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "tileset.tsx": {
+            "dynamicWrapping": true
+        }
+    },
+    "last.imagePath": "/home/jorben/Documents/dev/Java/Skelemarket/resources/textures/admurins-halloween",
+    "map.height": 13,
+    "map.tileHeight": 64,
+    "map.tileWidth": 64,
+    "map.width": 20,
+    "openFiles": [
+    ],
+    "project": "supermarket.tiled-project",
+    "recentFiles": [
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.type": 1
+}
