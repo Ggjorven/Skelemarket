@@ -11,6 +11,10 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	private Renderer mRendererRef = null;	
 
+	private float time = 0.0f;
+	private int frames = 0;
+	private float fps = 0;
+
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
@@ -19,7 +23,17 @@ public class Supermarket {
 	}
 
 	public void update(float deltaTime) {
-		System.out.println(String.format("deltaTime = %f, FPS = %f", deltaTime, 1 / deltaTime));
+		frames++;
+		time += deltaTime;
+
+		if (time >= 1.0f)
+		{
+			fps = frames / time;
+			frames = 0;
+			time = 0.0f;
+		}
+
+		System.out.println(String.format("deltaTime = %f, FPS = %f", deltaTime, fps));
 	}
 
 	public void render() {
