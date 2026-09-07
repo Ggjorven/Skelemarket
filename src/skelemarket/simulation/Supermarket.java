@@ -11,15 +11,20 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	private Renderer mRendererRef = null;	
 
+	// TODO: Remove temporary
 	private float time = 0.0f;
 	private int frames = 0;
 	private float fps = 0;
+
+	private Texture texture = null;
 
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
 	public Supermarket(Renderer rendererRef) {
 		mRendererRef = rendererRef;
+
+		texture = new Texture("textures/puzzled-skeleton.png");
 	}
 
 	public void update(float deltaTime) {
@@ -37,7 +42,6 @@ public class Supermarket {
 	}
 
 	public void render() {
-		Texture texture = new Texture("/puzzled-skeleton.png");
 		mRendererRef.drawQuad(texture, new Vec2(0.0f, 0.0f), new Vec2(100.0f, 100.0f));
 	}
 }

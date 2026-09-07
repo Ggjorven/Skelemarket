@@ -1,7 +1,6 @@
 package skelemarket.core;
 
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 public class Renderer {
 	///////////////////////////////////////////////////////////
@@ -17,8 +16,7 @@ public class Renderer {
 	}
 
 	public void clear() {
-		mContextRef.setFill(Color.BLACK);
-		mContextRef.fillRect(0.0, 0.0, (double)Config.WIDTH, (double)Config.HEIGHT);
+		mContextRef.clearRect(0.0, 0.0, (double)Config.WIDTH, (double)Config.HEIGHT);
 	}
 
 	public void drawQuad(Texture texture, Vec2 position, Vec2 size) {
