@@ -34,6 +34,7 @@ public class Simulation {
 
         stage.setScene(mScene);
         stage.setTitle(Config.TITLE);
+		stage.setResizable(false);
         stage.show();
 
 		mRenderer = new Renderer(mContext);
