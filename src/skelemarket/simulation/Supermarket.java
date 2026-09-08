@@ -24,7 +24,7 @@ public class Supermarket {
 	public Supermarket(Renderer rendererRef) {
 		mRendererRef = rendererRef;
 
-		texture = new Texture("textures/puzzled-skeleton.png");
+		texture = new Texture("/textures/puzzled-skeleton.png");
 	}
 
 	public void update(float deltaTime) {
