@@ -1,23 +1,46 @@
 {
-    "activeFile": "",
+    "activeFile": "pumpkin.tsx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "map.tmx": {
+            "scale": 0.87578125,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 912.3282783229259,
+                "y": 356.2533452274755
+            }
+        },
+        "pumpkin.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 2.516
+        },
         "tileset.tsx": {
-            "dynamicWrapping": true
+            "dynamicWrapping": true,
+            "scaleInDock": 0.7421,
+            "scaleInEditor": 1
         }
     },
-    "last.imagePath": "/home/jorben/Documents/dev/Java/Skelemarket/resources/textures/admurins-halloween",
+    "last.imagePath": "/home/jorben/Documents/dev/Java/Skelemarket/resources/textures/pumpkin",
     "map.height": 13,
+    "map.lastUsedFormat": "tmx",
     "map.tileHeight": 64,
     "map.tileWidth": 64,
     "map.width": 20,
     "openFiles": [
+        "map.tmx",
+        "pumpkin.tsx",
+        "tileset.tsx"
     ],
     "project": "supermarket.tiled-project",
     "recentFiles": [
+        "map.tmx",
+        "tileset.tsx",
+        "pumpkin.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
-    "tileset.type": 1
+    "tileset.type": 0
 }
