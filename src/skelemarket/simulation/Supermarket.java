@@ -19,7 +19,7 @@ public class Supermarket {
 	private Texture texture = null;
 
 	///////////////////////////////////////////////////////////
-	// Variables
+	// Methods
 	///////////////////////////////////////////////////////////
 	public Supermarket(Renderer rendererRef) {
 		mRendererRef = rendererRef;
