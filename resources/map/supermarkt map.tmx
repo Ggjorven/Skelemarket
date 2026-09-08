@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="23" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="1">
- <tileset firstgid="1" source="../../../Desktop/tiled/doors_lever_chest_animation.tsx"/>
- <tileset firstgid="151" source="../../../Desktop/tiled/decorative_cracks_walls.tsx"/>
- <tileset firstgid="407" source="../../../Desktop/tiled/punpkin.tsx"/>
- <tileset firstgid="663" source="../../../Desktop/tiled/decorative_cracks_floor.tsx"/>
- <tileset firstgid="783" source="../../../Desktop/tiled/tiles.tsx"/>
+ <tileset firstgid="1" source="./doors_lever_chest_animation.tsx"/>
+ <tileset firstgid="151" source="./decorative_cracks_walls.tsx"/>
+ <tileset firstgid="407" source="./punpkin.tsx"/>
+ <tileset firstgid="663" source="./decorative_cracks_floor.tsx"/>
+ <tileset firstgid="783" source="./tiles.tsx"/>
  <layer id="3" name="Floor" width="40" height="23">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

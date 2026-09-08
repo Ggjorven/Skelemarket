@@ -1,22 +1,49 @@
 {
-    "activeFile": "pumpkin.tsx",
+    "activeFile": "supermarkt map.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "/home/jorben/Documents/dev/Java/Desktop/tiled/decorative_cracks_floor.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/jorben/Documents/dev/Java/Desktop/tiled/decorative_cracks_walls.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/jorben/Documents/dev/Java/Desktop/tiled/doors_lever_chest_animation.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "/home/jorben/Documents/dev/Java/Desktop/tiled/punpkin.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/jorben/Documents/dev/Java/Desktop/tiled/tiles.tsx": {
+            "scaleInDock": 1
+        },
+        "doors_lever_chest_animation.tsx": {
+            "scaleInEditor": 1
+        },
         "map.tmx": {
             "scale": 0.87578125,
             "selectedLayer": 1,
             "viewCenter": {
                 "x": 912.3282783229259,
-                "y": 356.2533452274755
+                "y": 356.25334522747545
             }
         },
         "pumpkin.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 1,
             "scaleInEditor": 2.516
+        },
+        "supermarkt map.tmx": {
+            "scale": 0.7589673913043478,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 640.3437164339421,
+                "y": 367.6047261009668
+            }
         },
         "tileset.tsx": {
             "dynamicWrapping": true,
@@ -31,15 +58,15 @@
     "map.tileWidth": 64,
     "map.width": 20,
     "openFiles": [
-        "map.tmx",
-        "pumpkin.tsx",
-        "tileset.tsx"
+        "supermarkt map.tmx"
     ],
     "project": "supermarket.tiled-project",
     "recentFiles": [
+        "doors_lever_chest_animation.tsx",
+        "supermarkt map.tmx",
         "map.tmx",
-        "tileset.tsx",
-        "pumpkin.tsx"
+        "pumpkin.tsx",
+        "tileset.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.type": 0
