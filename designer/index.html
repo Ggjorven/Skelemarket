@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supermarket Map Designer</title>
+<style>
+  :root{
+    --bg:#15171c;
+    --panel:#1e2128;
+    --panel-2:#23262e;
+    --line:#2c3038;
+    --line-soft:#24272e;
+    --text:#e7e9ee;
+    --muted:#8b909c;
+    --muted-2:#6a6f7a;
+    --accent:#3ecf8e;      /* primary actions */
+    --accent-ink:#0c2b1e;
+    --amber:#f2b84b;       /* paint / warnings */
+    --blue:#5aa9ff;
+    --danger:#ff6b6b;
+    --sel:#5aa9ff;
+    --radius:8px;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);
+    font-size:13px;line-height:1.45;overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  .app{display:grid;grid-template-rows:auto 1fr auto;height:100vh}
+
+  /* ---------- Toolbar ---------- */
+  .toolbar{
+    display:flex;align-items:center;gap:14px;padding:8px 12px;
+    background:var(--panel);border-bottom:1px solid var(--line);flex-wrap:wrap;
+  }
+  .brand{display:flex;align-items:center;gap:9px;font-weight:600;letter-spacing:.2px}
+  .brand .dot{width:14px;height:14px;border-radius:4px;background:var(--accent);box-shadow:0 0 0 3px rgba(62,207,142,.15)}
+  .brand small{color:var(--muted);font-weight:400;margin-left:2px}
+  .tbgroup{display:flex;align-items:center;gap:6px;padding:0 4px;border-left:1px solid var(--line);height:30px}
+  .tbgroup:first-of-type{border-left:none}
+  .tbgroup .lbl{color:var(--muted);font-size:11px}
+
+  button,.btn{
+    font-family:inherit;font-size:12.5px;color:var(--text);background:var(--panel-2);
+    border:1px solid var(--line);border-radius:6px;padding:6px 10px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:6px;transition:background .12s,border-color .12s;
+    white-space:nowrap;
+  }
+  button:hover,.btn:hover{background:#2a2e37;border-color:#3a3f4a}
+  button:active{transform:translateY(1px)}
+  button.primary{background:var(--accent);color:var(--accent-ink);border-color:transparent;font-weight:600}
+  button.primary:hover{background:#4ada9b}
+  button.ghost{background:transparent}
+  button.danger{color:var(--danger)}
+  button.danger:hover{background:rgba(255,107,107,.1);border-color:rgba(255,107,107,.4)}
+  button:disabled{opacity:.4;cursor:not-allowed}
+  .seg{display:inline-flex;background:var(--panel-2);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+  .seg button{border:none;border-radius:0;background:transparent;border-left:1px solid var(--line)}
+  .seg button:first-child{border-left:none}
+  .seg button.on{background:var(--accent);color:var(--accent-ink);font-weight:600}
+  .seg button.on.paint{background:var(--amber);color:#3a2b06}
+
+  input[type=number],input[type=text]{
+    font-family:var(--mono);font-size:12px;color:var(--text);background:#15171c;
+    border:1px solid var(--line);border-radius:5px;padding:5px 7px;width:100%;
+  }
+  input:focus{outline:none;border-color:var(--accent)}
+  .field{display:flex;flex-direction:column;gap:4px}
+  .field label{font-size:10.5px;color:var(--muted);letter-spacing:.3px}
+  .inline{display:flex;align-items:center;gap:6px}
+  .w70{width:74px}
+  .chk{display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;font-size:12px;color:var(--muted)}
+  .chk input{accent-color:var(--accent)}
+
+  /* ---------- Body ---------- */
+  .body{display:grid;grid-template-columns:236px 1fr 268px;min-height:0}
+  .panel{background:var(--panel);display:flex;flex-direction:column;min-height:0}
+  .panel.left{border-right:1px solid var(--line)}
+  .panel.right{border-left:1px solid var(--line)}
+  .phead{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:10px 12px;border-bottom:1px solid var(--line);
+    font-size:11px;letter-spacing:.5px;color:var(--muted);text-transform:uppercase;
+  }
+  .pbody{overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:10px}
+
+  /* Asset palette */
+  .assets{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .asset{
+    position:relative;background:var(--panel-2);border:1px solid var(--line);border-radius:7px;
+    padding:6px;cursor:pointer;transition:border-color .12s,transform .06s;
+  }
+  .asset:hover{border-color:#3a3f4a}
+  .asset.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+  .asset .thumb{
+    height:52px;border-radius:4px;background-color:#0f1114;
+    background-image:
+      linear-gradient(45deg,#191c22 25%,transparent 25%),
+      linear-gradient(-45deg,#191c22 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#191c22 75%),
+      linear-gradient(-45deg,transparent 75%,#191c22 75%);
+    background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  }
+  .asset .thumb img{max-width:100%;max-height:100%;image-rendering:pixelated}
+  .asset .nm{font-size:11px;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .asset .sz{font-family:var(--mono);font-size:9.5px;color:var(--muted-2)}
+  .asset .del{
+    position:absolute;top:3px;right:3px;width:18px;height:18px;border-radius:4px;
+    background:rgba(0,0,0,.55);border:none;color:var(--muted);font-size:12px;padding:0;
+    display:none;align-items:center;justify-content:center;
+  }
+  .asset:hover .del{display:flex}
+  .asset .del:hover{color:var(--danger);background:rgba(0,0,0,.75)}
+  .empty{color:var(--muted-2);font-size:12px;text-align:center;padding:18px 8px;line-height:1.6}
+
+  /* ---------- Canvas workspace ---------- */
+  .workspace{position:relative;background:
+      radial-gradient(circle at 50% 40%, #1a1d23 0%, #131519 100%);
+    overflow:hidden;min-width:0}
+  #stage{display:block;width:100%;height:100%;cursor:default}
+  .hint{
+    position:absolute;left:50%;top:14px;transform:translateX(-50%);
+    background:rgba(0,0,0,.5);border:1px solid var(--line);border-radius:20px;
+    padding:5px 12px;font-size:11px;color:var(--muted);pointer-events:none;
+    backdrop-filter:blur(4px);
+  }
+  .zoombar{
+    position:absolute;right:12px;bottom:12px;display:flex;gap:6px;align-items:center;
+    background:rgba(0,0,0,.45);border:1px solid var(--line);border-radius:8px;padding:4px;
+    backdrop-filter:blur(4px);
+  }
+  .zoombar button{padding:4px 8px}
+  .zoombar .zval{font-family:var(--mono);font-size:11px;color:var(--muted);width:46px;text-align:center}
+
+  /* Inspector */
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .subhead{font-size:10.5px;letter-spacing:.4px;color:var(--muted-2);text-transform:uppercase;margin:2px 0}
+  .divider{height:1px;background:var(--line-soft);margin:2px 0}
+  .noselect{color:var(--muted-2);font-size:12px;text-align:center;padding:16px 6px;line-height:1.6}
+  .zbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+
+  /* ---------- Status bar ---------- */
+  .status{
+    display:flex;align-items:center;gap:18px;padding:6px 12px;background:var(--panel);
+    border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--muted);
+    flex-wrap:wrap;
+  }
+  .status b{color:var(--text);font-weight:500}
+  .status .sp{flex:1}
+
+  /* ---------- Modal ---------- */
+  .modal{
+    position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;
+    align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(3px);
+  }
+  .modal.open{display:flex}
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    width:min(680px,92vw);max-height:86vh;display:flex;flex-direction:column;overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,.5);
+  }
+  .card .chead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+  .card .chead h3{margin:0;font-size:14px;font-weight:600}
+  .card .cbody{padding:14px 16px;overflow:auto}
+  .card .cfoot{display:flex;gap:8px;justify-content:flex-end;padding:12px 16px;border-top:1px solid var(--line)}
+  pre.json{
+    font-family:var(--mono);font-size:12px;background:#0f1114;border:1px solid var(--line);
+    border-radius:8px;padding:12px;margin:0;overflow:auto;max-height:52vh;color:#cdd3dc;white-space:pre;
+  }
+  .hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="brand"><span class="dot"></span>Supermarket Map Designer <small>tile editor</small></div>
+
+    <div class="tbgroup">
+      <span class="lbl">Tool</span>
+      <div class="seg" id="toolSeg">
+        <button data-tool="select" class="on" title="Select / move / resize (V)">Select</button>
+        <button data-tool="place" title="Place one tile (B)">Place</button>
+        <button data-tool="paint" title="Paint tiles on the grid (P)">Paint</button>
+      </div>
+    </div>
+
+    <div class="tbgroup">
+      <label class="chk"><input type="checkbox" id="snapChk" checked> Snap</label>
+      <label class="chk"><input type="checkbox" id="gridChk" checked> Grid</label>
+    </div>
+
+    <div class="tbgroup">
+      <span class="lbl">Grid</span>
+      <input type="number" id="gridSize" class="w70" value="32" min="1" step="1">
+    </div>
+
+    <div class="tbgroup">
+      <span class="lbl">Map</span>
+      <input type="number" id="mapW" class="w70" value="1280" min="1">
+      <span style="color:var(--muted-2)">×</span>
+      <input type="number" id="mapH" class="w70" value="720" min="1">
+    </div>
+
+    <div style="flex:1"></div>
+
+    <div class="tbgroup" style="border:none">
+      <button class="ghost" id="fitBtn" title="Fit map to view (F)">Fit</button>
+      <button class="ghost" id="importBtn">Import JSON</button>
+      <button class="primary" id="exportBtn">Export JSON</button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="body">
+
+    <!-- Left: assets -->
+    <div class="panel left">
+      <div class="phead">
+        <span>Tiles</span>
+        <div style="display:flex;gap:6px">
+          <button class="ghost" id="sampleBtn" title="Add a few demo tiles" style="padding:4px 7px">Demo</button>
+          <button id="uploadBtn" style="padding:4px 8px">+ Upload</button>
+        </div>
+      </div>
+      <div class="pbody">
+        <div class="field">
+          <label>Asset path prefix (used in export)</label>
+          <input type="text" id="pathPrefix" value="assets/tiles/" spellcheck="false">
+        </div>
+        <div class="divider"></div>
+        <div id="assetList" class="assets"></div>
+        <div id="assetEmpty" class="empty">
+          No tiles yet.<br>Upload PNG/JPG files or click <b>Demo</b> to try it out.
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: canvas -->
+    <div class="workspace" id="workspace">
+      <canvas id="stage"></canvas>
+      <div class="hint" id="hint">Select a tile, then use Place or Paint. Middle-mouse or Space to pan · Scroll to zoom.</div>
+      <div class="zoombar">
+        <button id="zoomOut">−</button>
+        <span class="zval" id="zoomVal">100%</span>
+        <button id="zoomIn">+</button>
+      </div>
+    </div>
+
+    <!-- Right: inspector -->
+    <div class="panel right">
+      <div class="phead"><span>Inspector</span></div>
+      <div class="pbody">
+
+        <div id="assetProps" class="hidden">
+          <div class="subhead">Selected asset</div>
+          <div class="field"><label>File name (relative to prefix)</label>
+            <input type="text" id="aFilename" spellcheck="false"></div>
+          <div class="row2" style="margin-top:8px">
+            <div class="field"><label>Place width</label><input type="number" id="aW" min="1"></div>
+            <div class="field"><label>Place height</label><input type="number" id="aH" min="1"></div>
+          </div>
+          <div style="margin-top:8px;color:var(--muted-2);font-size:11px">
+            New tiles use this size. Existing tiles keep theirs.
+          </div>
+          <div class="divider" style="margin:12px 0"></div>
+        </div>
+
+        <div id="tileProps" class="hidden">
+          <div class="subhead">Selected tile</div>
+          <div class="row2">
+            <div class="field"><label>X</label><input type="number" id="tX"></div>
+            <div class="field"><label>Y</label><input type="number" id="tY"></div>
+          </div>
+          <div class="row2" style="margin-top:8px">
+            <div class="field"><label>Width</label><input type="number" id="tW" min="1"></div>
+            <div class="field"><label>Height</label><input type="number" id="tH" min="1"></div>
+          </div>
+          <div class="subhead" style="margin-top:12px">Order</div>
+          <div class="zbtns">
+            <button id="toFront">Bring to front</button>
+            <button id="toBack">Send to back</button>
+            <button id="dupBtn">Duplicate</button>
+            <button class="danger" id="delTile">Delete</button>
+          </div>
+        </div>
+
+        <div id="noSel" class="noselect">
+          Nothing selected.<br>Click a placed tile to edit it, or a palette tile to place it.
+        </div>
+
+        <div class="divider" style="margin:12px 0"></div>
+        <div class="subhead">Map</div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <button id="clearBtn" class="danger ghost">Clear all tiles</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status -->
+  <div class="status">
+    <span>Cursor <b id="stCursor">0, 0</b></span>
+    <span>Zoom <b id="stZoom">100%</b></span>
+    <span>Tiles <b id="stCount">0</b></span>
+    <span class="sp"></span>
+    <span id="stMode">Select mode</span>
+  </div>
+</div>
+
+<!-- Export/Import modal -->
+<div class="modal" id="modal">
+  <div class="card">
+    <div class="chead"><h3 id="modalTitle">Export JSON</h3><button class="ghost" id="modalClose">✕</button></div>
+    <div class="cbody">
+      <pre class="json" id="jsonView"></pre>
+      <textarea id="jsonInput" class="hidden" style="width:100%;height:320px;font-family:var(--mono);font-size:12px;background:#0f1114;color:#cdd3dc;border:1px solid var(--line);border-radius:8px;padding:12px" spellcheck="false" placeholder="Paste a map JSON here…"></textarea>
+    </div>
+    <div class="cfoot" id="modalFoot"></div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="image/png,image/jpeg" multiple class="hidden">
+
+<script>
+"use strict";
+
+/* ================= State ================= */
+const S = {
+  mapW:1280, mapH:720,
+  grid:32, snap:true, showGrid:true,
+  zoom:1, panX:60, panY:60,
+  assets:[],           // {id,name,filename,img,dataURL,w,h,pw,ph}
+  tiles:[],            // {id,assetId,x,y,w,h}
+  selAsset:null, selTile:null,
+  tool:'select',
+  pathPrefix:'assets/tiles/',
+};
+let uid = 1; const nid = () => uid++;
+
+/* ================= DOM ================= */
+const $ = s => document.querySelector(s);
+const canvas = $('#stage'), ctx = canvas.getContext('2d');
+const workspace = $('#workspace');
+
+/* ================= Canvas sizing ================= */
+let DPR = window.devicePixelRatio || 1;
+function resizeCanvas(){
+  const r = workspace.getBoundingClientRect();
+  DPR = window.devicePixelRatio || 1;
+  canvas.width = Math.round(r.width*DPR);
+  canvas.height = Math.round(r.height*DPR);
+  canvas.style.width = r.width+'px';
+  canvas.style.height = r.height+'px';
+  draw();
+}
+new ResizeObserver(resizeCanvas).observe(workspace);
+
+/* ================= Coordinate transforms ================= */
+function toMap(px,py){ return { x:(px - S.panX)/S.zoom, y:(py - S.panY)/S.zoom }; }
+function snap(v){ return S.snap ? Math.round(v/S.grid)*S.grid : Math.round(v); }
+const HANDLE = 8; // screen px
+
+/* ================= Drawing ================= */
+let rafPending=false;
+function draw(){ if(rafPending) return; rafPending=true; requestAnimationFrame(render); }
+
+function render(){
+  rafPending=false;
+  const W=canvas.width, H=canvas.height;
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,W,H);
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  ctx.save();
+  ctx.translate(S.panX,S.panY);
+  ctx.scale(S.zoom,S.zoom);
+
+  // Map background
+  ctx.fillStyle = '#20242b';
+  ctx.fillRect(-2,-2,S.mapW+4,S.mapH+4);
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(0,0,S.mapW,S.mapH);
+
+  // Grid
+  if(S.showGrid && S.grid*S.zoom > 3){
+    ctx.lineWidth = 1/S.zoom;
+    ctx.strokeStyle = 'rgba(0,0,0,0.08)';
+    ctx.beginPath();
+    for(let x=0;x<=S.mapW;x+=S.grid){ ctx.moveTo(x,0); ctx.lineTo(x,S.mapH); }
+    for(let y=0;y<=S.mapH;y+=S.grid){ ctx.moveTo(0,y); ctx.lineTo(S.mapW,y); }
+    ctx.stroke();
+  }
+
+  // Tiles
+  for(const t of S.tiles){
+    const a = assetById(t.assetId);
+    if(a && a.img && a.img.complete && a.img.naturalWidth){
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(a.img, t.x, t.y, t.w, t.h);
+    }else{
+      // missing asset placeholder
+      ctx.fillStyle = 'rgba(242,184,75,0.18)';
+      ctx.fillRect(t.x,t.y,t.w,t.h);
+      ctx.strokeStyle = 'rgba(242,184,75,0.7)';
+      ctx.lineWidth = 1/S.zoom;
+      ctx.strokeRect(t.x+.5/S.zoom,t.y+.5/S.zoom,t.w-1/S.zoom,t.h-1/S.zoom);
+    }
+  }
+
+  // Map border
+  ctx.strokeStyle = 'rgba(90,169,255,0.5)';
+  ctx.lineWidth = 1/S.zoom;
+  ctx.strokeRect(0,0,S.mapW,S.mapH);
+
+  // Selection
+  const t = tileById(S.selTile);
+  if(t){
+    ctx.strokeStyle = '#5aa9ff';
+    ctx.lineWidth = 1.5/S.zoom;
+    ctx.strokeRect(t.x,t.y,t.w,t.h);
+    const hs = HANDLE/S.zoom;
+    ctx.fillStyle = '#5aa9ff';
+    for(const [hx,hy] of handlePoints(t)){
+      ctx.fillRect(hx-hs/2, hy-hs/2, hs, hs);
+    }
+  }
+  ctx.restore();
+}
+
+function handlePoints(t){
+  const {x,y,w,h}=t;
+  return [
+    [x,y],[x+w/2,y],[x+w,y],
+    [x+w,y+h/2],[x+w,y+h],[x+w/2,y+h],
+    [x,y+h],[x,y+h/2],
+  ];
+}
+const HANDLE_IDS=['nw','n','ne','e','se','s','sw','w'];
+
+/* ================= Lookups ================= */
+function assetById(id){ return S.assets.find(a=>a.id===id); }
+function tileById(id){ return S.tiles.find(t=>t.id===id); }
+function topTileAt(mx,my){
+  for(let i=S.tiles.length-1;i>=0;i--){
+    const t=S.tiles[i];
+    if(mx>=t.x && mx<=t.x+t.w && my>=t.y && my<=t.y+t.h) return t;
+  }
+  return null;
+}
+function handleAt(mx,my,t){
+  const tol = (HANDLE/S.zoom)*0.85;
+  const pts = handlePoints(t);
+  for(let i=0;i<pts.length;i++){
+    if(Math.abs(mx-pts[i][0])<=tol && Math.abs(my-pts[i][1])<=tol) return HANDLE_IDS[i];
+  }
+  return null;
+}
+
+/* ================= Interaction ================= */
+let drag=null; // {mode,...}
+let spaceDown=false;
+
+canvas.addEventListener('contextmenu',e=>e.preventDefault());
+
+canvas.addEventListener('mousedown',e=>{
+  canvas.focus();
+  const rect=canvas.getBoundingClientRect();
+  const px=e.clientX-rect.left, py=e.clientY-rect.top;
+  const m=toMap(px,py);
+
+  // Pan: middle mouse or space held
+  if(e.button===1 || spaceDown){
+    drag={mode:'pan', sx:px, sy:py, px0:S.panX, py0:S.panY};
+    canvas.style.cursor='grabbing';
+    e.preventDefault(); return;
+  }
+  if(e.button!==0) return;
+
+  if(S.tool==='place'){ placeAt(m.x,m.y); return; }
+  if(S.tool==='paint'){
+    drag={mode:'paint', last:null};
+    paintAt(m.x,m.y);
+    return;
+  }
+
+  // Select tool
+  const sel=tileById(S.selTile);
+  if(sel){
+    const h=handleAt(m.x,m.y,sel);
+    if(h){
+      drag={mode:'resize', h, sx:sel.x, sy:sel.y, ex:sel.x+sel.w, ey:sel.y+sel.h};
+      return;
+    }
+  }
+  const hit=topTileAt(m.x,m.y);
+  if(hit){
+    selectTile(hit.id);
+    drag={mode:'move', ox:m.x-hit.x, oy:m.y-hit.y};
+  }else{
+    selectTile(null);
+  }
+});
+
+window.addEventListener('mousemove',e=>{
+  const rect=canvas.getBoundingClientRect();
+  const px=e.clientX-rect.left, py=e.clientY-rect.top;
+  const m=toMap(px,py);
+  $('#stCursor').textContent = Math.round(m.x)+', '+Math.round(m.y);
+
+  if(!drag){ updateCursor(m,px,py); return; }
+
+  if(drag.mode==='pan'){
+    S.panX=drag.px0+(px-drag.sx); S.panY=drag.py0+(py-drag.sy); draw(); return;
+  }
+  if(drag.mode==='move'){
+    const t=tileById(S.selTile); if(!t) return;
+    t.x=snap(m.x-drag.ox); t.y=snap(m.y-drag.oy);
+    syncTileProps(); draw(); return;
+  }
+  if(drag.mode==='resize'){
+    const t=tileById(S.selTile); if(!t) return;
+    doResize(t,drag.h,m); syncTileProps(); draw(); return;
+  }
+  if(drag.mode==='paint'){ paintAt(m.x,m.y); return; }
+});
+
+window.addEventListener('mouseup',()=>{
+  if(drag && drag.mode==='resize'){
+    const t=tileById(S.selTile);
+    if(t){ t.w=Math.max(1,Math.round(t.w)); t.h=Math.max(1,Math.round(t.h)); syncTileProps(); }
+  }
+  drag=null; updateCursorReset();
+});
+
+function doResize(t,h,m){
+  let x1=drag.sx, y1=drag.sy, x2=drag.ex, y2=drag.ey;
+  const L=h.includes('w'), R=h.includes('e'), T=h.includes('n'), B=h.includes('s');
+  if(L) x1=snap(m.x);
+  if(R) x2=snap(m.x);
+  if(T) y1=snap(m.y);
+  if(B) y2=snap(m.y);
+  const MIN=S.snap?S.grid:2;
+  if(x2-x1<MIN){ if(L) x1=x2-MIN; else x2=x1+MIN; }
+  if(y2-y1<MIN){ if(T) y1=y2-MIN; else y2=y1+MIN; }
+  t.x=x1; t.y=y1; t.w=x2-x1; t.h=y2-y1;
+}
+
+function updateCursor(m,px,py){
+  const sel=tileById(S.selTile);
+  if(S.tool==='select' && sel){
+    const h=handleAt(m.x,m.y,sel);
+    if(h){ canvas.style.cursor=cursorForHandle(h); return; }
+  }
+  if(S.tool==='select' && topTileAt(m.x,m.y)){ canvas.style.cursor='move'; return; }
+  if(S.tool==='place'||S.tool==='paint'){ canvas.style.cursor= S.selAsset?'crosshair':'not-allowed'; return; }
+  canvas.style.cursor = spaceDown?'grab':'default';
+}
+function updateCursorReset(){ canvas.style.cursor = spaceDown?'grab':'default'; }
+function cursorForHandle(h){
+  return {n:'ns-resize',s:'ns-resize',e:'ew-resize',w:'ew-resize',
+          nw:'nwse-resize',se:'nwse-resize',ne:'nesw-resize',sw:'nesw-resize'}[h]||'default';
+}
+
+/* ================= Place / Paint ================= */
+function placeAt(mx,my){
+  const a=assetById(S.selAsset);
+  if(!a){ flashHint('Select a tile from the palette first.'); return; }
+  const w=a.pw, h=a.ph;
+  const x=snap(mx - w/2), y=snap(my - h/2);
+  const t={id:nid(),assetId:a.id,x,y,w,h};
+  S.tiles.push(t); selectTile(t.id); refreshCount(); draw();
+}
+function paintAt(mx,my){
+  const a=assetById(S.selAsset);
+  if(!a){ return; }
+  const w=a.pw, h=a.ph;
+  const gx = S.snap ? Math.floor(mx/S.grid)*S.grid : Math.round(mx-w/2);
+  const gy = S.snap ? Math.floor(my/S.grid)*S.grid : Math.round(my-h/2);
+  const key=a.id+':'+gx+':'+gy;
+  if(drag && drag.last===key) return;
+  if(drag) drag.last=key;
+  // avoid exact duplicate stack of same asset at same cell
+  if(S.tiles.some(t=>t.assetId===a.id && t.x===gx && t.y===gy)) return;
+  S.tiles.push({id:nid(),assetId:a.id,x:gx,y:gy,w,h});
+  refreshCount(); draw();
+}
+
+/* ================= Selection sync ================= */
+function selectTile(id){
+  S.selTile=id;
+  const t=tileById(id);
+  $('#tileProps').classList.toggle('hidden',!t);
+  $('#noSel').classList.toggle('hidden', !!t || !!S.selAsset);
+  if(t) syncTileProps();
+  draw();
+}
+function syncTileProps(){
+  const t=tileById(S.selTile); if(!t) return;
+  $('#tX').value=Math.round(t.x); $('#tY').value=Math.round(t.y);
+  $('#tW').value=Math.round(t.w); $('#tH').value=Math.round(t.h);
+}
+function selectAsset(id){
+  S.selAsset=id;
+  renderAssets();
+  const a=assetById(id);
+  $('#assetProps').classList.toggle('hidden',!a);
+  $('#noSel').classList.toggle('hidden', !!a || !!S.selTile);
+  if(a){ $('#aFilename').value=a.filename; $('#aW').value=a.pw; $('#aH').value=a.ph; }
+  if(a && S.tool==='select'){ setTool('place'); }
+  draw();
+}
+
+/* ================= Asset palette ================= */
+function renderAssets(){
+  const list=$('#assetList'); list.innerHTML='';
+  $('#assetEmpty').classList.toggle('hidden', S.assets.length>0);
+  for(const a of S.assets){
+    const el=document.createElement('div');
+    el.className='asset'+(a.id===S.selAsset?' sel':'');
+    el.innerHTML=`
+      <button class="del" title="Delete tile" data-del="${a.id}">✕</button>
+      <div class="thumb"><img src="${a.dataURL}" alt=""></div>
+      <div class="nm" title="${a.filename}">${a.name}</div>
+      <div class="sz">${a.w}×${a.h}px</div>`;
+    el.addEventListener('click',ev=>{
+      if(ev.target.dataset.del) return;
+      selectAsset(a.id);
+    });
+    list.appendChild(el);
+  }
+  list.querySelectorAll('[data-del]').forEach(b=>{
+    b.addEventListener('click',()=>deleteAsset(+b.dataset.del));
+  });
+}
+function deleteAsset(id){
+  const used=S.tiles.filter(t=>t.assetId===id).length;
+  if(used && !confirm(`This tile is placed ${used} time(s). Delete the asset and all its placed tiles?`)) return;
+  S.tiles=S.tiles.filter(t=>t.assetId!==id);
+  S.assets=S.assets.filter(a=>a.id!==id);
+  if(S.selAsset===id){ S.selAsset=null; $('#assetProps').classList.add('hidden'); }
+  renderAssets(); refreshCount(); selectTile(S.selTile); draw();
+}
+
+function addAssetFromDataURL(dataURL,filename){
+  return new Promise(res=>{
+    const img=new Image();
+    img.onload=()=>{
+      const a={
+        id:nid(), name:filename.replace(/\.[^.]+$/,''), filename,
+        img, dataURL, w:img.naturalWidth, h:img.naturalHeight,
+        pw:img.naturalWidth, ph:img.naturalHeight,
+      };
+      S.assets.push(a); renderAssets(); res(a);
+    };
+    img.src=dataURL;
+  });
+}
+
+/* File upload */
+$('#uploadBtn').addEventListener('click',()=>$('#fileInput').click());
+$('#fileInput').addEventListener('change',e=>{
+  const files=[...e.target.files];
+  files.forEach(f=>{
+    const rd=new FileReader();
+    rd.onload=()=>addAssetFromDataURL(rd.result,f.name).then(a=>{ if(S.assets.length===1) selectAsset(a.id); });
+    rd.readAsDataURL(f);
+  });
+  e.target.value='';
+});
+
+/* Drag & drop onto canvas */
+['dragover','drop'].forEach(ev=>workspace.addEventListener(ev,e=>e.preventDefault()));
+workspace.addEventListener('drop',e=>{
+  [...e.dataTransfer.files].filter(f=>/image\/(png|jpeg)/.test(f.type)).forEach(f=>{
+    const rd=new FileReader();
+    rd.onload=()=>addAssetFromDataURL(rd.result,f.name).then(a=>{ if(S.assets.length===1) selectAsset(a.id); });
+    rd.readAsDataURL(f);
+  });
+});
+
+/* Demo tiles */
+function makeTile(w,h,fn){
+  const c=document.createElement('canvas'); c.width=w; c.height=h;
+  const x=c.getContext('2d'); fn(x,w,h); return c.toDataURL('image/png');
+}
+$('#sampleBtn').addEventListener('click',async()=>{
+  const defs=[
+    ['floor.png',32,32,(x,w,h)=>{x.fillStyle='#d9d2c4';x.fillRect(0,0,w,h);x.strokeStyle='#c3bba9';x.strokeRect(.5,.5,w-1,h-1);}],
+    ['cooler.png',64,128,(x,w,h)=>{x.fillStyle='#7fb8d6';x.fillRect(0,0,w,h);x.fillStyle='#dff1fb';x.fillRect(4,4,w-8,h-8);x.strokeStyle='#4d8fb0';x.lineWidth=2;x.strokeRect(1,1,w-2,h-2);x.fillStyle='#3a6b86';x.font='bold 10px sans-serif';x.textAlign='center';x.fillText('COOLER',w/2,h/2);}],
+    ['shelf.png',96,32,(x,w,h)=>{x.fillStyle='#b7a98e';x.fillRect(0,0,w,h);x.fillStyle='#8f8168';for(let i=6;i<w-6;i+=14)x.fillRect(i,5,8,h-10);x.strokeStyle='#7a6f57';x.strokeRect(.5,.5,w-1,h-1);}],
+    ['door.png',32,64,(x,w,h)=>{x.fillStyle='#9c6b3f';x.fillRect(0,0,w,h);x.fillStyle='#7a5230';x.fillRect(4,4,w-8,h-8);x.fillStyle='#e8c96a';x.beginPath();x.arc(w-9,h/2,3,0,7);x.fill();}],
+    ['checkout.png',64,64,(x,w,h)=>{x.fillStyle='#88c9a1';x.fillRect(0,0,w,h);x.fillStyle='#2f6d47';x.fillRect(0,h-16,w,16);x.strokeStyle='#3d7d57';x.strokeRect(.5,.5,w-1,h-1);}],
+  ];
+  for(const [fn,w,h,dr] of defs){
+    const dataURL=makeTile(w,h,dr);
+    const exists=S.assets.some(a=>a.filename===fn);
+    if(!exists) await addAssetFromDataURL(dataURL,fn);
+  }
+  if(!S.selAsset && S.assets.length) selectAsset(S.assets[0].id);
+});
+
+/* ================= Inspector edits ================= */
+function bindNum(id,apply){
+  $(id).addEventListener('input',()=>{ const v=parseFloat($(id).value); if(!isNaN(v)) apply(v); draw(); });
+}
+bindNum('#tX',v=>{const t=tileById(S.selTile);if(t)t.x=v;});
+bindNum('#tY',v=>{const t=tileById(S.selTile);if(t)t.y=v;});
+bindNum('#tW',v=>{const t=tileById(S.selTile);if(t)t.w=Math.max(1,v);});
+bindNum('#tH',v=>{const t=tileById(S.selTile);if(t)t.h=Math.max(1,v);});
+
+$('#aFilename').addEventListener('input',()=>{const a=assetById(S.selAsset);if(a){a.filename=$('#aFilename').value;a.name=a.filename.replace(/\.[^.]+$/,'');renderAssets();}});
+bindNum('#aW',v=>{const a=assetById(S.selAsset);if(a)a.pw=Math.max(1,Math.round(v));});
+bindNum('#aH',v=>{const a=assetById(S.selAsset);if(a)a.ph=Math.max(1,Math.round(v));});
+
+$('#toFront').addEventListener('click',()=>{const t=tileById(S.selTile);if(!t)return;S.tiles=S.tiles.filter(x=>x!==t);S.tiles.push(t);draw();});
+$('#toBack').addEventListener('click',()=>{const t=tileById(S.selTile);if(!t)return;S.tiles=S.tiles.filter(x=>x!==t);S.tiles.unshift(t);draw();});
+$('#dupBtn').addEventListener('click',dupTile);
+$('#delTile').addEventListener('click',delTile);
+function dupTile(){const t=tileById(S.selTile);if(!t)return;const n={...t,id:nid(),x:t.x+S.grid,y:t.y+S.grid};S.tiles.push(n);selectTile(n.id);refreshCount();draw();}
+function delTile(){const t=tileById(S.selTile);if(!t)return;S.tiles=S.tiles.filter(x=>x!==t);selectTile(null);refreshCount();draw();}
+
+$('#clearBtn').addEventListener('click',()=>{
+  if(!S.tiles.length) return;
+  if(confirm('Remove all placed tiles? (Uploaded tile assets are kept.)')){
+    S.tiles=[];selectTile(null);refreshCount();draw();
+  }
+});
+
+/* ================= Toolbar controls ================= */
+function setTool(t){
+  S.tool=t;
+  $('#toolSeg').querySelectorAll('button').forEach(b=>{
+    const on=b.dataset.tool===t;
+    b.classList.toggle('on',on);
+    b.classList.toggle('paint',on && t==='paint');
+  });
+  $('#stMode').textContent = t.charAt(0).toUpperCase()+t.slice(1)+' mode';
+  updateCursorReset();
+}
+$('#toolSeg').addEventListener('click',e=>{ if(e.target.dataset.tool) setTool(e.target.dataset.tool); });
+$('#snapChk').addEventListener('change',e=>{S.snap=e.target.checked;});
+$('#gridChk').addEventListener('change',e=>{S.showGrid=e.target.checked;draw();});
+$('#gridSize').addEventListener('input',e=>{const v=parseInt(e.target.value);if(v>0){S.grid=v;draw();}});
+$('#mapW').addEventListener('input',e=>{const v=parseInt(e.target.value);if(v>0){S.mapW=v;draw();}});
+$('#mapH').addEventListener('input',e=>{const v=parseInt(e.target.value);if(v>0){S.mapH=v;draw();}});
+$('#pathPrefix').addEventListener('input',e=>{S.pathPrefix=e.target.value;});
+
+/* ================= Zoom & pan ================= */
+function setZoom(z,cx,cy){
+  z=Math.min(8,Math.max(0.1,z));
+  const rect=canvas.getBoundingClientRect();
+  cx=cx??rect.width/2; cy=cy??rect.height/2;
+  const before=toMap(cx,cy);
+  S.zoom=z;
+  const after=toMap(cx,cy);
+  S.panX += (after.x-before.x)*S.zoom;
+  S.panY += (after.y-before.y)*S.zoom;
+  $('#zoomVal').textContent=Math.round(z*100)+'%';
+  $('#stZoom').textContent=Math.round(z*100)+'%';
+  draw();
+}
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const rect=canvas.getBoundingClientRect();
+  const f=e.deltaY<0?1.12:1/1.12;
+  setZoom(S.zoom*f, e.clientX-rect.left, e.clientY-rect.top);
+},{passive:false});
+$('#zoomIn').addEventListener('click',()=>setZoom(S.zoom*1.2));
+$('#zoomOut').addEventListener('click',()=>setZoom(S.zoom/1.2));
+
+function fitView(){
+  const rect=canvas.getBoundingClientRect();
+  const pad=40;
+  const z=Math.min((rect.width-pad*2)/S.mapW,(rect.height-pad*2)/S.mapH);
+  S.zoom=Math.min(8,Math.max(0.1,z));
+  S.panX=(rect.width-S.mapW*S.zoom)/2;
+  S.panY=(rect.height-S.mapH*S.zoom)/2;
+  $('#zoomVal').textContent=Math.round(S.zoom*100)+'%';
+  $('#stZoom').textContent=Math.round(S.zoom*100)+'%';
+  draw();
+}
+$('#fitBtn').addEventListener('click',fitView);
+
+/* ================= Keyboard ================= */
+function typing(){const a=document.activeElement;return a&&(a.tagName==='INPUT'||a.tagName==='TEXTAREA');}
+window.addEventListener('keydown',e=>{
+  if(e.code==='Space' && !typing()){ spaceDown=true; if(!drag) canvas.style.cursor='grab'; e.preventDefault(); }
+  if(typing()) return;
+  const t=tileById(S.selTile);
+  if((e.key==='Delete'||e.key==='Backspace') && t){ delTile(); e.preventDefault(); }
+  else if(e.key==='v'||e.key==='V') setTool('select');
+  else if(e.key==='b'||e.key==='B') setTool('place');
+  else if(e.key==='p'||e.key==='P') setTool('paint');
+  else if(e.key==='f'||e.key==='F') fitView();
+  else if(e.key==='Escape'){ selectTile(null); }
+  else if((e.ctrlKey||e.metaKey)&&(e.key==='d')){ if(t){dupTile();e.preventDefault();} }
+  else if(t && ['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){
+    const step=e.shiftKey?S.grid:1;
+    if(e.key==='ArrowLeft')t.x-=step; if(e.key==='ArrowRight')t.x+=step;
+    if(e.key==='ArrowUp')t.y-=step; if(e.key==='ArrowDown')t.y+=step;
+    syncTileProps(); draw(); e.preventDefault();
+  }
+});
+window.addEventListener('keyup',e=>{ if(e.code==='Space'){ spaceDown=false; updateCursorReset(); } });
+
+/* ================= Export / Import ================= */
+function buildJSON(){
+  return {
+    width:String(S.mapW),
+    height:String(S.mapH),
+    tiles:S.tiles.map(t=>{
+      const a=assetById(t.assetId);
+      const fname=a?a.filename:'missing.png';
+      return {
+        image:(S.pathPrefix||'')+fname,
+        size:[Math.round(t.w),Math.round(t.h)],
+        location:[Math.round(t.x),Math.round(t.y)],
+      };
+    })
+  };
+}
+function openModal(mode){
+  const m=$('#modal'), foot=$('#modalFoot');
+  foot.innerHTML='';
+  if(mode==='export'){
+    $('#modalTitle').textContent='Export JSON';
+    $('#jsonView').classList.remove('hidden'); $('#jsonInput').classList.add('hidden');
+    const json=JSON.stringify(buildJSON(),null,2);
+    $('#jsonView').textContent=json;
+    const copy=btn('Copy',()=>{navigator.clipboard.writeText(json);copy.textContent='Copied ✓';setTimeout(()=>copy.textContent='Copy',1200);});
+    const dl=btn('Download .json',()=>downloadJSON(json),'primary');
+    foot.append(copy,dl);
+  }else{
+    $('#modalTitle').textContent='Import JSON';
+    $('#jsonView').classList.add('hidden'); $('#jsonInput').classList.remove('hidden');
+    $('#jsonInput').value='';
+    const load=btn('Load map',()=>{ importJSON($('#jsonInput').value); },'primary');
+    foot.append(load);
+  }
+  m.classList.add('open');
+}
+function btn(label,fn,cls){const b=document.createElement('button');b.textContent=label;if(cls)b.className=cls;b.onclick=fn;return b;}
+function downloadJSON(json){
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download='supermarket-map.json';a.click();
+  URL.revokeObjectURL(url);
+}
+function importJSON(text){
+  let data;
+  try{ data=JSON.parse(text); }catch(err){ alert('Invalid JSON: '+err.message); return; }
+  if(data.width) S.mapW=parseInt(data.width)||S.mapW;
+  if(data.height) S.mapH=parseInt(data.height)||S.mapH;
+  $('#mapW').value=S.mapW; $('#mapH').value=S.mapH;
+  S.tiles=[];
+  const tiles=Array.isArray(data.tiles)?data.tiles:[];
+  for(const t of tiles){
+    const size=t.size||[S.grid,S.grid], loc=t.location||[0,0];
+    const imgPath=t.image||'';
+    const base=imgPath.split('/').pop();
+    let a=S.assets.find(x=>x.filename===base || (S.pathPrefix+x.filename)===imgPath);
+    if(!a){ // placeholder asset (no image loaded)
+      a={id:nid(),name:base||'missing',filename:base||'missing.png',img:null,dataURL:'',w:size[0],h:size[1],pw:size[0],ph:size[1]};
+      S.assets.push(a);
+    }
+    S.tiles.push({id:nid(),assetId:a.id,x:+loc[0]||0,y:+loc[1]||0,w:+size[0]||S.grid,h:+size[1]||S.grid});
+  }
+  renderAssets(); refreshCount(); selectTile(null); $('#modal').classList.remove('open'); fitView();
+}
+$('#exportBtn').addEventListener('click',()=>openModal('export'));
+$('#importBtn').addEventListener('click',()=>openModal('import'));
+$('#modalClose').addEventListener('click',()=>$('#modal').classList.remove('open'));
+$('#modal').addEventListener('click',e=>{ if(e.target.id==='modal') $('#modal').classList.remove('open'); });
+
+/* ================= Misc ================= */
+function refreshCount(){ $('#stCount').textContent=S.tiles.length; }
+let hintTimer=null;
+function flashHint(msg){
+  const h=$('#hint'); const orig=h.textContent; h.textContent=msg; h.style.color='var(--amber)';
+  clearTimeout(hintTimer);
+  hintTimer=setTimeout(()=>{h.textContent=orig;h.style.color='';},1800);
+}
+
+/* ================= Init ================= */
+resizeCanvas();
+fitView();
+setTool('select');
+refreshCount();
+</script>
+</body>
+</html>
