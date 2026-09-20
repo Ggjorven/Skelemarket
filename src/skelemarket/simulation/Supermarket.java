@@ -15,6 +15,8 @@ public class Supermarket {
 	private float time = 0.0f;
 	private int frames = 0;
 	private float fps = 0;
+	private float x = 0.0f;
+	private float speed = 100.0f;
 
 	private Texture texture = null;
 
@@ -30,6 +32,7 @@ public class Supermarket {
 	public void update(float deltaTime) {
 		frames++;
 		time += deltaTime;
+		x += speed * deltaTime;
 
 		if (time >= 1.0f)
 		{
@@ -42,6 +45,6 @@ public class Supermarket {
 	}
 
 	public void render() {
-		mRendererRef.drawQuad(texture, new Vec2(0.0f, 0.0f), new Vec2(100.0f, 100.0f));
+		mRendererRef.drawQuad(texture, new Vec2(x, 0.0f), new Vec2(100.0f, 100.0f));
 	}
 }
