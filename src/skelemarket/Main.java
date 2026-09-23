@@ -3,13 +3,19 @@ package skelemarket;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import skelemarket.core.Logger;
+import skelemarket.core.Simulation;
+
 public class Main extends Application {
-    public static void main(String[] args) {
-        launch(args);
-    }
+    private Simulation mSimulation = null;
 
     @Override
-    public void start(Stage primaryStage) {
-        System.out.println("Hello, world");
+    public void start(Stage stage) {
+		mSimulation = new Simulation(stage);
+		mSimulation.run();
+    }
+
+    public static void main(String[] args) {
+        launch();
     }
 }

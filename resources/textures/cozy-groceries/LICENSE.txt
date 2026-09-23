@@ -1,0 +1,79 @@
+MAYGETSU PIXEL ASSET LICENSE COZY GROCERIES – FREE STARTER PACK
+
+Copyright © 2026 Maygetsu All rights reserved.
+
+This license applies to the pixel art assets included in the “Cozy
+Groceries – Free Starter Pack” by Maygetsu.
+
+By downloading or using these assets, you agree to the terms below.
+
+1.  GRANTED RIGHTS Maygetsu grants you a non-exclusive, worldwide,
+    royalty-free license to use, reproduce, modify, and incorporate the
+    assets into your own projects.
+
+You may use the assets in personal and commercial projects, including
+games, prototypes, game jams, apps, videos, trailers, screenshots,
+promotional materials, and other creative works where the assets form
+part of a larger work.
+
+You may modify the assets, including recoloring, resizing, editing,
+animating, and combining them with other artwork.
+
+2.  COMMERCIAL USE Commercial use is allowed. You may use these assets
+    in a game or other project that you sell or monetize. No royalties
+    are owed to Maygetsu for a finished project that incorporates
+    these assets.
+
+3.  REDISTRIBUTION AND RESALE You may NOT: • Resell the original assets
+    as a standalone product. • Redistribute the original PNG, Aseprite,
+    or sprite sheet files. • Upload the original files to another asset
+    store, marketplace, repository, file-sharing service, or download
+    site. • Include the original assets in another asset pack intended
+    for redistribution. • Give away or share the source files as a
+    separate asset collection. • Sell individual assets from this pack
+    separately. • Create a substantially unchanged derivative asset pack
+    and sell or distribute it as your own.
+
+The assets must be incorporated into a larger creative work rather than
+redistributed as the primary downloadable asset collection.
+
+4.  OWNERSHIP The original artwork and intellectual property remain the
+    property of Maygetsu. Downloading or using the assets does not
+    transfer ownership or copyright of the original artwork.
+
+5.  SOURCE FILES Aseprite source files are provided for convenience and
+    editing. They are covered by the same license restrictions as the
+    PNG assets. You may modify them for your own projects but may not
+    redistribute or resell them.
+
+6.  AI / MACHINE LEARNING You may not use these assets as training data
+    for machine-learning or generative-AI models, datasets, or similar
+    systems without explicit written permission from Maygetsu.
+
+7.  NFT / SPECULATIVE USE You may not use the original artwork as NFTs
+    or other speculative digital collectibles, or sell the artwork
+    itself as a tokenized collectible.
+
+8.  CREDIT Credit is not required. If you would like to provide credit,
+    this format is appreciated:
+
+“Cozy Groceries by Maygetsu”
+
+9.  COMMISSIONED PROJECTS You may use the assets in commissioned work. A
+    client may receive the finished project containing the assets, but
+    may not receive or redistribute the original asset files as a
+    standalone collection.
+
+10. LICENSE TERMINATION This license is automatically terminated if you
+    violate its terms. If the license is terminated, you must stop
+    distributing the assets and unauthorized copies of the assets.
+
+11. DISCLAIMER The assets are provided “as is” without warranties of any
+    kind. Maygetsu is not responsible for damages, losses, or
+    claims arising from their use.
+
+12. CONTACT For licensing questions, permissions, or special-use
+    requests, please contact Maygetsu through the official itch.io
+    page.
+
+Copyright © 2026 Maygetsu All rights reserved.

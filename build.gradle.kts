@@ -2,7 +2,10 @@ plugins {
     id("java")
     id("application")
     id("eclipse")
+
+    id("org.javamodularity.moduleplugin") version "1.8.15"
     id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.beryx.jlink") version "2.25.0"
 }
 
 java {
@@ -21,6 +24,7 @@ repositories {
 sourceSets {
     main {
         java.setSrcDirs(listOf("src"))
+        resources.setSrcDirs(listOf("resources"))
     }
     test {
         java.setSrcDirs(listOf("tests"))
@@ -35,7 +39,7 @@ javafx {
 dependencies {
 	implementation("io.github.kusoroadeolu:ferrous:1.0.1")
 
-    testImplementation(platform("org.junit:junit-bom:6.0.0"))
+    testImplementation(platform("org.junit:junit-bom:5.12.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
@@ -44,12 +48,16 @@ application {
     mainClass.set("skelemarket.Main")
 }
 
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+}
+
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "skelemarket.Main"
     }
 }
 
-tasks.test {
+tasks.withType<Test> {
     useJUnitPlatform()
 }
