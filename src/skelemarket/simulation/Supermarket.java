@@ -18,8 +18,6 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	public Supermarket(Renderer rendererRef) {
 		mRendererRef = rendererRef;
-
-		texture = new Texture("/textures/puzzled-skeleton.png");
 	}
 
 	public void update() {
@@ -27,6 +25,6 @@ public class Supermarket {
 	}
 
 	public void render() {
-		mRendererRef.drawQuad(texture, new Vec2(0.0f, 0.0f), new Vec2(100.0f, 100.0f));
+		// TODO: ...
 	}
 }
