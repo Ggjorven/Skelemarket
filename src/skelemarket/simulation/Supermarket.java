@@ -1,9 +1,6 @@
 package skelemarket.simulation;
 
 import skelemarket.core.Renderer;
-import skelemarket.core.Texture;
-import skelemarket.core.Vec2;
-import skelemarket.core.UV;
 
 public class Supermarket {
 	///////////////////////////////////////////////////////////
@@ -16,13 +13,32 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	public Supermarket(Renderer rendererRef) {
 		mRendererRef = rendererRef;
+
+		// Create/load map
+
+		// Spawn customers at the door
+		
+
+		// Spawn manager
+		
+		// Spawn cashier
+		
+
+		// Spawn 3 random stockers
 	}
 
 	public void update() {
-		// TODO: ...
+		// Update all customers
+		
+		// Update all employees
 	}
 
 	public void render() {
-		// TODO: ...
+		// Render map
+		
+		// Render customers
+		
+		
+		// Render employees
 	}
 }
