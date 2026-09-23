@@ -12,7 +12,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
 
-        Logger.Warn("vytfucucc");
+        Logger.warn("vytfucucc");
 
 
 		mSimulation = new Simulation(stage);

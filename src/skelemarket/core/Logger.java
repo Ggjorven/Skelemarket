@@ -19,16 +19,15 @@ public class Logger {
     ////////////////////////////////////////////////////////////////////////////////////
     // Static methods
     ////////////////////////////////////////////////////////////////////////////////////
-    public static void Trace(String message) { Log(LoggerSeverity.Trace, message); }
-    public static void Info(String message) { Log(LoggerSeverity.Info, message); }
-    public static void Warning(String message) { Log(LoggerSeverity.Warning, message); }
-    public static void Warn(String message) { Warning(message); }
-    public static void Error(String message) { Log(LoggerSeverity.Error, message); }
+    public static void trace(String message) { log(LoggerSeverity.Trace, message); }
+    public static void info(String message) { log(LoggerSeverity.Info, message); }
+    public static void warn(String message) { log(LoggerSeverity.Warning, message); }
+    public static void error(String message) { log(LoggerSeverity.Error, message); }
 
     ////////////////////////////////////////////////////////////////////////////////////
     // Private static methods
     ////////////////////////////////////////////////////////////////////////////////////
-    private static String SeverityToColour(LoggerSeverity severity)
+    private static String severityToColour(LoggerSeverity severity)
     {
         switch (severity)
         {
@@ -38,14 +37,11 @@ public class Logger {
             case LoggerSeverity.Error:    return "\033[31m";
 
             default:
-                // TODO: Break
-                break;
+                throw new RuntimeException("Unreachable logger colour code.");
         }
-
-        return "\033[0m";
     }
 
-    private static String SeverityToTag(LoggerSeverity severity)
+    private static String severityToTag(LoggerSeverity severity)
     {
         switch (severity)
         {
@@ -55,19 +51,16 @@ public class Logger {
             case LoggerSeverity.Error:    return "ERROR";
 
             default:
-                // TODO: Break
-                break;
+                throw new RuntimeException("Unreachable logger tag code.");
         }
-
-        return "<UNKNOWN>";
     }
 
-    private static void Log(LoggerSeverity severity, String message)
+    private static void log(LoggerSeverity severity, String message)
     {
         Format timeFormat = new SimpleDateFormat("HH:mm:ss");
         String timeStr = timeFormat.format(new Date());
 
-        System.out.printf("%s[%s] [%s]: %s\n", SeverityToColour(severity), timeStr, SeverityToTag(severity), message);
+        System.out.printf("%s[%s] [%s]: %s\n", severityToColour(severity), timeStr, severityToTag(severity), message);
         System.out.print("\033[0m");
     }
 }
