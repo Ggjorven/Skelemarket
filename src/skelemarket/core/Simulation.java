@@ -57,7 +57,7 @@ public class Simulation {
 			public void handle(long now) {
 				mRenderer.clear();
 				mSupermarket.render();
-				System.out.printf("Update\n");
+				Logger.trace("Update");
 			}
 		}.start();;
 
@@ -69,7 +69,7 @@ public class Simulation {
 				updater.join();
 			}
 			catch (Exception ex) {
-				System.out.printf("Exception caught: %s\n", ex.toString());
+				System.out.printf("Exception caught: %s", ex.toString());
 			}
 		});
 	}
@@ -113,7 +113,7 @@ class SimulationUpdater extends Thread {
 			if (timePassed >= mNsPerFrame) {
 				mSupermarketRef.update();
 
-				System.out.printf("Update - %d - %d - %d\n", mNsPerFrame, deltaTime, timePassed);
+				Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
 				timePassed = 0;
 			}
 		}
