@@ -45,7 +45,7 @@ public class Simulation {
 		mRenderer = new Renderer(mContext);
 		Logger.info("Created renderer.");
 
-		mSupermarket = new Supermarket(mRenderer);
+		mSupermarket = new Supermarket();
 		Logger.info("Created supermarket.");
 	}
 
@@ -62,7 +62,7 @@ public class Simulation {
 			@Override
 			public void handle(long now) {
 				mRenderer.clear();
-				mSupermarket.render();
+				mSupermarket.render(mRenderer);
 				// Logger.trace("Update");
 			}
 		}.start();;

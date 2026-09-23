@@ -6,14 +6,12 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private Renderer mRendererRef = null;	
-
+	
+	
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Supermarket(Renderer rendererRef) {
-		mRendererRef = rendererRef;
-
+	public Supermarket() {
 		// Create/load map
 
 		// Spawn customers at the door
@@ -33,7 +31,7 @@ public class Supermarket {
 		// Update all employees
 	}
 
-	public void render() {
+	public void render(Renderer rendererRef) {
 		// Render map
 		
 		// Render customers
