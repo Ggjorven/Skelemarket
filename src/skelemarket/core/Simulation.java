@@ -31,6 +31,7 @@ public class Simulation {
 
         mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
         mContext = mCanvas.getGraphicsContext2D();
+		Logger.info("Created canvas.");
 
         mPane = new Pane(mCanvas);
 		mScene = new Scene(mPane);
@@ -39,13 +40,18 @@ public class Simulation {
         stage.setTitle(Config.TITLE);
 		stage.setResizable(false);
         stage.show();
+		Logger.info("Created scene & pane.");
 
 		mRenderer = new Renderer(mContext);
+		Logger.info("Created renderer.");
 
 		mSupermarket = new Supermarket(mRenderer);
+		Logger.info("Created supermarket.");
 	}
 
 	public void run() {
+		Logger.info("Started simulation");
+
 		SimulationUpdater updater = new SimulationUpdater(mSupermarket, Config.SIMULATION_FPS);
 
 		// Update
@@ -57,12 +63,14 @@ public class Simulation {
 			public void handle(long now) {
 				mRenderer.clear();
 				mSupermarket.render();
-				Logger.trace("Update");
+				// Logger.trace("Update");
 			}
 		}.start();;
 
 		// Close handling
 		mStageRef.setOnCloseRequest(event -> {
+			Logger.info("Closing application...");
+
 			// Interrupt and wait on updater thread
 			try {
 				updater.stopRunning();
@@ -113,7 +121,7 @@ class SimulationUpdater extends Thread {
 			if (timePassed >= mNsPerFrame) {
 				mSupermarketRef.update();
 
-				Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
+				// Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
 				timePassed = 0;
 			}
 		}
