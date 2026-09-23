@@ -11,11 +11,6 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	private Renderer mRendererRef = null;	
 
-	// TODO: Remove temporary
-	private float time = 0.0f;
-	private int frames = 0;
-	private float fps = 0;
-
 	private Texture texture = null;
 
 	///////////////////////////////////////////////////////////
@@ -27,18 +22,8 @@ public class Supermarket {
 		texture = new Texture("/textures/puzzled-skeleton.png");
 	}
 
-	public void update(float deltaTime) {
-		frames++;
-		time += deltaTime;
-
-		if (time >= 1.0f)
-		{
-			fps = frames / time;
-			frames = 0;
-			time = 0.0f;
-		}
-
-		System.out.println(String.format("deltaTime = %f, FPS = %f", deltaTime, fps));
+	public void update() {
+		// TODO: ...
 	}
 
 	public void render() {

@@ -43,21 +43,70 @@ public class Simulation {
 	}
 
 	public void run() {
-		new AnimationTimer() {
-            private long previousTime = System.nanoTime();
+		Thread updater = new SimulationUpdater(mSupermarket, Config.SIMULATION_FPS);
 
+		// Update
+		updater.start();
+
+		// Renderer
+		new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				double deltaTime = (now - previousTime) / 1_000_000_000.0;
-				previousTime = now;
-
-				// Clear screen
 				mRenderer.clear();
 
-				// Update & Render
-				mSupermarket.update((float)deltaTime);
 				mSupermarket.render();
+				System.out.println("Render");
 			}
 		}.start();
+
+		// Join
+		// try {
+		// 	updater.join();
+		// }
+		// catch (Exception ex) {
+		// 	System.out.println(String.format("Exception caught: %s", ex.toString()));
+		// }
+	}
+
+	public Supermarket getSupermarket() { return mSupermarket; }
+}
+
+
+
+class SimulationUpdater extends Thread {
+	///////////////////////////////////////////////////////////
+	// Variables
+	///////////////////////////////////////////////////////////
+	private Supermarket mSupermarketRef = null;
+	private int mFPS = 0;
+	public long mNsPerFrame = 0;
+
+	///////////////////////////////////////////////////////////
+	// Methods
+	///////////////////////////////////////////////////////////
+	public SimulationUpdater(Supermarket supermarketRef, int fps) {
+		mSupermarketRef = supermarketRef;
+		mFPS = fps;
+
+		mNsPerFrame = (long)((1.0 / mFPS) * 1_000_000_000);
+	}
+
+	public void run() {
+		long timePassed = 0;
+		long previousTime = System.nanoTime();
+
+		while (true) {
+			long now = System.nanoTime();
+			long deltaTime = now - previousTime;
+			timePassed += deltaTime;
+			previousTime = now;
+
+			if (timePassed >= mNsPerFrame) {
+				mSupermarketRef.update();
+
+				System.out.println(String.format("Update - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
+				timePassed = 0;
+			}
+		}
 	}
 }
