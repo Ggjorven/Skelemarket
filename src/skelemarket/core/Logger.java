@@ -17,6 +17,14 @@ enum LoggerSeverity
 
 public class Logger {
     ////////////////////////////////////////////////////////////////////////////////////
+    // Variables
+    ////////////////////////////////////////////////////////////////////////////////////
+    private static final String WHITE = "\033[37m";
+    private static final String GREEN = "\033[32m";
+    private static final String YELLOW = "\033[33m";
+    private static final String RED = "\033[31m";
+
+    ////////////////////////////////////////////////////////////////////////////////////
     // Static methods
     ////////////////////////////////////////////////////////////////////////////////////
     public static void trace(String message) { log(LoggerSeverity.Trace, message); }
@@ -31,10 +39,10 @@ public class Logger {
     {
         switch (severity)
         {
-            case LoggerSeverity.Trace:    return "\033[37m";
-            case LoggerSeverity.Info:     return "\033[32m";
-            case LoggerSeverity.Warning:  return "\033[33m";
-            case LoggerSeverity.Error:    return "\033[31m";
+            case LoggerSeverity.Trace:    return Logger.WHITE;
+            case LoggerSeverity.Info:     return Logger.GREEN;
+            case LoggerSeverity.Warning:  return Logger.YELLOW;
+            case LoggerSeverity.Error:    return Logger.RED;
 
             default:
                 throw new RuntimeException("Unreachable logger colour code.");
