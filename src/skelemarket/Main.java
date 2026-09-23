@@ -3,6 +3,7 @@ package skelemarket;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
+import skelemarket.core.Logger;
 import skelemarket.core.Simulation;
 
 public class Main extends Application {
@@ -10,6 +11,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+
+        Logger.Warn("vytfucucc");
+
+
 		mSimulation = new Simulation(stage);
 		mSimulation.run();
     }
