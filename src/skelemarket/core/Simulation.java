@@ -20,8 +20,6 @@ public class Simulation {
 	private Scene mScene = null;
 
 	private Renderer mRenderer = null;
-	private long mNsPerFrame = 0;
-
 	private Supermarket mSupermarket = null;
 
 	///////////////////////////////////////////////////////////
@@ -40,7 +38,6 @@ public class Simulation {
         stage.show();
 
 		mRenderer = new Renderer(mContext);
-		mNsPerFrame = (long)((1.0 / Config.RENDERER_FPS) * 1_000_000_000);
 
 		mSupermarket = new Supermarket(mRenderer);
 	}
@@ -52,25 +49,14 @@ public class Simulation {
 		updater.start();
 
 		// Renderer
-		{
-			long previousTime = System.nanoTime();
-			long timePassed = 0;
-			
-			while (true) {
-				long now = System.nanoTime();
-				long deltaTime = now - previousTime;
-				timePassed += deltaTime;
-				previousTime = now;
-
-				if (timePassed >= mNsPerFrame)
-				{
-					mRenderer.clear();
-					mSupermarket.render();
-					System.out.printf("Render - %d - %d - %d\n", mNsPerFrame, deltaTime, timePassed);
-					timePassed = 0;
-				}
+		new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				mRenderer.clear();
+				mSupermarket.render();
+				System.out.printf("Update\n");
 			}
-		}
+		}.start();
 
 		// Join
 		// try {
