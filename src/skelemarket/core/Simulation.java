@@ -13,6 +13,8 @@ public class Simulation {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	private Stage mStageRef = null;
+
 	private Canvas mCanvas = null;
 	private GraphicsContext mContext = null;
 
@@ -26,6 +28,8 @@ public class Simulation {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Simulation(Stage stage) {
+		mStageRef = stage;
+
         mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
         mContext = mCanvas.getGraphicsContext2D();
 
@@ -43,32 +47,33 @@ public class Simulation {
 	}
 
 	public void run() {
-		Thread updater = new SimulationUpdater(mSupermarket, Config.SIMULATION_FPS);
+		SimulationUpdater updater = new SimulationUpdater(mSupermarket, Config.SIMULATION_FPS);
 
 		// Update
 		updater.start();
 
 		// Renderer
-		new AnimationTimer() {
+		new Timer() {
 			@Override
 			public void handle(long now) {
 				mRenderer.clear();
-
 				mSupermarket.render();
-				System.out.println("Render");
+				System.out.printf("Update\n");
 			}
-		}.start();
+		}.start();;
 
-		// Join
-		// try {
-		// 	updater.join();
-		// }
-		// catch (Exception ex) {
-		// 	System.out.println(String.format("Exception caught: %s", ex.toString()));
-		// }
+		// Close handling
+		mStageRef.setOnCloseRequest(event -> {
+			// Interrupt and wait on updater thread
+			try {
+				updater.stopRunning();
+				updater.join();
+			}
+			catch (Exception ex) {
+				System.out.printf("Exception caught: %s\n", ex.toString());
+			}
+		});
 	}
-
-	public Supermarket getSupermarket() { return mSupermarket; }
 }
 
 
@@ -78,8 +83,11 @@ class SimulationUpdater extends Thread {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private Supermarket mSupermarketRef = null;
+
 	private int mFPS = 0;
 	public long mNsPerFrame = 0;
+
+	private volatile boolean mRunning = false;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -92,10 +100,12 @@ class SimulationUpdater extends Thread {
 	}
 
 	public void run() {
+		mRunning = true;
+
 		long timePassed = 0;
 		long previousTime = System.nanoTime();
 
-		while (true) {
+		while (mRunning) {
 			long now = System.nanoTime();
 			long deltaTime = now - previousTime;
 			timePassed += deltaTime;
@@ -104,9 +114,14 @@ class SimulationUpdater extends Thread {
 			if (timePassed >= mNsPerFrame) {
 				mSupermarketRef.update();
 
-				System.out.println(String.format("Update - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
+				System.out.printf("Update - %d - %d - %d\n", mNsPerFrame, deltaTime, timePassed);
 				timePassed = 0;
 			}
 		}
 	}
+
+	public void stopRunning() {
+        mRunning = false;
+        interrupt(); // Unblocks sleep/wait
+    }
 }
