@@ -1,5 +1,7 @@
 package skelemarket.simulation.map;
 
+import skelemarket.core.Renderer;
+
 public class Map {
 	///////////////////////////////////////////////////////////
 	// Variables
@@ -9,12 +11,11 @@ public class Map {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Map(String path) {
-		// Create a maploader
-		
-		// Load random stock into loaded shelves
+		// Load map
+
 	}
 
-	public void render() {
+	public void render(Renderer RendererRef) {
 		// Render all objects
 	}
 }
