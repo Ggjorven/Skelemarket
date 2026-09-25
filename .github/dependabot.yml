@@ -1,0 +1,25 @@
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "ggjorven"
+    commit-message:
+      prefix: ""
+    pull-request-branch-name:
+      separator: "/"
+    target-branch: "dev"
+      
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    assignees:
+      - "ggjorven"
+    commit-message:
+      prefix: ""
+    pull-request-branch-name:
+      separator: "/"
+    target-branch: "dev"

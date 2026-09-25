@@ -1,4 +1,3 @@
-
 package skelemarket.simulation.map.Product;
 
 public enum ProductCategory  {
