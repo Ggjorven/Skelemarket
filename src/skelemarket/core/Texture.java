@@ -2,9 +2,6 @@ package skelemarket.core;
 
 import javafx.scene.image.Image;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class Texture {
 	///////////////////////////////////////////////////////////
 	// Variables
@@ -19,11 +16,11 @@ public class Texture {
 	}
 
 	public int getWidth() {
-		return (int)mImage.getWidth();
+		return (int) mImage.getWidth();
 	}
 
 	public int getHeight() {
-		return (int)mImage.getHeight();
+		return (int) mImage.getHeight();
 	}
 
 	public Image toUnderlying() {
