@@ -13,7 +13,7 @@ public class Supermarket {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Supermarket() {
-		// Create/load map
+		// Load map
 		MapLoader loader = new MapLoader();
 		try {
 			loader.loadFromPath(Config.MAP_FILE);

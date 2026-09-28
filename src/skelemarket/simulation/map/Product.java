@@ -10,13 +10,16 @@ public class Product {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	private String mName = "";
+	private String mCategory = "";
+
 	private Texture mTextureRef = null;
 	private UV mTextureCoords = new UV();
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Product(Texture textureRef, UV coords) {
+	public Product(String name, String category, Texture textureRef, UV coords) {
 		mTextureRef = textureRef;
 		mTextureCoords = coords;
 	}
