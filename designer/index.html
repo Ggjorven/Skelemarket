@@ -41,20 +41,24 @@
     <div class="tbgroup canvas-only">
       <label class="chk"><input type="checkbox" id="snapChk" checked> Snap</label>
       <label class="chk"><input type="checkbox" id="gridChk" checked> Grid</label>
-      <input type="number" id="gridSize" class="w60" value="32" min="1" title="Grid size">
+      <span class="lbl" style="margin-left:4px">Grid</span>
+      <input type="number" id="gridX" class="w52" value="32" min="1" title="Grid width (X)">
+      <span class="muted2">×</span>
+      <input type="number" id="gridY" class="w52" value="32" min="1" title="Grid height (Y)">
     </div>
 
     <div class="tbgroup canvas-only">
       <span class="lbl">Map</span>
       <input type="number" id="mapW" class="w70" value="1280" min="1" title="Map width">
       <span class="muted2">×</span>
-      <input type="number" id="mapH" class="w70" value="720" min="1" title="Map height">
+      <input type="number" id="mapH" class="w70" value="738" min="1" title="Map height">
     </div>
 
     <div class="spacer"></div>
 
     <div class="tbgroup noborder">
       <button class="ghost canvas-only" id="fitBtn" title="Fit map to view (F)">Fit</button>
+      <button class="ghost" id="folderBtn" title="Load every image in your resources folder (or project folder) with its real path">Open resources folder</button>
       <button class="ghost" id="importBtn">Import JSON</button>
       <button class="primary" id="exportBtn">Export JSON</button>
     </div>
@@ -74,8 +78,9 @@
         </div>
         <div class="pbody">
           <div class="field">
-            <label>Asset path prefix (tiles and items)</label>
-            <input type="text" id="pathPrefix" value="assets/tiles/" spellcheck="false">
+            <label>Resource root folder</label>
+            <input type="text" id="resRoot" value="resources" spellcheck="false">
+            <div class="hintline">Image paths are exported from this folder down, e.g. resources/textures/tileA.png.</div>
           </div>
           <div class="divider"></div>
           <div id="assetList" class="assets"></div>
@@ -129,7 +134,8 @@
       <div class="pbody map-only" id="inspector">
         <div id="assetProps" class="block hidden">
           <div class="subhead">Selected palette tile</div>
-          <div class="field"><label>File name (relative to prefix)</label><input type="text" id="aFilename" spellcheck="false"></div>
+          <div class="field"><label>Image path</label><input type="text" id="aPath" spellcheck="false" title="Paste a full path, e.g. C:/…/resources/textures/tileA.png"><div class="warn hidden" id="aPathWarn"></div></div>
+          <div class="hintline">Paste a full path to fix it. Every tile and item using this image follows.</div>
           <div class="row2">
             <div class="field"><label>Place width</label><input type="number" id="aW" min="1"></div>
             <div class="field"><label>Place height</label><input type="number" id="aH" min="1"></div>
@@ -251,7 +257,7 @@
           <div class="subhead">Sprite</div>
           <div class="spritebox checker" id="iSprite"></div>
           <div class="field"><label>Source region [x, y, w, h]</label><div class="srcline" id="iSrc">—</div></div>
-          <div class="field"><label>Exported image path</label><div class="srcline" id="iPath">—</div></div>
+          <div class="field"><label>Image path</label><div class="srcline" id="iPath">—</div></div>
           <div class="zbtns">
             <button id="iPick">Pick from sheet…</button>
             <button class="ghost" id="iClear">Clear sprite</button>
@@ -317,6 +323,7 @@
         <span class="srcline bare" id="slSelInfo">Region: — (click a cell or drag)</span>
         <div class="field" style="min-width:150px"><label>Sprite name</label><input type="text" id="slName" placeholder="sprite" spellcheck="false"></div>
         <button class="primary" id="slAdd">Add region</button>
+        <button id="slAddWhole">Add whole image</button>
         <button id="slAddAll">Add all cells</button>
         <span class="spacer"></span>
         <span class="srcline bare" id="slCountLbl">0 sprites added</span>
@@ -337,6 +344,7 @@
 <div id="toast"></div>
 <input type="file" id="fileInput" accept="image/png,image/jpeg" multiple class="hidden">
 <input type="file" id="sheetFileInput" accept="image/png,image/jpeg" class="hidden">
+<input type="file" id="folderInput" webkitdirectory multiple class="hidden">
 
 <script src="script.js"></script>
 </body>
