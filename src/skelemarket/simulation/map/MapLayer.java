@@ -1,6 +1,6 @@
 package skelemarket.simulation.map;
 
-public class MapLoader {
+public class MapLayer {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
@@ -8,7 +8,7 @@ public class MapLoader {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public MapLoader(String path) {
+	public MapLayer(String path) {
 		// Load map
 
 	}
@@ -16,5 +16,4 @@ public class MapLoader {
 	public void render(Renderer RendererRef) {
 		// Render all objects
 	}
-
 }
