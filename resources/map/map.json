@@ -19,7 +19,7 @@
     {
       "name": "APPLE",
       "category": "FRUIT",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "source": [
         32,
         0,
@@ -30,7 +30,7 @@
     {
       "name": "BROCCOLI",
       "category": "VEGETABLES",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "source": [
         128,
         0,
@@ -42,7 +42,7 @@
   "tiles": [
     {
       "id": "t1",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
         0,
@@ -61,7 +61,7 @@
     },
     {
       "id": "t2",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
         0,
@@ -86,7 +86,7 @@
     },
     {
       "id": "t3",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
         0,
@@ -111,7 +111,7 @@
     },
     {
       "id": "t4",
-      "image": "resources/textures/puzzled-skeleton.png",
+      "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
         0,

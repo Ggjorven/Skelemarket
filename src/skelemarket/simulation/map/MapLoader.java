@@ -1,14 +1,10 @@
 package skelemarket.simulation.map;
 
-import java.io.File;
-import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,16 +37,18 @@ public class MapLoader {
 	}
 
 	public Map loadFromPath(String path) throws MapLoadException {
-		// Load contents
-		String rawJson = readFile(getClass().getResource(path).toExternalForm());
+		// Load file
+		try (InputStream stream = getClass().getResourceAsStream(path)) {
+			if (stream == null) {
+				throw new MapLoadException("Resource not found on classpath: " + path);
+			}
 
-		// Parse contents
-		try {
-			mRootNode = mJSONMapper.readTree(rawJson);
-		} catch (Exception ex) {
-			throw new MapLoadException("Failed to parse JSON due to error: %s.", ex.toString());
+			mRootNode = mJSONMapper.readTree(stream);
+		} catch (IOException ex) {
+			throw new MapLoadException("Failed to load/parse JSON: " + ex.getMessage());
 		}
 
+		// Parse file
 		parseSpecifications();
 		parseLayers();
 		parseCategories();
@@ -64,21 +62,6 @@ public class MapLoader {
 	///////////////////////////////////////////////////////////
 	// Private methods
 	///////////////////////////////////////////////////////////
-	private String readFile(String path) throws MapLoadException {
-		File file = new File(path);
-
-		StringBuilder builder = new StringBuilder();
-		try (Scanner reader = new Scanner(file)) {
-			while (reader.hasNextLine()) {
-				builder.append(reader.nextLine());
-			}
-		} catch (Exception ex) {
-			throw new MapLoadException("Failed to read \"%s\"'s file contents. Exception: %s.", path, ex.toString());
-		}
-
-		return builder.toString();
-	}
-
 	private void parseSpecifications() throws MapLoadException {
 		int width = mRootNode.get("width").asInt();
 		int height = mRootNode.get("height").asInt();

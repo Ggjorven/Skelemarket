@@ -1,5 +1,7 @@
 package skelemarket.core;
 
+import java.io.InputStream;
+
 import javafx.scene.image.Image;
 
 public class Texture {
@@ -12,7 +14,13 @@ public class Texture {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Texture(String path) {
-		mImage = new Image(getClass().getResource(path).toExternalForm());
+		InputStream stream = getClass().getResourceAsStream(path);
+
+		if (stream == null) {
+			throw new IllegalArgumentException("Texture resource not found: " + path);
+		}
+
+		mImage = new Image(stream);
 	}
 
 	public int getWidth() {
