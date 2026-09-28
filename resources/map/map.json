@@ -19,6 +19,7 @@
     {
       "name": "APPLE",
       "category": "FRUIT",
+	  "weight": 1,
       "image": "/textures/puzzled-skeleton.png",
       "source": [
         32,
@@ -30,6 +31,7 @@
     {
       "name": "BROCCOLI",
       "category": "VEGETABLES",
+	  "weight": 1,
       "image": "/textures/puzzled-skeleton.png",
       "source": [
         128,
