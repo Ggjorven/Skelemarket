@@ -40,12 +40,12 @@ public class MapLoader {
 		// Load file
 		try (InputStream stream = getClass().getResourceAsStream(path)) {
 			if (stream == null) {
-				throw new MapLoadException("Resource not found on classpath: " + path);
+				throw new MapLoadException("Resource not found: %s.", path);
 			}
 
 			mRootNode = mJSONMapper.readTree(stream);
 		} catch (IOException ex) {
-			throw new MapLoadException("Failed to load/parse JSON: " + ex.getMessage());
+			throw new MapLoadException("Failed to load/parse JSON, error: %s.", ex.getMessage());
 		}
 
 		// Parse file
