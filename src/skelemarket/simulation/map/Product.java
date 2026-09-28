@@ -11,6 +11,7 @@ public class Product {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private String mName = "";
+	private int mWeight = 1;
 	private String mCategory = "";
 
 	private Texture mTextureRef = null;
@@ -19,7 +20,11 @@ public class Product {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Product(String name, String category, Texture textureRef, UV coords) {
+	public Product(String name, int weight, String category, Texture textureRef, UV coords) {
+		mName = name;
+		mWeight = weight;
+		mCategory = category;
+
 		mTextureRef = textureRef;
 		mTextureCoords = coords;
 	}

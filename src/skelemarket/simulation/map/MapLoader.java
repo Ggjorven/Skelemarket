@@ -97,6 +97,7 @@ public class MapLoader {
 	private void parseItems() throws MapLoadException {
 		for (JsonNode item : mRootNode.get("items")) {
 			String name = item.get("name").asText();
+			int weight = item.get("weight").asInt();
 
 			// Category
 			String category = item.get("category").asText();
@@ -118,7 +119,7 @@ public class MapLoader {
 
 			// UV
 			List<Integer> rawSourceUV = new ArrayList<>(4);
-			for (JsonNode sourceValue : mRootNode.get("source")) {
+			for (JsonNode sourceValue : item.get("source")) {
 				rawSourceUV.add(sourceValue.asInt());
 			}
 
@@ -130,7 +131,12 @@ public class MapLoader {
 
 			// Create product
 			List<Product> products = mProductsPerCategory.get(category);
-			products.add(new Product(name, category, textureRef, uv));
+			products.add(new Product(name, weight, category, textureRef, uv));
+
+			Logger.trace(
+					"Loaded product with name = %s, weight = %d, category = %s, image = %s & source = [%d, %d, %d, %d]",
+					name, weight, category, imagePath, rawSourceUV.get(0), rawSourceUV.get(1), rawSourceUV.get(2),
+					rawSourceUV.get(3));
 		}
 	}
 
