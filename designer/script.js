@@ -19,6 +19,7 @@ const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 const basename = p => String(p || '').split('/').pop();
 const byName = (a, b) => a.name.localeCompare(b.name);
 const sameSrc = (a, b) => !!a && !!b && a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
+const toWeight = v => { const n = Math.floor(Number(v)); return Number.isFinite(n) && n >= 1 ? n : 1; };   // whole number >= 1
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const readFile = f => new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
 
@@ -37,7 +38,7 @@ const S = {
   layers: [],      // {id, name, visible, locked}
   tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, attrs:[string], inv:[{itemId, count}]}
   categories: [],  // {id, name}
-  items: [],       // {id, name, categoryId, path, source:[x,y,w,h]}
+  items: [],       // {id, name, categoryId, weight, path, source:[x,y,w,h]}
   nodes: [],       // {id:'n1', x, y, targets:['t1', ...]}
   edges: [],       // [['n1','n2'], ...] — undirected
   activeLayer: null,
@@ -89,7 +90,7 @@ const resRoot = () => String(S.resRoot || '').replace(/^[\\/]+|[\\/]+$/g, '') ||
 const splitPath = p => String(p || '').replace(/\\/g, '/').split('/').filter(x => x && x !== '.');
 const fileStem = p => basename(p).replace(/\.[^.]+$/, '');
 const isImageFile = f => !f.name.startsWith('.') && /\.(png|jpe?g)$/i.test(f.name);
-const looksAbsolute = p => /^([A-Za-z]:)?[\\/]/.test(String(p).trim());
+const OS_ROOTS = new Set(['home', 'users', 'volumes', 'mnt', 'media', 'tmp', 'var', 'opt', 'usr', 'root', 'etc']);
 /** Index of the last path segment named like the resource root (case-insensitive), or -1. */
 function rootIndex(parts) {
   const r = lower(resRoot());
@@ -103,6 +104,20 @@ function toResPath(raw) {
   if (!parts.length) return null;
   const i = rootIndex(parts);
   return i >= 0 ? parts.slice(i).join('/') : [resRoot(), ...parts].join('/');
+}
+/** Internal 'resources/textures/a.png' -> exported '/textures/a.png' (classpath style, relative to the resource root).
+ *  Internal paths always start with the root folder, so the first segment is dropped. */
+const toClasspath = p => '/' + splitPath(p).slice(1).join('/');
+/** JSON image paths: '/textures/a.png' (current) or 'resources/textures/a.png' (earlier exports). */
+const fromJsonPath = raw => (String(raw).trim().startsWith('/') ? [resRoot(), ...splitPath(raw)].join('/') : toResPath(raw));
+/** Text typed or pasted into an image-path field. Accepts a full disk path containing the resource root,
+ *  or a classpath-style '/textures/a.png'. Returns null for a disk path outside the resource root. */
+function parsePathInput(raw) {
+  const t = String(raw).trim(), parts = splitPath(t);
+  if (!parts.length) return null;
+  if (rootIndex(parts) >= 0) return toResPath(t);
+  const diskPath = /^[A-Za-z]:/.test(t) || (t.startsWith('/') && OS_ROOTS.has(lower(parts[0])));
+  return diskPath ? null : [resRoot(), ...parts].join('/');
 }
 /** A single picked file only has a name: reuse a path already known for that name when it is unambiguous. */
 function pathForSingleFile(name) {
@@ -634,7 +649,7 @@ async function loadImageFiles(files) {
     if (guessed) guessedNames.push(f.name);
     out.push(await addSheet(await readFile(f), path, guessed));
   }
-  if (guessedNames.length) toast(`Folder unknown for ${guessedNames.join(', ')}, so it was saved as ${resRoot()}/<name>. Use Open resources folder, or paste the full path in the inspector.`);
+  if (guessedNames.length) toast(`Folder unknown for ${guessedNames.join(', ')}, so it was saved as /<name>. Use Open resources folder, or paste the full path in the inspector.`);
   return out;
 }
 async function uploadTileFiles(files) {
@@ -692,7 +707,7 @@ function selectAsset(id) {
   const a = assetById(id);
   $('#assetProps').classList.toggle('hidden', !a);
   if (a) {
-    $('#aPath').value = a.path; $('#aW').value = a.pw; $('#aH').value = a.ph;
+    $('#aPath').value = toClasspath(a.path); $('#aW').value = a.pw; $('#aH').value = a.ph;
     const sh = sheetByPath(a.path);
     const warn = !sh ? 'This image is not loaded. Use Open resources folder to load it.'
       : sh.guessed ? 'Folder guessed: the browser only reveals a picked file\'s name. Use Open resources folder, or paste the full path above.' : '';
@@ -786,7 +801,7 @@ function syncMapInspector() {
   if (n === 1) {
     const t = tileById(S.sel[0]), a = assetById(t.assetId);
     $('#tId').textContent = t.id;
-    $('#tSource').textContent = a && a.source ? `[${a.source.map(Math.round).join(', ')}]  ${a.path}` : '—';
+    $('#tSource').textContent = a && a.source ? `[${a.source.map(Math.round).join(', ')}]  ${toClasspath(a.path)}` : '—';
     const from = S.nodes.filter(nd => nd.targets.includes(t.id)).map(nd => nd.id);
     $('#tLinks').textContent = from.length ? from.join(', ') : '—';
   }
@@ -915,12 +930,12 @@ bindNum('#aW', v => { const a = assetById(S.selAsset); if (a) a.pw = Math.max(1,
 bindNum('#aH', v => { const a = assetById(S.selAsset); if (a) a.ph = Math.max(1, Math.round(v)); });
 $('#aPath').addEventListener('change', () => {
   const a = assetById(S.selAsset); if (!a) return;
-  const raw = $('#aPath').value.trim();
-  if (!raw || (looksAbsolute(raw) && rootIndex(splitPath(raw)) < 0)) {
-    toast(raw ? `That path has no ${resRoot()} folder in it.` : 'The image path cannot be empty.');
-    $('#aPath').value = a.path; return;
+  const raw = $('#aPath').value.trim(), p = parsePathInput(raw);
+  if (!p) {
+    toast(raw ? `That disk path has no ${resRoot()} folder in it.` : 'The image path cannot be empty.');
+    $('#aPath').value = toClasspath(a.path); return;
   }
-  repath(a.path, toResPath(raw));
+  repath(a.path, p);
   afterLibraryChange(); selectAsset(a.id);
 });
 $('#aPath').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
@@ -1092,7 +1107,7 @@ function renderItemGrid() {
     card.innerHTML = `<div class="thumb checker">${url ? `<img src="${url}" alt="">` : `<span class="miss">${it.path ? 'image not loaded' : 'no sprite'}</span>`}</div>
       <div class="nm" title="${esc(it.name)}">${esc(it.name)}</div>
       <div class="cat${cat ? '' : ' none'}">${cat ? esc(cat.name) : 'Uncategorized'}</div>
-      <div class="use">${u.tiles ? `${u.units} on ${plural(u.tiles, 'tile', 'tiles')}` : 'not stocked'}</div>`;
+      <div class="use">weight ${toWeight(it.weight)} · ${u.tiles ? `${u.units} on ${plural(u.tiles, 'tile', 'tiles')}` : 'not stocked'}</div>`;
     card.addEventListener('click', () => selectItem(it.id));
     grid.appendChild(card);
   }
@@ -1110,11 +1125,12 @@ function renderItemEditor() {
   $('#iCat').innerHTML = '<option value="">None</option>' + S.categories.slice().sort(byName).map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
   $('#iCat').value = catById(it.categoryId) ? String(it.categoryId) : '';
   $('#iCatHint').classList.toggle('hidden', S.categories.length > 0);
+  if (document.activeElement !== $('#iWeight')) { $('#iWeight').value = toWeight(it.weight); $('#iWeight').classList.remove('bad'); }
   const url = itemSprite(it);
   $('#iSprite').innerHTML = url ? `<img src="${url}" alt="">`
-    : `<span class="miss">${it.path ? `${esc(it.path)} is not loaded. Use Open resources folder to see it.` : 'No sprite yet.'}</span>`;
+    : `<span class="miss">${it.path ? `${esc(toClasspath(it.path))} is not loaded. Use Open resources folder to see it.` : 'No sprite yet.'}</span>`;
   $('#iSrc').textContent = it.source ? `[${it.source.join(', ')}]` : '—';
-  $('#iPath').textContent = it.path || '—';
+  $('#iPath').textContent = it.path ? toClasspath(it.path) : '—';
   $('#iFromTile').innerHTML = '<option value="">Reuse a tile sprite…</option>' + S.assets.map(a => `<option value="${a.id}">${esc(a.name)}</option>`).join('');
   $('#iFromTile').disabled = !S.assets.length;
   $('#iClear').disabled = !it.source;
@@ -1125,7 +1141,7 @@ function newItem() {
   pushHistory();
   let name = 'NEW_ITEM', i = 2;
   while (itemByName(name)) name = `NEW_ITEM_${i++}`;
-  const it = { id: nid(), name, categoryId: typeof S.itemFilter === 'number' ? S.itemFilter : null, path: null, source: null };
+  const it = { id: nid(), name, categoryId: typeof S.itemFilter === 'number' ? S.itemFilter : null, weight: 1, path: null, source: null };
   S.items.push(it); S.itemSearch = ''; $('#itemSearch').value = '';
   selectItem(it.id); renderCategories(); refreshCount();
   const inp = $('#iName'); inp.focus(); inp.select();
@@ -1156,6 +1172,15 @@ $('#iCat').addEventListener('change', e => {
   const it = itemById(S.selItem); if (!it) return;
   pushHistory(); it.categoryId = e.target.value ? +e.target.value : null; renderItemsView();
 });
+$('#iWeight').addEventListener('input', e => {
+  const it = itemById(S.selItem); if (!it) return;
+  const raw = e.target.value.trim(), v = Number(raw);
+  const valid = raw !== '' && Number.isInteger(v) && v >= 1;
+  e.target.classList.toggle('bad', !valid);
+  if (!valid || v === it.weight) return;
+  beginMutation(); it.weight = v; renderItemGrid();
+});
+$('#iWeight').addEventListener('blur', e => { const it = itemById(S.selItem); if (it) { e.target.value = toWeight(it.weight); e.target.classList.remove('bad'); } });
 $('#iPick').addEventListener('click', () => { if (itemById(S.selItem)) openSlicer('item'); });
 $('#iFromTile').addEventListener('change', e => {
   const it = itemById(S.selItem), a = assetById(+e.target.value); e.target.value = '';
@@ -1197,7 +1222,7 @@ function openSlicer(mode) {
 function closeSlicer() { $('#sliceModal').classList.remove('open'); }
 function refreshSheetSel() {
   const sel = $('#sheetSel');
-  const rel = x => x.path.split('/').slice(1).join('/') || x.path;
+  const rel = x => toClasspath(x.path);
   sel.innerHTML = S.sheets.length
     ? S.sheets.slice().sort((x, y) => x.path.localeCompare(y.path)).map(x => `<option value="${x.id}">${esc(rel(x))} (${x.w}×${x.h})${x.guessed ? ' · folder guessed' : ''}</option>`).join('')
     : '<option>No images yet. Open your resources folder or upload one.</option>';
@@ -1338,7 +1363,7 @@ function buildJSON() {
     const a = assetById(t.assetId);
     const o = {
       id: t.id,
-      image: a ? a.path : `${resRoot()}/missing.png`,
+      image: a ? toClasspath(a.path) : '/missing.png',
       layer: layerIndex.get(L.id),
       source: a && a.source ? a.source.map(Math.round) : [0, 0, Math.round(t.w), Math.round(t.h)],
       size: [Math.round(t.w), Math.round(t.h)],
@@ -1356,7 +1381,7 @@ function buildJSON() {
     categories: S.categories.map(c => c.name),
     items: S.items.map(it => {
       const c = catById(it.categoryId);
-      return { name: it.name, category: c ? c.name : null, image: it.path || null, source: it.source ? it.source.map(Math.round) : null };
+      return { name: it.name, category: c ? c.name : null, weight: toWeight(it.weight), image: it.path ? toClasspath(it.path) : null, source: it.source ? it.source.map(Math.round) : null };
     }),
     tiles,
     paths: {
@@ -1418,8 +1443,8 @@ function importJSON(text) {
     if (!name) { warn.push('skipped an item without a name'); continue; }
     if (itemByName(name)) { warn.push(`skipped duplicate item ${name}`); continue; }
     S.items.push({
-      id: nid(), name, categoryId: ensureCat(it.category),
-      path: it.image ? toResPath(it.image) : null,
+      id: nid(), name, categoryId: ensureCat(it.category), weight: toWeight(it.weight),
+      path: it.image ? fromJsonPath(it.image) : null,
       source: Array.isArray(it.source) ? it.source.slice(0, 4).map(Number) : null,
     });
   }
@@ -1431,7 +1456,7 @@ function importJSON(text) {
   let missingInv = 0;
   S.tiles = rawTiles.map((t, i) => {
     const size = Array.isArray(t.size) ? t.size : [S.gridX, S.gridY], loc = Array.isArray(t.location) ? t.location : [0, 0];
-    const path = toResPath(t.image) || `${resRoot()}/missing.png`, sh = sheetByPath(path);
+    const path = (t.image && fromJsonPath(t.image)) || `${resRoot()}/missing.png`, sh = sheetByPath(path);
     const src = Array.isArray(t.source) ? t.source.slice(0, 4).map(Number) : sh ? [0, 0, sh.w, sh.h] : [0, 0, +size[0] || S.gridX, +size[1] || S.gridY];
     let a = S.assets.find(x => x.path === path && sameSrc(x.source, src));
     if (!a) {

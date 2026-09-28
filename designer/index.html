@@ -80,7 +80,7 @@
           <div class="field">
             <label>Resource root folder</label>
             <input type="text" id="resRoot" value="resources" spellcheck="false">
-            <div class="hintline">Image paths are exported from this folder down, e.g. resources/textures/tileA.png.</div>
+            <div class="hintline">Paths are exported relative to this folder: resources/textures/tileA.png becomes /textures/tileA.png.</div>
           </div>
           <div class="divider"></div>
           <div id="assetList" class="assets"></div>
@@ -134,8 +134,8 @@
       <div class="pbody map-only" id="inspector">
         <div id="assetProps" class="block hidden">
           <div class="subhead">Selected palette tile</div>
-          <div class="field"><label>Image path</label><input type="text" id="aPath" spellcheck="false" title="Paste a full path, e.g. C:/…/resources/textures/tileA.png"><div class="warn hidden" id="aPathWarn"></div></div>
-          <div class="hintline">Paste a full path to fix it. Every tile and item using this image follows.</div>
+          <div class="field"><label>Image path</label><input type="text" id="aPath" spellcheck="false" title="Type /textures/tileA.png, or paste a full path such as C:/…/resources/textures/tileA.png"><div class="warn hidden" id="aPathWarn"></div></div>
+          <div class="hintline">Type /textures/… or paste a full disk path to fix it. Every tile and item using this image follows.</div>
           <div class="row2">
             <div class="field"><label>Place width</label><input type="number" id="aW" min="1"></div>
             <div class="field"><label>Place height</label><input type="number" id="aH" min="1"></div>
@@ -252,6 +252,10 @@
             <label>Category</label>
             <select id="iCat"></select>
             <div class="hintline hidden" id="iCatHint">Add a category on the left first.</div>
+          </div>
+          <div class="field">
+            <label>Weight (whole number, 1 or more)</label>
+            <input type="number" id="iWeight" min="1" step="1" value="1">
           </div>
           <div class="divider"></div>
           <div class="subhead">Sprite</div>
