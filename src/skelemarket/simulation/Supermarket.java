@@ -2,6 +2,7 @@ package skelemarket.simulation;
 
 import skelemarket.core.Logger;
 import skelemarket.core.Renderer;
+import skelemarket.simulation.map.MapLoader;
 
 public class Supermarket {
 	///////////////////////////////////////////////////////////
@@ -13,6 +14,12 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	public Supermarket() {
 		// Create/load map
+		MapLoader loader = new MapLoader();
+		try {
+			loader.loadFromPath(Config.MAP_FILE);
+		} catch (Exception ex) {
+			Logger.error("Failed to load map due to error: %s.", ex.toString());
+		}
 
 		// Spawn customers at the door
 
@@ -24,8 +31,6 @@ public class Supermarket {
 	}
 
 	public void update() {
-		Logger.trace("test");
-
 		// Update all customers
 
 		// Update all employees

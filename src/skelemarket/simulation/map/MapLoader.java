@@ -2,11 +2,14 @@ package skelemarket.simulation.map;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import skelemarket.core.Texture;
 
 ///////////////////////////////////////////////////////////
 // MapLoader
@@ -19,7 +22,10 @@ public class MapLoader {
 
 	private JsonNode mRootNode = null;
 
+	private java.util.Map<String, Texture> mTextures = new HashMap<>();
+
 	private List<MapLayer> mLayers = new ArrayList<>();
+	private java.util.Map<String, List<Product>> mItems = new HashMap<>();
 
 	///////////////////////////////////////////////////////////
 	// Public methods
@@ -40,6 +46,11 @@ public class MapLoader {
 		}
 
 		parseSpecifications();
+		parseLayers();
+		parseCategories();
+		parseItems();
+		parseTiles();
+		parsePaths();
 
 		return null;
 	}
@@ -74,7 +85,31 @@ public class MapLoader {
 	}
 
 	private void parseLayers() throws MapLoadException {
+		for (JsonNode _layer : mRootNode.get("layers")) {
+			// String name = layer.get("name").asText();
+			// boolean visibility = layer.get("visibility").asBoolean();
 
+			// We don't need the name or visibility
+			mLayers.add(new MapLayer());
+		}
+	}
+
+	private void parseCategories() throws MapLoadException {
+		for (JsonNode category : mRootNode.get("categories")) {
+			mItems.put(category.asText(), new ArrayList<>());
+		}
+	}
+
+	private void parseItems() throws MapLoadException {
+		for (JsonNode item : mRootNode.get("items")) {
+			String name = item.get("name").asText();
+		}
+	}
+
+	private void parseTiles() throws MapLoadException {
+	}
+
+	private void parsePaths() throws MapLoadException {
 	}
 }
 

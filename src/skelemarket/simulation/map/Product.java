@@ -1,19 +1,23 @@
 package skelemarket.simulation.map;
 
-import skelemarket.core.Renderer;
+import java.util.HashMap;
+import java.util.Map;
 
-public class MapLayer {
+import skelemarket.core.Texture;
+import skelemarket.core.UV;
+
+public class Product {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	private Texture mTextureRef = null;
+	private UV mTextureCoords = new UV();
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public MapLayer() {
-	}
-
-	public void render(Renderer RendererRef) {
-		// Render all objects
+	public Product(Texture textureRef, UV coords) {
+		mTextureRef = textureRef;
+		mTextureCoords = coords;
 	}
 }
