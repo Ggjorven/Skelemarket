@@ -1,0 +1,162 @@
+{
+  "width": "1280",
+  "height": "720",
+  "layers": [
+    {
+      "name": "Ground",
+      "visible": true
+    },
+    {
+      "name": "Shelves",
+      "visible": true
+    }
+  ],
+  "categories": [
+    "FRUIT",
+    "VEGETABLES"
+  ],
+  "items": [
+    {
+      "name": "APPLE",
+      "category": "FRUIT",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "source": [
+        32,
+        0,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BROCCOLI",
+      "category": "VEGETABLES",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "source": [
+        128,
+        0,
+        32,
+        32
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "id": "t1",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "layer": 0,
+      "source": [
+        0,
+        0,
+        156,
+        79
+      ],
+      "size": [
+        156,
+        79
+      ],
+      "location": [
+        224,
+        160
+      ]
+    },
+    {
+      "id": "t2",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "layer": 0,
+      "source": [
+        0,
+        0,
+        156,
+        79
+      ],
+      "size": [
+        156,
+        79
+      ],
+      "location": [
+        800,
+        256
+      ],
+      "inventory": [
+        {
+          "item": "APPLE",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "id": "t3",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "layer": 0,
+      "source": [
+        0,
+        0,
+        156,
+        79
+      ],
+      "size": [
+        156,
+        79
+      ],
+      "location": [
+        416,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "BROCCOLI",
+          "count": 10
+        }
+      ]
+    },
+    {
+      "id": "t4",
+      "image": "resources/textures/puzzled-skeleton.png",
+      "layer": 0,
+      "source": [
+        0,
+        0,
+        156,
+        79
+      ],
+      "size": [
+        156,
+        79
+      ],
+      "location": [
+        224,
+        160
+      ]
+    }
+  ],
+  "paths": {
+    "nodes": [
+      {
+        "id": "n4",
+        "location": [
+          496,
+          560
+        ],
+        "targets": [
+          "t3"
+        ]
+      },
+      {
+        "id": "n5",
+        "location": [
+          880,
+          368
+        ],
+        "targets": [
+          "t2"
+        ]
+      }
+    ],
+    "edges": [
+      [
+        "n4",
+        "n5"
+      ]
+    ]
+  }
+}
