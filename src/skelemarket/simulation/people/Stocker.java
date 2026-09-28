@@ -8,9 +8,9 @@ public class Stocker extends Employee{
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    private State mCurrentState = State.IDLE;
-    private Vec2 mWalkTarget = new Vec2();
-
+    private StockerState mCurrentState = StockerState.Idle;
+    // TODO: carrier (RollContainer)
+    // TODO: refill task from the supermarket (which products, for which shelf)
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
@@ -31,11 +31,11 @@ public class Stocker extends Employee{
         // TODO: If the task is done: become idle again
     }
 
-    private enum State{
-        IDLE,
-        WALK,
-        TAKE,
-        RESTOCK,
-        PUT_BACK
+    private enum StockerState{
+        Idle,
+        Walk,
+        Take,
+        Restock,
+        PutBack
     }
 }
