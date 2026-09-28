@@ -7,8 +7,6 @@ import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2;
-import skelemarket.simulation.map.Product.ProductCategory;
-import skelemarket.simulation.map.Product.ProductType;
 
 public class Shelf {
 	///////////////////////////////////////////////////////////
@@ -20,20 +18,15 @@ public class Shelf {
 	private Texture mTextureRef = null;
 	private UV mTextureCoords = new UV();
 
-	private ProductCategory mCategory = ProductCategory.Fruit;
-	private Map<ProductType, Integer> mProducts = new HashMap<>(); // TOOD: Fix
-
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Shelf(Vec2 position, Vec2 size, ProductCategory category, Texture textureRef, UV coords) {
+	public Shelf(Vec2 position, Vec2 size, Texture textureRef, UV coords) {
 		mPosition = position;
 		mSize = size;
 
 		mTextureRef = textureRef;
 		mTextureCoords = coords;
-
-		mCategory = category;
 
 		// TODO: Add random amount of products for category
 	}
