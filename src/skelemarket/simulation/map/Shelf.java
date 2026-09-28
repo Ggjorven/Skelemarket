@@ -40,7 +40,6 @@ public class Shelf {
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
-		
 	}
 
 	// TODO: Add and take methods
