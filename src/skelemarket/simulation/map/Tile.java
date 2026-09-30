@@ -1,16 +1,13 @@
 package skelemarket.simulation.map;
 
-import skelemarket.core.Renderer;
-import skelemarket.core.Texture;
-import skelemarket.core.UV;
-import skelemarket.core.Vec2f;
+import skelemarket.core.*;
 
 public abstract class Tile {
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    protected Vec2f mPosition = new Vec2f();
-    private Vec2f mSize = new Vec2f();
+    protected Vec2i mPosition = new Vec2i();
+    private Vec2i mSize = new Vec2i();
 
     private Texture mTextureRef = null;
     private UV mTextureCoords = new UV();
@@ -18,7 +15,7 @@ public abstract class Tile {
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
-    public Tile(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
+    public Tile(Vec2i position, Vec2i size, Texture textureRef, UV coords) {
         mPosition = position;
         mSize = size;
 
