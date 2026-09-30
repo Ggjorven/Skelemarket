@@ -1,4 +1,5 @@
 package skelemarket.simulation.people;
+
 import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;

@@ -17,7 +17,6 @@ public class Customer extends Person {
     ///////////////////////////////////////////////////////////
     public Customer(Vec2 position, Vec2 size, Texture textureRef, UV coords) {
         super(position, size, textureRef, coords);
-
     }
 
     @Override
