@@ -4,13 +4,14 @@ import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2;
 
-public class Stocker extends Employee{
+public class Stocker extends Employee {
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    private StockerState mCurrentState = StockerState.Idle;
+    private State mCurrentState = State.Idle;
     // TODO: carrier (RollContainer)
     // TODO: refill task from the supermarket (which products, for which shelf)
+
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
@@ -31,7 +32,7 @@ public class Stocker extends Employee{
         // TODO: If the task is done: become idle again
     }
 
-    private enum StockerState{
+    private enum State {
         Idle,
         Walk,
         Take,

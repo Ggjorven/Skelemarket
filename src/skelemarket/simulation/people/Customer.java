@@ -4,13 +4,14 @@ import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2;
 
-public class Customer extends Person{
+public class Customer extends Person {
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    private CustomerState mCurrentState = CustomerState.TakeCart;
+    private State mCurrentState = State.TakeCart;
     // TODO: carrier (basket or cart), type = shared superclass of both
     // TODO: shopping list, a list of products (filled when spawning)
+
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
@@ -31,7 +32,7 @@ public class Customer extends Person{
         //TODO: walk to the end point of the Store
 
     }
-    private enum CustomerState{
+    private enum State {
         TakeCart,
         Walk,
         TakeProduct,

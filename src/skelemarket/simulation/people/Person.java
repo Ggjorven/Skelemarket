@@ -14,6 +14,7 @@ public abstract class Person {
     private Texture mTextureRef = null;
     private UV mTextureCoords = new UV();
     protected int mRemainingTicks;
+
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////

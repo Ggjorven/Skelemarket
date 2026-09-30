@@ -6,10 +6,10 @@ public abstract class Carrier {
     ///////////////////////////////////////////////////////////
     //TODO: list with the products in the carrier
     private final int mMaxCapacity; // in units (e.g. apple = 1, bread = 2)
+
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
-
     public Carrier(int MaxCapacity) {
         mMaxCapacity = MaxCapacity;
     }
