@@ -32,11 +32,12 @@ const S = {
 
   // Image library — NOT in undo history (holds Image objects)
   sheets: [],      // {id, name, path, img, dataURL, w, h, guessed}  (guessed = folder unknown)
-  assets: [],      // tile palette: {id, name, path, img, dataURL, w, h, pw, ph, source:[x,y,w,h]}
+  assets: [],      // tile palette: {id, name, typeId, path, img, dataURL, w, h, pw, ph, source:[x,y,w,h]}
 
   // Document — in undo history
   layers: [],      // {id, name, visible, locked}
-  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, attrs:[string], inv:[{itemId, count}]}
+  types: [],       // {id, name} tile types (SHELF, WALL…); a placed tile has the type of its palette tile
+  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, attrs:[string], inv:[{itemId, capacity}]}
   categories: [],  // {id, name}
   items: [],       // {id, name, categoryId, weight, path, source:[x,y,w,h]}
   nodes: [],       // {id:'n1', x, y, targets:['t1', ...]}
@@ -64,6 +65,10 @@ const catByName = n => S.categories.find(c => lower(c.name) === lower(n));
 const itemById = id => S.items.find(i => i.id === id);
 const itemByName = n => S.items.find(i => lower(i.name) === lower(n));
 const nodeById = id => S.nodes.find(n => n.id === id);
+const typeById = id => S.types.find(t => t.id === id);
+const typeByName = n => S.types.find(t => lower(t.name) === lower(n));
+const tileType = t => { const a = assetById(t.assetId); return a ? typeById(a.typeId) : null; };
+const exportId = id => Number(String(id).replace(/^\D+/, ''));   // internal 't10' / 'n3' -> 10 / 3
 const tileAttrs = t => t.attrs || (t.attrs = []);
 const tileInv = t => t.inv || (t.inv = []);
 const selectableLayer = id => { const l = layerById(id); return !!(l && l.visible && !l.locked); };
@@ -208,7 +213,8 @@ function clampDelta(objs, dx, dy) {
 /* ---------- Undo / redo ---------- */
 function snapshot() {
   return JSON.stringify({
-    tiles: S.tiles, layers: S.layers, categories: S.categories, items: S.items,
+    tiles: S.tiles, layers: S.layers, types: S.types, categories: S.categories, items: S.items,
+    assetTypes: Object.fromEntries(S.assets.map(a => [a.id, a.typeId ?? null])),
     nodes: S.nodes, edges: S.edges, sel: S.sel, nsel: S.nsel,
     activeLayer: S.activeLayer, mapW: S.mapW, mapH: S.mapH,
   });
@@ -231,12 +237,13 @@ function beginMutation() { if (!S.editing) { pushHistory(); S.editing = true; } 
 function restore(str) {
   const d = JSON.parse(str);
   Object.assign(S, {
-    tiles: d.tiles, layers: d.layers, categories: d.categories, items: d.items,
+    tiles: d.tiles, layers: d.layers, types: d.types || [], categories: d.categories, items: d.items,
     nodes: d.nodes, edges: d.edges, mapW: d.mapW, mapH: d.mapH, activeLayer: d.activeLayer,
     sel: d.sel || [], nsel: d.nsel || [],
   });
   if (!layerById(S.activeLayer)) S.activeLayer = S.layers[0] && S.layers[0].id;
-  purgeRefs();
+  for (const a of S.assets) if (d.assetTypes && a.id in d.assetTypes) a.typeId = d.assetTypes[a.id];
+  purgeRefs(); renderAssets();
   $('#mapW').value = S.mapW; $('#mapH').value = S.mapH;
   refreshAll();
 }
@@ -424,7 +431,7 @@ canvas.addEventListener('mousedown', e => {
 
 function mapDown(e, m) {
   if (S.tool === 'place') { placeTile(m.x, m.y); return; }
-  if (S.tool === 'paint') { drag = beginDrag({ mode: 'paint', last: null }); paintTile(m.x, m.y); return; }
+  if (S.tool === 'paint') { if (!requireTypedAsset()) return; drag = beginDrag({ mode: 'paint', last: null }); paintTile(m.x, m.y); return; }
   if (S.sel.length === 1) {
     const t = tileById(S.sel[0]), h = t && handleAt(m.x, m.y, t);
     if (h) { drag = beginDrag({ mode: 'resize', h, sx: t.x, sy: t.y, ex: t.x + t.w, ey: t.y + t.h }); return; }
@@ -558,12 +565,18 @@ function updateCursor(m) {
   } else if (S.tool === 'select') {
     if (S.sel.length === 1) { const t = tileById(S.sel[0]), h = t && handleAt(m.x, m.y, t); if (h) c = HANDLE_CURSORS[h]; }
     if (c === 'default' && topTileAt(m.x, m.y)) c = 'move';
-  } else c = S.selAsset ? 'crosshair' : 'not-allowed';
+  } else { const a = assetById(S.selAsset); c = a && typeById(a.typeId) ? 'crosshair' : 'not-allowed'; }
   canvas.style.cursor = spaceDown ? 'grab' : c;
 }
 function updateCursorReset() { canvas.style.cursor = spaceDown ? 'grab' : 'default'; }
 
 /* ---------- Place / paint tiles ---------- */
+function requireTypedAsset() {
+  const a = assetById(S.selAsset);
+  if (!a) { toast('Pick a tile from the palette first.'); return false; }
+  if (!typeById(a.typeId)) { toast(`Give ${a.name} a type first (Inspector → Type).`); $('#aType').focus(); return false; }
+  return true;
+}
 function activeLayerOK() {
   const L = layerById(S.activeLayer);
   if (!L) return false;
@@ -572,16 +585,15 @@ function activeLayerOK() {
   return true;
 }
 function placeTile(mx, my) {
+  if (!requireTypedAsset() || !activeLayerOK()) return;
   const a = assetById(S.selAsset);
-  if (!a) { toast('Pick a tile from the palette first.'); return; }
-  if (!activeLayerOK()) return;
   pushHistory();
   const w = a.pw, h = a.ph;
   const t = { id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: clampX(snapX(mx - w / 2), w), y: clampY(snapY(my - h / 2), h), w, h, attrs: [], inv: [] };
   S.tiles.push(t); setSel([t.id]); refreshCount(); renderLayers();
 }
 function paintTile(mx, my) {
-  const a = assetById(S.selAsset); if (!a) return;
+  const a = assetById(S.selAsset); if (!a || !typeById(a.typeId)) return;
   const L = layerById(S.activeLayer); if (!L || !L.visible || L.locked) return;
   const w = a.pw, h = a.ph;
   const gx = clampX(S.snap ? Math.floor(mx / S.gridX) * S.gridX : Math.round(mx - w / 2), w);
@@ -680,19 +692,102 @@ function afterLibraryChange() { renderAssets(); if (S.view === 'items') renderIt
 function renderAssets() {
   const list = $('#assetList'); list.innerHTML = '';
   $('#assetEmpty').classList.toggle('hidden', S.assets.length > 0);
-  for (const a of S.assets) {
-    const sh = sheetByPath(a.path);
-    const sliced = !!(sh && a.source && !sameSrc(a.source, [0, 0, sh.w, sh.h]));
-    const el = document.createElement('div');
-    el.className = 'asset' + (a.id === S.selAsset ? ' sel' : '');
-    el.innerHTML = `${sliced ? '<span class="badge">SHEET</span>' : ''}<button class="del" title="Delete tile">✕</button>
-      <div class="thumb checker">${a.dataURL ? `<img src="${a.dataURL}" alt="">` : '<span class="miss">image not loaded</span>'}</div>
-      <div class="nm" title="${esc(a.name)}">${esc(a.name)}</div><div class="sz">${a.w}×${a.h}px</div>`;
-    el.querySelector('.del').addEventListener('click', ev => { ev.stopPropagation(); deleteAsset(a.id); });
-    el.addEventListener('click', () => selectAsset(a.id));
-    list.appendChild(el);
+  const groups = S.types.slice().sort(byName).map(ty => ({ label: ty.name, assets: S.assets.filter(a => a.typeId === ty.id) }));
+  groups.push({ label: 'No type yet (cannot be placed)', untyped: true, assets: S.assets.filter(a => !typeById(a.typeId)) });
+  for (const g of groups) {
+    if (!g.assets.length) continue;
+    const head = document.createElement('div');
+    head.className = 'grouphead' + (g.untyped ? ' warnhead' : ''); head.textContent = g.label;
+    list.appendChild(head);
+    for (const a of g.assets) {
+      const sh = sheetByPath(a.path);
+      const sliced = !!(sh && a.source && !sameSrc(a.source, [0, 0, sh.w, sh.h]));
+      const el = document.createElement('div');
+      el.className = 'asset' + (a.id === S.selAsset ? ' sel' : '') + (g.untyped ? ' untyped' : '');
+      el.innerHTML = `${sliced ? '<span class="badge">SHEET</span>' : ''}<button class="del" title="Delete tile">✕</button>
+        <div class="thumb checker">${a.dataURL ? `<img src="${a.dataURL}" alt="">` : '<span class="miss">image not loaded</span>'}</div>
+        <div class="nm" title="${esc(a.name)}">${esc(a.name)}</div><div class="sz">${a.w}×${a.h}px</div>`;
+      el.querySelector('.del').addEventListener('click', ev => { ev.stopPropagation(); deleteAsset(a.id); });
+      el.addEventListener('click', () => selectAsset(a.id));
+      list.appendChild(el);
+    }
   }
 }
+
+/* ---------- Tile types ---------- */
+/** Returns the id of the type with this name, creating it if needed (no history entry). */
+function createType(name) {
+  const v = String(name || '').trim();
+  if (!v) return null;
+  const ex = typeByName(v);
+  if (ex) return ex.id;
+  const t = { id: nid(), name: v }; S.types.push(t);
+  return t.id;
+}
+function renderTypes() {
+  const el = $('#typeChips'); el.innerHTML = '';
+  if (!S.types.length) el.innerHTML = '<span class="attrempty">No types yet. A palette tile needs one before it can be placed.</span>';
+  for (const ty of S.types.slice().sort(byName)) {
+    const placed = S.tiles.filter(t => { const a = assetById(t.assetId); return a && a.typeId === ty.id; }).length;
+    const chip = document.createElement('span');
+    chip.className = 'chip type'; chip.title = `${plural(placed, 'placed tile', 'placed tiles')} · double-click to rename`;
+    chip.innerHTML = `<span>${esc(ty.name)}</span><small>${placed}</small><button title="Delete type">×</button>`;
+    chip.addEventListener('dblclick', () => renameType(ty.id));
+    chip.querySelector('button').addEventListener('click', () => deleteType(ty.id));
+    el.appendChild(chip);
+  }
+}
+function addTypeFromInput() {
+  const v = $('#typeNew').value.trim(); if (!v) return;
+  if (typeByName(v)) { toast(`Type ${typeByName(v).name} already exists.`); return; }
+  pushHistory(); createType(v); $('#typeNew').value = ''; afterTypesChange();
+}
+function renameType(id) {
+  const ty = typeById(id); if (!ty) return;
+  const v = (prompt('Rename tile type:', ty.name) || '').trim();
+  if (!v || v === ty.name) return;
+  const clash = typeByName(v);
+  if (clash && clash.id !== id) { toast(`Type ${clash.name} already exists.`); return; }
+  pushHistory(); ty.name = v; afterTypesChange();
+}
+function deleteType(id) {
+  const ty = typeById(id); if (!ty) return;
+  const users = S.assets.filter(a => a.typeId === id);
+  const placed = S.tiles.filter(t => users.some(a => a.id === t.assetId)).length;
+  if (placed) { toast(`${ty.name} is used by ${plural(placed, 'placed tile', 'placed tiles')}. Give those palette tiles another type first.`); return; }
+  if (users.length && !confirm(`${plural(users.length, 'palette tile uses', 'palette tiles use')} ${ty.name}. Delete it anyway? They can't be placed until they get a new type.`)) return;
+  pushHistory();
+  S.types = S.types.filter(x => x.id !== id);
+  users.forEach(a => { a.typeId = null; });
+  afterTypesChange();
+}
+function afterTypesChange() { renderTypes(); renderAssets(); syncAssetInspector(); syncInspector(); fillTypeSelect($('#slType')); draw(); }
+/** Fill a type <select>: placeholder, every type, and a "+ New type…" entry. */
+function fillTypeSelect(sel, value) {
+  const keep = value !== undefined ? value : sel.value;
+  sel.innerHTML = '<option value="">Choose a type…</option>'
+    + S.types.slice().sort(byName).map(t => `<option value="${t.id}">${esc(t.name)}</option>`).join('')
+    + '<option value="__new">+ New type…</option>';
+  sel.value = keep !== '' && keep != null && typeById(+keep) ? String(keep) : '';
+}
+/** Read a type <select>; "+ New type…" asks for a name. Returns a type id or null. */
+function pickTypeFromSelect(sel) {
+  if (sel.value !== '__new') return sel.value ? +sel.value : null;
+  const v = (prompt('Name of the new tile type (e.g. SHELF, WALL):') || '').trim();
+  if (!v) return null;
+  if (typeByName(v)) return typeByName(v).id;
+  pushHistory(); const id = createType(v); renderTypes();
+  return id;
+}
+$('#typeAdd').addEventListener('click', addTypeFromInput);
+$('#typeNew').addEventListener('keydown', e => { if (e.key === 'Enter') { addTypeFromInput(); e.preventDefault(); } });
+$('#aType').addEventListener('change', e => {
+  const a = assetById(S.selAsset); if (!a) return;
+  const id = pickTypeFromSelect(e.target);
+  if (id === null || id === a.typeId) { fillTypeSelect(e.target, a.typeId ?? ''); return; }
+  pushHistory(); a.typeId = id; afterTypesChange();
+});
+
 function deleteAsset(id) {
   const used = S.tiles.filter(t => t.assetId === id).length;
   if (used && !confirm(`This tile is placed ${plural(used, 'time', 'times')}. Delete it and every placed copy?`)) return;
@@ -703,19 +798,24 @@ function deleteAsset(id) {
   purgeRefs(); renderAssets(); refreshAll();
 }
 function selectAsset(id) {
-  S.selAsset = id; renderAssets();
-  const a = assetById(id);
-  $('#assetProps').classList.toggle('hidden', !a);
-  if (a) {
-    $('#aPath').value = toClasspath(a.path); $('#aW').value = a.pw; $('#aH').value = a.ph;
-    const sh = sheetByPath(a.path);
-    const warn = !sh ? 'This image is not loaded. Use Open resources folder to load it.'
-      : sh.guessed ? 'Folder guessed: the browser only reveals a picked file\'s name. Use Open resources folder, or paste the full path above.' : '';
-    $('#aPathWarn').textContent = warn; $('#aPathWarn').classList.toggle('hidden', !warn);
-    $('#aSource').textContent = a.source ? `[${a.source.map(Math.round).join(', ')}]` : '—';
-    if (S.tool === 'select' && S.view === 'map') setTool('place');
-  }
+  S.selAsset = id; renderAssets(); syncAssetInspector();
+  if (assetById(id) && S.tool === 'select' && S.view === 'map') setTool('place');
   syncInspector(); draw();
+}
+function syncAssetInspector() {
+  const a = assetById(S.selAsset);
+  $('#assetProps').classList.toggle('hidden', !a);
+  if (!a) return;
+  const typed = !!typeById(a.typeId);
+  fillTypeSelect($('#aType'), a.typeId ?? '');
+  $('#aType').classList.toggle('bad', !typed);
+  $('#aTypeHint').textContent = typed ? 'Every placed copy of this tile has this type.' : 'Pick a type before placing this tile.';
+  $('#aPath').value = toClasspath(a.path); $('#aW').value = a.pw; $('#aH').value = a.ph;
+  const sh = sheetByPath(a.path);
+  const warn = !sh ? 'This image is not loaded. Use Open resources folder to load it.'
+    : sh.guessed ? 'Folder guessed: the browser only reveals a picked file\'s name. Use Open resources folder, or paste the full path above.' : '';
+  $('#aPathWarn').textContent = warn; $('#aPathWarn').classList.toggle('hidden', !warn);
+  $('#aSource').textContent = a.source ? `[${a.source.map(Math.round).join(', ')}]` : '—';
 }
 $('#uploadBtn').addEventListener('click', () => $('#fileInput').click());
 $('#fileInput').addEventListener('change', e => { uploadTileFiles([...e.target.files]); e.target.value = ''; });
@@ -801,6 +901,8 @@ function syncMapInspector() {
   if (n === 1) {
     const t = tileById(S.sel[0]), a = assetById(t.assetId);
     $('#tId').textContent = t.id;
+    const ty = tileType(t);
+    $('#tType').textContent = ty ? ty.name : 'None. Give its palette tile a type.';
     $('#tSource').textContent = a && a.source ? `[${a.source.map(Math.round).join(', ')}]  ${toClasspath(a.path)}` : '—';
     const from = S.nodes.filter(nd => nd.targets.includes(t.id)).map(nd => nd.id);
     $('#tLinks').textContent = from.length ? from.join(', ') : '—';
@@ -883,7 +985,7 @@ function renderInvEditor() {
   const tiles = selTiles(); if (!tiles.length) return;
   const single = tiles.length === 1;
   const agg = new Map();   // itemId -> {k: tiles holding it, total}
-  for (const t of tiles) for (const e of tileInv(t)) { const a = agg.get(e.itemId) || { k: 0, total: 0 }; a.k++; a.total += e.count; agg.set(e.itemId, a); }
+  for (const t of tiles) for (const e of tileInv(t)) { const a = agg.get(e.itemId) || { k: 0, total: 0 }; a.k++; a.total += e.capacity; agg.set(e.itemId, a); }
   const rows = [...agg].map(([id, a]) => ({ it: itemById(id), a })).filter(r => r.it).sort((x, y) => byName(x.it, y.it));
 
   const list = $('#invList'); list.innerHTML = rows.length ? '' : '<div class="attrempty">Empty.</div>';
@@ -892,12 +994,12 @@ function renderInvEditor() {
     const row = document.createElement('div'); row.className = 'invrow';
     row.innerHTML = `<span class="ithumb checker">${url ? `<img src="${url}" alt="">` : ''}</span>
       <span class="nm"><b>${esc(it.name)}</b><small>${cat ? esc(cat.name) : 'Uncategorized'}</small></span>
-      ${single ? `<input type="number" min="1" value="${a.total}" title="Count">` : `<span class="qty" title="Total count, tiles holding it">${a.total} in ${a.k}/${tiles.length}</span>`}
+      ${single ? `<input type="number" min="1" value="${a.total}" title="Capacity">` : `<span class="qty" title="Total capacity · tiles holding it">${a.total} in ${a.k}/${tiles.length}</span>`}
       <button class="x" title="${single ? 'Remove' : 'Remove from all selected'}">×</button>`;
     if (single) row.querySelector('input').addEventListener('input', ev => {
       const v = parseInt(ev.target.value, 10); if (!(v >= 1)) return;
       const e = tileInv(tiles[0]).find(x => x.itemId === it.id); if (!e) return;
-      beginMutation(); e.count = v;
+      beginMutation(); e.capacity = v;
     });
     row.querySelector('.x').addEventListener('click', () => removeFromInv(it.id));
     list.appendChild(row);
@@ -905,13 +1007,13 @@ function renderInvEditor() {
   fillItemSelect($('#invItem'));
   $('#invAdd').disabled = !S.items.length;
   $('#invHint').textContent = !S.items.length ? 'No items yet. Create them in the Items tab.'
-    : single ? 'Adding an item that is already here increases its count.' : `Adds to all ${tiles.length} selected tiles.`;
+    : single ? 'Adding an item that is already here raises its capacity.' : `Adds to all ${tiles.length} selected tiles.`;
 }
 function addToInv() {
-  const id = +$('#invItem').value, cnt = Math.max(1, parseInt($('#invCount').value, 10) || 1);
+  const id = +$('#invItem').value, cnt = Math.max(1, parseInt($('#invCapacity').value, 10) || 1);
   if (!itemById(id) || !S.sel.length) return;
   pushHistory();
-  for (const t of selTiles()) { const inv = tileInv(t), e = inv.find(x => x.itemId === id); if (e) e.count += cnt; else inv.push({ itemId: id, count: cnt }); }
+  for (const t of selTiles()) { const inv = tileInv(t), e = inv.find(x => x.itemId === id); if (e) e.capacity += cnt; else inv.push({ itemId: id, capacity: cnt }); }
   renderInvEditor(); draw();
 }
 function removeFromInv(id) { pushHistory(); for (const t of selTiles()) t.inv = tileInv(t).filter(e => e.itemId !== id); renderInvEditor(); draw(); }
@@ -1020,7 +1122,7 @@ $('#dimChk').addEventListener('change', e => { S.dimTiles = e.target.checked; dr
 /* ---------- Items view: categories ---------- */
 function itemUsage(id) {
   let tiles = 0, units = 0;
-  for (const t of S.tiles) { const e = tileInv(t).find(x => x.itemId === id); if (e) { tiles++; units += e.count; } }
+  for (const t of S.tiles) { const e = tileInv(t).find(x => x.itemId === id); if (e) { tiles++; units += e.capacity; } }
   return { tiles, units };
 }
 function renderItemsView() {
@@ -1107,7 +1209,7 @@ function renderItemGrid() {
     card.innerHTML = `<div class="thumb checker">${url ? `<img src="${url}" alt="">` : `<span class="miss">${it.path ? 'image not loaded' : 'no sprite'}</span>`}</div>
       <div class="nm" title="${esc(it.name)}">${esc(it.name)}</div>
       <div class="cat${cat ? '' : ' none'}">${cat ? esc(cat.name) : 'Uncategorized'}</div>
-      <div class="use">weight ${toWeight(it.weight)} · ${u.tiles ? `${u.units} on ${plural(u.tiles, 'tile', 'tiles')}` : 'not stocked'}</div>`;
+      <div class="use">weight ${toWeight(it.weight)} · ${u.tiles ? `cap ${u.units} on ${plural(u.tiles, 'tile', 'tiles')}` : 'not stocked'}</div>`;
     card.addEventListener('click', () => selectItem(it.id));
     grid.appendChild(card);
   }
@@ -1135,7 +1237,7 @@ function renderItemEditor() {
   $('#iFromTile').disabled = !S.assets.length;
   $('#iClear').disabled = !it.source;
   const u = itemUsage(it.id);
-  $('#iUsage').textContent = u.tiles ? `Stocked on ${plural(u.tiles, 'tile', 'tiles')}, ${u.units} units in total.` : 'Not stocked on any tile yet.';
+  $('#iUsage').textContent = u.tiles ? `Stocked on ${plural(u.tiles, 'tile', 'tiles')}, total capacity ${u.units}.` : 'Not stocked on any tile yet.';
 }
 function newItem() {
   pushHistory();
@@ -1211,7 +1313,7 @@ function openSlicer(mode) {
   $('#sliceDone').textContent = mode === 'item' ? 'Cancel' : 'Done';
   if (item && sheetByPath(item.path)) SL.sheet = sheetByPath(item.path);
   if (!S.sheets.includes(SL.sheet)) SL.sheet = S.sheets[S.sheets.length - 1] || null;
-  refreshSheetSel();
+  refreshSheetSel(); fillTypeSelect($('#slType'));
   SL.current = item && item.source && SL.sheet && item.path === SL.sheet.path
     ? { x: item.source[0], y: item.source[1], w: item.source[2], h: item.source[3] } : null;
   SL.added = 0; $('#slCountLbl').textContent = '0 sprites added';
@@ -1317,30 +1419,40 @@ function updateSlInfo() {
   $('#slSelInfo').textContent = txt; $('#slPickInfo').textContent = txt;
   if (c && SL.mode === 'palette' && !$('#slName').value) $('#slName').value = `${SL.sheet ? SL.sheet.name : 'sprite'}_${Math.round(c.x)}_${Math.round(c.y)}`;
 }
+/** Type chosen in the slicer for new palette tiles (required). */
+function slType() {
+  const id = +$('#slType').value;
+  if (typeById(id)) return id;
+  toast('Choose a type for the new tiles first.'); $('#slType').focus(); return null;
+}
+$('#slType').addEventListener('change', e => { const id = pickTypeFromSelect(e.target); fillTypeSelect(e.target, id ?? ''); });
 $('#slAdd').addEventListener('click', () => {
   const c = SL.current;
   if (!SL.sheet || !c || c.w < 1 || c.h < 1) { toast('Pick a region first.'); return; }
-  addSpriteAsset(SL.sheet, Math.round(c.x), Math.round(c.y), Math.round(c.w), Math.round(c.h), $('#slName').value.trim() || undefined);
+  const typeId = slType(); if (!typeId) return;
+  addSpriteAsset(SL.sheet, Math.round(c.x), Math.round(c.y), Math.round(c.w), Math.round(c.h), $('#slName').value.trim() || undefined).typeId = typeId;
   SL.added++; $('#slCountLbl').textContent = `${plural(SL.added, 'sprite', 'sprites')} added`; $('#slName').value = '';
   renderAssets();
 });
 $('#slAddWhole').addEventListener('click', () => {
   const sh = SL.sheet; if (!sh) return;
-  if (S.assets.some(a => a.path === sh.path && sameSrc(a.source, [0, 0, sh.w, sh.h]))) { toast('That image is already in the palette.'); return; }
-  addSpriteAsset(sh, 0, 0, sh.w, sh.h, sh.name);
+  const typeId = slType(); if (!typeId) return;
+  if (S.assets.some(a => a.path === sh.path && sameSrc(a.source, [0, 0, sh.w, sh.h]) && a.typeId === typeId)) { toast(`That image is already in the palette as ${typeById(typeId).name}.`); return; }
+  addSpriteAsset(sh, 0, 0, sh.w, sh.h, sh.name).typeId = typeId;
   SL.added++; $('#slCountLbl').textContent = `${plural(SL.added, 'sprite', 'sprites')} added`;
   renderAssets();
 });
 $('#slAddAll').addEventListener('click', () => {
   if (!SL.sheet) return;
+  const typeId = slType(); if (!typeId) return;
   const p = slParams(), stepx = p.cw + p.gx, stepy = p.ch + p.gy;
   let n = 0;
   for (let y = p.offy; y + p.ch <= SL.sheet.h + 0.5; y += stepy)
     for (let x = p.offx; x + p.cw <= SL.sheet.w + 0.5; x += stepx) {
-      addSpriteAsset(SL.sheet, x, y, p.cw, p.ch, `${SL.sheet.name}_${Math.round((x - p.offx) / stepx)}_${Math.round((y - p.offy) / stepy)}`); n++;
+      addSpriteAsset(SL.sheet, x, y, p.cw, p.ch, `${SL.sheet.name}_${Math.round((x - p.offx) / stepx)}_${Math.round((y - p.offy) / stepy)}`).typeId = typeId; n++;
     }
   SL.added += n; $('#slCountLbl').textContent = `${plural(SL.added, 'sprite', 'sprites')} added`;
-  renderAssets(); toast(`Added ${plural(n, 'cell', 'cells')} to the palette.`);
+  renderAssets(); toast(`Added ${plural(n, 'cell', 'cells')} to the palette as ${typeById(typeId).name}.`);
 });
 function setItemSprite(r) {
   const it = itemById(S.selItem);
@@ -1361,23 +1473,25 @@ function buildJSON() {
   for (const L of S.layers) for (const t of S.tiles) {
     if (t.layerId !== L.id) continue;
     const a = assetById(t.assetId);
+    const ty = tileType(t);
     const o = {
-      id: t.id,
+      id: exportId(t.id),
+      type: ty ? ty.name : null,
       image: a ? toClasspath(a.path) : '/missing.png',
       layer: layerIndex.get(L.id),
       source: a && a.source ? a.source.map(Math.round) : [0, 0, Math.round(t.w), Math.round(t.h)],
       size: [Math.round(t.w), Math.round(t.h)],
       location: [Math.round(t.x), Math.round(t.y)],
     };
-    if (tileAttrs(t).length) o.attributes = [...t.attrs];
-    const inv = tileInv(t).filter(e => itemById(e.itemId)).map(e => ({ item: itemById(e.itemId).name, count: e.count }));
-    if (inv.length) o.inventory = inv;
+    o.attributes = [...tileAttrs(t)];
+    o.inventory = tileInv(t).filter(e => itemById(e.itemId)).map(e => ({ item: itemById(e.itemId).name, capacity: e.capacity }));
     tiles.push(o);
   }
   return {
     width: S.mapW,
     height: S.mapH,
     layers: S.layers.map(L => ({ name: L.name, visible: L.visible })),
+    types: S.types.map(t => t.name),
     categories: S.categories.map(c => c.name),
     items: S.items.map(it => {
       const c = catById(it.categoryId);
@@ -1386,10 +1500,7 @@ function buildJSON() {
     tiles,
     paths: {
       nodes: S.nodes.map(n => {
-        const o = { id: n.id, location: [Math.round(n.x), Math.round(n.y)] };
-        const tg = n.targets.filter(tileById);
-        if (tg.length) o.targets = tg;
-        return o;
+        return { id: exportId(n.id), location: [Math.round(n.x), Math.round(n.y)], targets: n.targets.filter(tileById) };
       }),
       edges: S.edges.filter(([a, b]) => nodeById(a) && nodeById(b)).map(([a, b]) => [a, b]),
     },
@@ -1398,21 +1509,31 @@ function buildJSON() {
 
 /* ---------- Import ---------- */
 /** Keep ids from the file where possible; give missing or duplicate ids a fresh one. */
+/** Ids in the file are numbers (10) or, in older files, 't10' / 'n3'. Keep them where possible;
+ *  missing or duplicate ids get a fresh number. Internally ids carry the prefix: 't10', 'n3'. */
 function reserveIds(raw, prefix) {
-  const re = new RegExp(`^${prefix}(\\d+)$`);
-  const wanted = raw.map(o => (o && typeof o.id === 'string' && o.id.trim() ? o.id.trim() : null));
-  const all = new Set(wanted.filter(Boolean)), taken = new Set();
+  const re = new RegExp(`^${prefix}?(\\d+)$`);
+  const num = o => {
+    const v = o && o.id;
+    if (Number.isInteger(v) && v >= 0) return v;
+    const m = typeof v === 'string' && re.exec(v.trim());
+    return m ? +m[1] : null;
+  };
+  const wanted = raw.map(num);
+  const all = new Set(wanted.filter(v => v !== null)), taken = new Set();
   let seq = 1, dupes = 0;
-  for (const w of wanted) { const m = w && re.exec(w); if (m) seq = Math.max(seq, +m[1] + 1); }
-  const ids = wanted.map(w => {
-    if (w && !taken.has(w)) { taken.add(w); return w; }
-    if (w) dupes++;
-    let id; do { id = prefix + seq++; } while (all.has(id) || taken.has(id));
-    taken.add(id); return id;
+  for (const v of all) seq = Math.max(seq, v + 1);
+  const ids = wanted.map(v => {
+    if (v !== null && !taken.has(v)) { taken.add(v); return prefix + v; }
+    if (v !== null) dupes++;
+    while (all.has(seq) || taken.has(seq)) seq++;
+    taken.add(seq); return prefix + seq++;
   });
   S.seq[prefix] = seq;
   return { ids, dupes };
 }
+/** A reference to a tile ('t10') or node ('n3'); a bare number is read with the given prefix. */
+const refId = (v, prefix) => (/^\d+$/.test(String(v).trim()) ? prefix + String(v).trim() : String(v).trim());
 function importJSON(text) {
   let data;
   try { data = JSON.parse(text); } catch (err) { alert('That is not valid JSON: ' + err.message); return; }
@@ -1425,6 +1546,12 @@ function importJSON(text) {
   const rawLayers = arr(data.layers).length ? data.layers : [{ name: 'Layer 1' }];
   S.layers = rawLayers.map((L, i) => ({ id: nid(), name: (L && L.name) || `Layer ${i + 1}`, visible: !L || L.visible !== false, locked: false }));
   S.activeLayer = S.layers[0].id;
+
+  // Tile types. Palette tiles that were already loaded keep theirs.
+  const paletteTypes = new Map(S.assets.map(a => [a.id, typeById(a.typeId) ? typeById(a.typeId).name : null]));
+  S.types = [];
+  arr(data.types).forEach(createType);
+  for (const a of S.assets) a.typeId = paletteTypes.get(a.id) ? createType(paletteTypes.get(a.id)) : null;
 
   // Categories (items may also introduce ones missing from the list)
   S.categories = [];
@@ -1453,25 +1580,30 @@ function importJSON(text) {
   const rawTiles = arr(data.tiles);
   const { ids: tIds, dupes: tDupes } = reserveIds(rawTiles, 't');
   if (tDupes) warn.push(`${plural(tDupes, 'duplicate tile id was', 'duplicate tile ids were')} renumbered`);
-  let missingInv = 0;
+  let missingInv = 0, untyped = 0;
   S.tiles = rawTiles.map((t, i) => {
     const size = Array.isArray(t.size) ? t.size : [S.gridX, S.gridY], loc = Array.isArray(t.location) ? t.location : [0, 0];
     const path = (t.image && fromJsonPath(t.image)) || `${resRoot()}/missing.png`, sh = sheetByPath(path);
     const src = Array.isArray(t.source) ? t.source.slice(0, 4).map(Number) : sh ? [0, 0, sh.w, sh.h] : [0, 0, +size[0] || S.gridX, +size[1] || S.gridY];
-    let a = S.assets.find(x => x.path === path && sameSrc(x.source, src));
-    if (!a) {
+    const typeId = t.type == null ? null : createType(t.type);
+    if (!typeId) untyped++;
+    let a = S.assets.find(x => x.path === path && sameSrc(x.source, src) && (x.typeId ?? null) === typeId)
+         || (typeId && S.assets.find(x => x.path === path && sameSrc(x.source, src) && !typeById(x.typeId)));   // adopt an untyped copy
+    if (a) a.typeId = typeId;
+    else {
       const whole = sh && sameSrc(src, [0, 0, sh.w, sh.h]);
       const name = fileStem(path) + (whole ? '' : `_${src[0]}_${src[1]}`);
       a = sh ? addSpriteAsset(sh, src[0], src[1], src[2], src[3], name)
              : addAssetObj({ name, path, img: null, dataURL: '', w: src[2], h: src[3], source: src });
+      a.typeId = typeId;
     }
     const li = typeof t.layer === 'number' ? clamp(Math.round(t.layer), 0, S.layers.length - 1) : 0;
     const inv = [];
     for (const e of arr(t.inventory)) {
       const it = e && itemByName(String(e.item));
       if (!it) { missingInv++; continue; }
-      const cnt = Math.max(1, parseInt(e.count, 10) || 1), ex = inv.find(x => x.itemId === it.id);
-      if (ex) ex.count += cnt; else inv.push({ itemId: it.id, count: cnt });
+      const cnt = Math.max(1, parseInt(e.capacity ?? e.count, 10) || 1), ex = inv.find(x => x.itemId === it.id);   // 'count' = older files
+      if (ex) ex.capacity += cnt; else inv.push({ itemId: it.id, capacity: cnt });
     }
     return {
       id: tIds[i], assetId: a.id, layerId: S.layers[li].id,
@@ -1479,6 +1611,7 @@ function importJSON(text) {
       attrs: [...new Set(arr(t.attributes).map(String))], inv,
     };
   });
+  if (untyped) warn.push(`${plural(untyped, 'tile has', 'tiles have')} no type; give their palette tiles one`);
   if (missingInv) warn.push(`${plural(missingInv, 'inventory entry refers', 'inventory entries refer')} to unknown items`);
 
   // Paths
@@ -1489,13 +1622,13 @@ function importJSON(text) {
   let badTargets = 0;
   S.nodes = rawNodes.map((n, i) => {
     const loc = Array.isArray(n.location) ? n.location : [0, 0];
-    const targets = [...new Set(arr(n.targets).map(String))].filter(id => (tileById(id) ? true : (badTargets++, false)));
+    const targets = [...new Set(arr(n.targets).map(v => refId(v, 't')))].filter(id => (tileById(id) ? true : (badTargets++, false)));
     return { id: nIds[i], x: clamp(+loc[0] || 0, 0, S.mapW), y: clamp(+loc[1] || 0, 0, S.mapH), targets };
   });
   if (badTargets) warn.push(`${plural(badTargets, 'node target points', 'node targets point')} to unknown tiles`);
   S.edges = [];
   for (const e of arr(P.edges)) {
-    const [a, b] = Array.isArray(e) ? e : [e && e.from, e && e.to];
+    const [a, b] = (Array.isArray(e) ? e : [e && e.from, e && e.to]).map(v => refId(v, 'n'));
     if (nodeById(a) && nodeById(b)) addEdge(a, b);
   }
 
@@ -1654,12 +1787,13 @@ function pathKeys(e, mod, k) {
 
 /* ---------- Misc ---------- */
 function refreshCount() {
+  renderTypes();
   const targets = S.nodes.reduce((s, n) => s + n.targets.length, 0);
   $('#stCount').textContent = S.tiles.length; $('#stItems').textContent = S.items.length; $('#stNodes').textContent = S.nodes.length;
   $('#psNodes').textContent = S.nodes.length; $('#psEdges').textContent = S.edges.length; $('#psTargets').textContent = targets;
 }
 function refreshAll() {
-  renderLayers(); syncInspector(); refreshCount(); updateUndoUI();
+  renderLayers(); syncAssetInspector(); syncInspector(); refreshCount(); updateUndoUI();
   if (S.view === 'items') renderItemsView();
   draw();
 }
@@ -1675,6 +1809,6 @@ S.layers = [
   { id: nid(), name: 'Shelves', visible: true, locked: false },
 ];
 S.activeLayer = S.layers[0].id;
-setView('map'); setTool('select'); setPTool('select');
+setView('map'); setTool('select'); setPTool('select'); fillTypeSelect($('#slType'));
 renderAssets(); refreshAll();
 resizeCanvas(); fitView();

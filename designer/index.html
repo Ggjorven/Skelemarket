@@ -82,6 +82,15 @@
             <input type="text" id="resRoot" value="resources" spellcheck="false">
             <div class="hintline">Paths are exported relative to this folder: resources/textures/tileA.png becomes /textures/tileA.png.</div>
           </div>
+          <div class="field">
+            <label>Tile types</label>
+            <div class="inline">
+              <input type="text" id="typeNew" placeholder="e.g. SHELF" spellcheck="false">
+              <button id="typeAdd">Add</button>
+            </div>
+            <div class="attrchips" id="typeChips"></div>
+            <div class="hintline">A palette tile needs a type before it can be placed. Double-click a type to rename it.</div>
+          </div>
           <div class="divider"></div>
           <div id="assetList" class="assets"></div>
           <div id="assetEmpty" class="empty">No tiles yet.<br>Upload a PNG/JPG or slice a spritesheet.</div>
@@ -134,6 +143,7 @@
       <div class="pbody map-only" id="inspector">
         <div id="assetProps" class="block hidden">
           <div class="subhead">Selected palette tile</div>
+          <div class="field"><label>Type</label><select id="aType"></select><div class="hintline" id="aTypeHint"></div></div>
           <div class="field"><label>Image path</label><input type="text" id="aPath" spellcheck="false" title="Type /textures/tileA.png, or paste a full path such as C:/…/resources/textures/tileA.png"><div class="warn hidden" id="aPathWarn"></div></div>
           <div class="hintline">Type /textures/… or paste a full disk path to fix it. Every tile and item using this image follows.</div>
           <div class="row2">
@@ -146,6 +156,7 @@
 
         <div id="tileEdit" class="block hidden">
           <div class="subhead">Tile <span class="idtag" id="tId"></span></div>
+          <div class="field"><label>Type (set on its palette tile)</label><div class="srcline" id="tType">—</div></div>
           <div class="row2"><div class="field"><label>X</label><input type="number" id="tX"></div><div class="field"><label>Y</label><input type="number" id="tY"></div></div>
           <div class="row2"><div class="field"><label>Width</label><input type="number" id="tW" min="1"></div><div class="field"><label>Height</label><input type="number" id="tH" min="1"></div></div>
           <div class="field"><label>Source region [x, y, w, h]</label><div class="srcline" id="tSource">—</div></div>
@@ -170,7 +181,7 @@
           <div class="invlist" id="invList"></div>
           <div class="inline">
             <select id="invItem"></select>
-            <input type="number" id="invCount" class="w52" value="1" min="1" title="Count">
+            <input type="number" id="invCapacity" class="w52" value="1" min="1" title="Capacity">
             <button id="invAdd">Add</button>
           </div>
           <div class="hintline" id="invHint"></div>
@@ -325,6 +336,7 @@
       <!-- Palette mode: add sprites as tiles -->
       <div class="inline wrap" id="slAddRow">
         <span class="srcline bare" id="slSelInfo">Region: — (click a cell or drag)</span>
+        <div class="field" style="min-width:150px"><label>Type for new tiles</label><select id="slType"></select></div>
         <div class="field" style="min-width:150px"><label>Sprite name</label><input type="text" id="slName" placeholder="sprite" spellcheck="false"></div>
         <button class="primary" id="slAdd">Add region</button>
         <button id="slAddWhole">Add whole image</button>
