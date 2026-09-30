@@ -1,38 +1,38 @@
 package skelemarket.core;
 
-public class Vec2 {
+public class Vec2i {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private float mX = 0.0f;
-	private float mY = 0.0f;
+	private int mX = 0;
+	private int mY = 0;
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Vec2() {
-		mX = 0.0f;
-		mY = 0.0f;
+	public Vec2i() {
+		mX = 0;
+		mY = 0;
 	}
 
-	public Vec2(float x, float y) {
+	public Vec2i(int x, int y) {
 		mX = x;
 		mY = y;
 	}
 
-	public void setX(float x) {
+	public void setX(int x) {
 		mX = x;
 	}
 
-	public float getX() {
+	public int getX() {
 		return mX;
 	}
 
-	public void setY(float y) {
+	public void setY(int y) {
 		mY = y;
 	}
 
-	public float getY() {
+	public int getY() {
 		return mY;
 	}
 }
