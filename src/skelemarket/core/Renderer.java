@@ -23,7 +23,16 @@ public class Renderer {
 		drawQuad(texture, position, size, null);
 	}
 
+	public void drawQuad(Texture texture, Vec2f position, Vec2f size) {
+		drawQuad(texture, position, size, null);
+	}
+
 	public void drawQuad(Texture texture, Vec2i position, Vec2i size, UV textureCoords) {
+		drawQuad(texture, new Vec2f(position.getX(), position.getY()), new Vec2f(size.getX(), size.getY()),
+				textureCoords);
+	}
+
+	public void drawQuad(Texture texture, Vec2f position, Vec2f size, UV textureCoords) {
 		if (textureCoords == null) {
 			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
 					(double) size.getX(), (double) size.getY());
