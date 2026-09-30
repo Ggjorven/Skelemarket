@@ -11,6 +11,9 @@
       "visible": true
     }
   ],
+  "types": [
+    "SHELF"
+  ],
   "categories": [
     "FRUIT",
     "VEGETABLES"
@@ -19,7 +22,7 @@
     {
       "name": "APPLE",
       "category": "FRUIT",
-	  "weight": 1,
+      "weight": 1,
       "image": "/textures/puzzled-skeleton.png",
       "source": [
         32,
@@ -31,7 +34,7 @@
     {
       "name": "BROCCOLI",
       "category": "VEGETABLES",
-	  "weight": 1,
+      "weight": 1,
       "image": "/textures/puzzled-skeleton.png",
       "source": [
         128,
@@ -43,7 +46,8 @@
   ],
   "tiles": [
     {
-      "id": "t1",
+      "id": 1,
+      "type": "SHELF",
       "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
@@ -59,10 +63,13 @@
       "location": [
         224,
         160
-      ]
+      ],
+      "attributes": [],
+      "inventory": []
     },
     {
-      "id": "t2",
+      "id": 2,
+      "type": "SHELF",
       "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
@@ -79,15 +86,17 @@
         800,
         256
       ],
+      "attributes": [],
       "inventory": [
         {
           "item": "APPLE",
-          "count": 10
+          "capacity": 10
         }
       ]
     },
     {
-      "id": "t3",
+      "id": 3,
+      "type": "SHELF",
       "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
@@ -104,15 +113,17 @@
         416,
         448
       ],
+      "attributes": [],
       "inventory": [
         {
           "item": "BROCCOLI",
-          "count": 10
+          "capacity": 10
         }
       ]
     },
     {
-      "id": "t4",
+      "id": 4,
+      "type": "SHELF",
       "image": "/textures/puzzled-skeleton.png",
       "layer": 0,
       "source": [
@@ -128,13 +139,15 @@
       "location": [
         224,
         160
-      ]
+      ],
+      "attributes": [],
+      "inventory": []
     }
   ],
   "paths": {
     "nodes": [
       {
-        "id": "n4",
+        "id": 4,
         "location": [
           496,
           560
@@ -144,7 +157,7 @@
         ]
       },
       {
-        "id": "n5",
+        "id": 5,
         "location": [
           880,
           368
