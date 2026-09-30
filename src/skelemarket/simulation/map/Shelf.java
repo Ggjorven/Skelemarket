@@ -1,19 +1,16 @@
 package skelemarket.simulation.map;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
-import skelemarket.core.Vec2;
+import skelemarket.core.Vec2i;
 
 public class Shelf {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private Vec2 mPosition = new Vec2();
-	private Vec2 mSize = new Vec2();
+	private Vec2i mPosition = new Vec2i();
+	private Vec2i mSize = new Vec2i();
 
 	private Texture mTextureRef = null;
 	private UV mTextureCoords = new UV();
@@ -21,7 +18,7 @@ public class Shelf {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Shelf(Vec2 position, Vec2 size, Texture textureRef, UV coords) {
+	public Shelf(Vec2i position, Vec2i size, Texture textureRef, UV coords) {
 		mPosition = position;
 		mSize = size;
 

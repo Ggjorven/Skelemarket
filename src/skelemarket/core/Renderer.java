@@ -16,19 +16,22 @@ public class Renderer {
 	}
 
 	public void clear() {
-		mContextRef.clearRect(0.0, 0.0, (double)Config.WIDTH, (double)Config.HEIGHT);
+		mContextRef.clearRect(0.0, 0.0, (double) Config.WIDTH, (double) Config.HEIGHT);
 	}
 
-	public void drawQuad(Texture texture, Vec2 position, Vec2 size) {
+	public void drawQuad(Texture texture, Vec2i position, Vec2i size) {
 		drawQuad(texture, position, size, null);
 	}
 
-	public void drawQuad(Texture texture, Vec2 position, Vec2 size, UV textureCoords) {
+	public void drawQuad(Texture texture, Vec2i position, Vec2i size, UV textureCoords) {
 		if (textureCoords == null) {
-			mContextRef.drawImage(texture.toUnderlying(), (double)position.getX(), (double)position.getY(), (double)size.getX(), (double)size.getY());
-		}
-		else {
-			mContextRef.drawImage(texture.toUnderlying(), (double)position.getX(), (double)position.getY(), (double)size.getX(), (double)size.getY(), (double)textureCoords.getX(), (double)textureCoords.getY(), (double)textureCoords.getWidth(), (double)textureCoords.getHeight());
+			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
+					(double) size.getX(), (double) size.getY());
+		} else {
+			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
+					(double) size.getX(), (double) size.getY(), (double) textureCoords.getX(),
+					(double) textureCoords.getY(), (double) textureCoords.getWidth(),
+					(double) textureCoords.getHeight());
 		}
 	}
 }
