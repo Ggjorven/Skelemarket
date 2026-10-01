@@ -19,6 +19,7 @@ public class Supermarket {
 			loader.loadFromPath(Config.MAP_FILE);
 		} catch (Exception ex) {
 			Logger.error("Failed to load map due to error: %s.", ex.toString());
+			return;
 		}
 
 		// Spawn customers at the door
