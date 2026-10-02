@@ -1,15 +1,16 @@
 package skelemarket.simulation.carrier;
 
+import skelemarket.simulation.Config;
+
 public class RollContainer extends Carrier {
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    private static final int CAPACITY = 20;
 
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
     public RollContainer() {
-        super(CAPACITY);
+        super(Config.ROLL_CONTAINER_CAPACITY);
     }
 }

@@ -10,8 +10,8 @@ public abstract class Carrier {
     ///////////////////////////////////////////////////////////
     // Methods
     ///////////////////////////////////////////////////////////
-    public Carrier(int MaxCapacity) {
-        mMaxCapacity = MaxCapacity;
+    public Carrier(int maxCapacity) {
+        mMaxCapacity = maxCapacity;
     }
 
     //TODO: add a product
