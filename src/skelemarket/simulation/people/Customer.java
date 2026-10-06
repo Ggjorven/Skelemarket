@@ -24,7 +24,8 @@ public class Customer extends Person {
 		// TODO: Take a cart
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf
-		// TODO: take item, if no item than skip item (maybe in the future angry customer)
+		// TODO: take item, if no item than skip item (maybe in the future angry
+		// customer)
 		// TODO: walk to the next shelf, or walk to the cash register
 		// TODO: wait in line
 		// TODO: Buy the products

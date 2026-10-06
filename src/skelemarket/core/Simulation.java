@@ -29,17 +29,17 @@ public class Simulation {
 	public Simulation(Stage stage) {
 		mStageRef = stage;
 
-        mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
-        mContext = mCanvas.getGraphicsContext2D();
+		mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
+		mContext = mCanvas.getGraphicsContext2D();
 		Logger.info("Created canvas.");
 
-        mPane = new Pane(mCanvas);
+		mPane = new Pane(mCanvas);
 		mScene = new Scene(mPane);
 
-        stage.setScene(mScene);
-        stage.setTitle(Config.TITLE);
+		stage.setScene(mScene);
+		stage.setTitle(Config.TITLE);
 		stage.setResizable(false);
-        stage.show();
+		stage.show();
 		Logger.info("Created scene & pane.");
 
 		mRenderer = new Renderer(mContext);
@@ -65,7 +65,8 @@ public class Simulation {
 				mSupermarket.render(mRenderer);
 				// Logger.trace("Update");
 			}
-		}.start();;
+		}.start();
+		;
 
 		// Close handling
 		mStageRef.setOnCloseRequest(event -> {
@@ -75,17 +76,14 @@ public class Simulation {
 			try {
 				updater.stopRunning();
 				updater.join();
-			}
-			catch (Exception ex) {
+			} catch (Exception ex) {
 				System.out.printf("Exception caught: %s", ex.toString());
 			}
 		});
 	}
 }
 
-
-
-class SimulationUpdater extends Thread {
+class SimulationUpdater extends Thread { // TODO: Remove multi-threading
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
@@ -103,7 +101,7 @@ class SimulationUpdater extends Thread {
 		mSupermarketRef = supermarketRef;
 		mFPS = fps;
 
-		mNsPerFrame = (long)((1.0 / mFPS) * 1_000_000_000);
+		mNsPerFrame = (long) ((1.0 / mFPS) * 1_000_000_000);
 	}
 
 	public void run() {
@@ -121,14 +119,15 @@ class SimulationUpdater extends Thread {
 			if (timePassed >= mNsPerFrame) {
 				mSupermarketRef.update();
 
-				// Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
+				// Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime,
+				// timePassed));
 				timePassed = 0;
 			}
 		}
 	}
 
 	public void stopRunning() {
-        mRunning = false;
-        interrupt(); // Unblocks sleep/wait
-    }
+		mRunning = false;
+		interrupt(); // Unblocks sleep/wait
+	}
 }

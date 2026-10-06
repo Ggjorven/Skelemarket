@@ -35,4 +35,8 @@ public class Vec2f {
 	public float getY() {
 		return mY;
 	}
+
+	public String toString() {
+		return String.format("[%.1f, %.1f]", mX, mY);
+	}
 }

@@ -3,8 +3,12 @@ package skelemarket.simulation.map;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Dictionary;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -57,7 +61,7 @@ public class MapLoader {
 		parseTiles();
 		parsePaths();
 
-		return null;
+		return new Map(mLayers);
 	}
 
 	///////////////////////////////////////////////////////////
@@ -123,15 +127,45 @@ public class MapLoader {
 
 	private void parseTiles() throws MapLoadException {
 		for (JsonNode tile : mRootNode.get("tiles")) {
+			// Attributes
 			int id = tile.get("id").asInt();
 			String type = tile.get("type").asText();
 			Texture textureRef = parseTextureFromNode(tile, "image");
 			int layer = tile.get("layer").asInt();
 			UV uv = parseUVFromNode(tile, "source");
+			Vec2i size = parseVec2iFromNode(tile, "size");
+			Vec2i location = parseVec2iFromNode(tile, "location");
+			Set<String> attributes = parseStringSetFromNode(tile, "attributes");
+			Dictionary<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
+
+			// Checks
+			if (layer >= mLayers.size()) {
+				throw new MapLoadException("Trying to create a tile on layer %d, but there are only %d layers.", layer,
+						mLayers.size());
+			}
+			MapLayer layerRef = mLayers.get(layer);
+
+			// Creation
+			switch (type) {
+				case "SHELF":
+					layerRef.addTile(new Shelf(location, size, textureRef, uv)); // TODO: Inventory
+					break;
+
+				case "ENTRACE":
+				case "EXIT":
+					break;
+
+				default:
+					throw new MapLoadException("Failed to identify Tile type: %s.", type);
+			}
+
+			Logger.trace("Add new %s to layer %d. Location: %s, size: %s", type, layer, location.toString(),
+					size.toString());
 		}
 	}
 
 	private void parsePaths() throws MapLoadException {
+
 	}
 
 	///////////////////////////////////////////////////////////
@@ -149,6 +183,7 @@ public class MapLoader {
 
 	private UV parseUVFromNode(JsonNode node, String uvName) throws MapLoadException {
 		List<Integer> rawSourceUV = new ArrayList<>(4);
+
 		for (JsonNode sourceValue : node.get(uvName)) {
 			rawSourceUV.add(sourceValue.asInt());
 		}
@@ -160,8 +195,22 @@ public class MapLoader {
 		return new UV(rawSourceUV.get(0), rawSourceUV.get(1), rawSourceUV.get(2), rawSourceUV.get(3));
 	}
 
+	private Dictionary<String, Integer> parseInventoryItemsFromNode(JsonNode node, String inventoryName) {
+		Dictionary<String, Integer> dictionary = new Hashtable<>();
+
+		for (JsonNode item : node.get(inventoryName)) {
+			String name = item.get("item").asText();
+			int capacity = item.get("capacity").asInt();
+
+			dictionary.put(name, capacity);
+		}
+
+		return dictionary;
+	}
+
 	private Vec2i parseVec2iFromNode(JsonNode node, String vecName) throws MapLoadException {
 		List<Integer> rawVec2 = new ArrayList<>(4);
+
 		for (JsonNode value : node.get(vecName)) {
 			rawVec2.add(value.asInt());
 		}
@@ -171,6 +220,16 @@ public class MapLoader {
 		}
 
 		return new Vec2i(rawVec2.get(0), rawVec2.get(1));
+	}
+
+	private Set<String> parseStringSetFromNode(JsonNode node, String listName) {
+		Set<String> strings = new HashSet<>();
+
+		for (JsonNode value : node.get(listName)) {
+			strings.add(value.asText());
+		}
+
+		return strings;
 	}
 }
 
