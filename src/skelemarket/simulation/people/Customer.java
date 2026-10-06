@@ -29,7 +29,7 @@ public class Customer extends Person {
 		// TODO: wait in line
 		// TODO: Buy the products
 		// TODO: walk to the end point of the Store
-
+		// TODO: Customer Finished
 	}
 
 	private enum State {
@@ -37,6 +37,7 @@ public class Customer extends Person {
 		Walk,
 		TakeProduct,
 		WaitInLine,
-		Buy
+		Buy,
+		Finished
 	}
 }
