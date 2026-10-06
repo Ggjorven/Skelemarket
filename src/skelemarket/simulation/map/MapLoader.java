@@ -127,6 +127,7 @@ public class MapLoader {
 
 	private void parseTiles() throws MapLoadException {
 		for (JsonNode tile : mRootNode.get("tiles")) {
+			// Attributes
 			int id = tile.get("id").asInt();
 			String type = tile.get("type").asText();
 			Texture textureRef = parseTextureFromNode(tile, "image");
@@ -137,7 +138,26 @@ public class MapLoader {
 			Set<String> attributes = parseStringSetFromNode(tile, "attributes");
 			Dictionary<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
 
-			// TODO: Create tile
+			// Checks
+			if (layer >= mLayers.size()) {
+				throw new MapLoadException("Trying to create a tile on layer %d, but there are only %d layers.", layer,
+						mLayers.size());
+			}
+			MapLayer layerRef = mLayers.get(layer);
+
+			// Creation
+			switch (type) {
+				case "SHELF":
+					layerRef.addTile(new Shelf(location, size, textureRef, uv)); // TODO: Inventory
+					break;
+
+				case "ENTRACE":
+				case "EXIT":
+					break;
+			}
+
+			Logger.trace("Add new %s to layer %d. Location: %s, size: %s", type, layer, location.toString(),
+					size.toString());
 		}
 	}
 
