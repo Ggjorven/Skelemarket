@@ -32,7 +32,7 @@ public class EntranceTest {
 		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
 		entrance.isReadyToSpawn();
 
-		for (int i = 0; i < Config.SPAWN_INTERVAL_TICKS; i++) {
+		for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS; i++) {
 			entrance.update();
 		}
 		boolean ready = entrance.isReadyToSpawn();
@@ -46,7 +46,7 @@ public class EntranceTest {
 		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
 		entrance.isReadyToSpawn();
 
-		for (int i = 0; i < Config.SPAWN_INTERVAL_TICKS - 1; i++) {
+		for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS - 1; i++) {
 			entrance.update();
 		}
 		boolean ready = entrance.isReadyToSpawn();
