@@ -1,6 +1,6 @@
 package skelemarket.simulation.map;
 
-import java.awt.List;
+import java.util.List;
 import java.util.ArrayList;
 
 import skelemarket.core.Renderer;
