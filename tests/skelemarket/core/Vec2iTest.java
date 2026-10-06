@@ -30,4 +30,12 @@ public class Vec2iTest {
 		vec.setY(4);
 		assertEquals(vec.getY(), 4, "Y should be 4.");
 	}
+
+	@Test
+	void testToString() {
+		Vec2i vec = new Vec2i(5, 6);
+		String str = vec.toString();
+
+		assertEquals(str, "[5, 6]", "String should be [5, 6]");
+	}
 }

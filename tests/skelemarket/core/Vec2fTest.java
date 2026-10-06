@@ -30,4 +30,12 @@ public class Vec2fTest {
 		vec.setY(4.0f);
 		assertEquals(vec.getY(), 4.0f, "Y should be 4.0f.");
 	}
+
+	@Test
+	void testToString() {
+		Vec2f vec = new Vec2f(5.0f, 6.0f);
+		String str = vec.toString();
+
+		assertEquals(str, "[5.0, 6.0]", "String should be [5.0, 6.0]");
+	}
 }
