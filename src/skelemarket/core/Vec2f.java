@@ -37,6 +37,6 @@ public class Vec2f {
 	}
 
 	public String toString() {
-		return String.format("[%f, %f]", mX, mY);
+		return String.format("[%.1f, %.1f]", mX, mY);
 	}
 }
