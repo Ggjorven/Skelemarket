@@ -154,6 +154,9 @@ public class MapLoader {
 				case "ENTRACE":
 				case "EXIT":
 					break;
+
+				default:
+					throw new MapLoadException("Failed to identify Tile type: %s.", type);
 			}
 
 			Logger.trace("Add new %s to layer %d. Location: %s, size: %s", type, layer, location.toString(),
