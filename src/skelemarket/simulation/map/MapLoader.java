@@ -61,7 +61,7 @@ public class MapLoader {
 		parseTiles();
 		parsePaths();
 
-		return null;
+		return new Map(mLayers);
 	}
 
 	///////////////////////////////////////////////////////////
