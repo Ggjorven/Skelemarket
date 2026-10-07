@@ -20,17 +20,17 @@ public class Colour {
 	}
 
 	public Colour(int red, int green, int blue) {
-		mR = red;
-		mG = green;
-		mB = blue;
+		this.setR(red);
+		this.setG(green);
+		this.setB(blue);
 		mA = 255;
 	}
 
 	public Colour(int red, int green, int blue, int alpha) {
-		mR = red;
-		mG = green;
-		mB = blue;
-		mA = alpha;
+		this.setR(red);
+		this.setG(green);
+		this.setB(blue);
+		this.setA(alpha);
 	}
 
 	public void setR(int r) {
