@@ -14,6 +14,9 @@ public class Renderer {
 	///////////////////////////////////////////////////////////
 	public Renderer(GraphicsContext contextRef) {
 		mContextRef = contextRef;
+
+		// Disable linear filtering
+		mContextRef.setImageSmoothing(false);
 	}
 
 	public void clear() {
