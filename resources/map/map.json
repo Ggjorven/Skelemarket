@@ -1,6 +1,12 @@
 {
   "width": 1280,
   "height": 738,
+  "background": [
+    108,
+    117,
+    138,
+    255
+  ],
   "layers": [
     {
       "name": "Ground",
@@ -20,12 +26,15 @@
     "SHELF",
     "WALL"
   ],
-  "categories": [],
+  "categories": [
+    "FRUIT"
+  ],
   "items": [],
   "tiles": [
     {
       "id": 120,
       "type": "GROUND",
+      "category": "",
       "image": "/textures/enhanced/walls_floor.png",
       "layer": 0,
       "source": [
@@ -42,12 +51,12 @@
         416,
         320
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 121,
       "type": "GROUND",
+      "category": "",
       "image": "/textures/enhanced/walls_floor.png",
       "layer": 0,
       "source": [
@@ -64,12 +73,12 @@
         384,
         320
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 122,
       "type": "GROUND",
+      "category": "",
       "image": "/textures/enhanced/walls_floor.png",
       "layer": 0,
       "source": [
@@ -86,12 +95,12 @@
         416,
         288
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 123,
       "type": "GROUND",
+      "category": "",
       "image": "/textures/enhanced/walls_floor.png",
       "layer": 0,
       "source": [
@@ -108,12 +117,100 @@
         384,
         288
       ],
-      "attributes": [],
+      "inventory": []
+    },
+    {
+      "id": 124,
+      "type": "GROUND",
+      "category": "",
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 125,
+      "type": "GROUND",
+      "category": "",
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        320
+      ],
+      "inventory": []
+    },
+    {
+      "id": 126,
+      "type": "GROUND",
+      "category": "",
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 127,
+      "type": "GROUND",
+      "category": "",
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        288
+      ],
       "inventory": []
     },
     {
       "id": 35,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -130,12 +227,12 @@
         32,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 36,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -152,12 +249,12 @@
         64,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 37,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -174,12 +271,12 @@
         96,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 38,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -196,12 +293,12 @@
         128,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 39,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -218,12 +315,12 @@
         160,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 40,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -240,12 +337,12 @@
         192,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 41,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -262,12 +359,12 @@
         224,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 42,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -284,12 +381,12 @@
         256,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 43,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -306,12 +403,12 @@
         288,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 44,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -328,12 +425,12 @@
         320,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 45,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -350,12 +447,12 @@
         352,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 46,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -372,12 +469,12 @@
         384,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 47,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -394,12 +491,12 @@
         416,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 48,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -416,12 +513,12 @@
         448,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 49,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -438,12 +535,12 @@
         480,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 50,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -460,12 +557,12 @@
         512,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 51,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -482,12 +579,12 @@
         544,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 52,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -504,12 +601,12 @@
         576,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 53,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -526,12 +623,12 @@
         608,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 54,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -548,12 +645,12 @@
         640,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 55,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -570,12 +667,12 @@
         672,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 56,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -592,12 +689,12 @@
         704,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 57,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -614,12 +711,12 @@
         736,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 58,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -636,12 +733,12 @@
         768,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 59,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -658,12 +755,12 @@
         800,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 60,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -680,12 +777,12 @@
         832,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 61,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -702,12 +799,12 @@
         864,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 62,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -724,12 +821,12 @@
         896,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 63,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -746,12 +843,12 @@
         928,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 64,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -768,12 +865,12 @@
         960,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 65,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -790,12 +887,12 @@
         992,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 66,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -812,12 +909,12 @@
         1024,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 67,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -834,12 +931,12 @@
         1056,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 68,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -856,12 +953,12 @@
         1088,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 69,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -878,12 +975,12 @@
         1120,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 70,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -900,12 +997,12 @@
         1152,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 71,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -922,12 +1019,12 @@
         1184,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 72,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -944,12 +1041,12 @@
         1216,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 74,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -966,12 +1063,12 @@
         0,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 75,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -988,12 +1085,12 @@
         1248,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 76,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1010,12 +1107,12 @@
         1248,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 78,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1032,12 +1129,12 @@
         0,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 79,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1054,12 +1151,12 @@
         32,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 80,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1076,12 +1173,12 @@
         64,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 81,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1098,12 +1195,12 @@
         96,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 82,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1120,12 +1217,12 @@
         128,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 83,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1142,12 +1239,12 @@
         160,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 84,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1164,12 +1261,12 @@
         192,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 85,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1186,12 +1283,12 @@
         224,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 86,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1208,12 +1305,12 @@
         256,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 87,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1230,12 +1327,12 @@
         288,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 88,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1252,12 +1349,12 @@
         320,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 89,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1274,12 +1371,12 @@
         352,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 90,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1296,12 +1393,12 @@
         384,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 91,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1318,12 +1415,12 @@
         416,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 92,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1340,12 +1437,12 @@
         448,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 93,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1362,12 +1459,12 @@
         480,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 94,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1384,12 +1481,12 @@
         512,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 95,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1406,12 +1503,12 @@
         544,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 96,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1428,12 +1525,12 @@
         576,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 97,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1450,12 +1547,12 @@
         608,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 98,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1472,12 +1569,12 @@
         640,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 99,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1494,12 +1591,12 @@
         672,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 100,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1516,12 +1613,12 @@
         704,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 101,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1538,12 +1635,12 @@
         736,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 102,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1560,12 +1657,12 @@
         768,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 103,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1582,12 +1679,12 @@
         800,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 104,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1604,12 +1701,12 @@
         832,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 105,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1626,12 +1723,12 @@
         864,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 106,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1648,12 +1745,12 @@
         896,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 107,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1670,12 +1767,12 @@
         928,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 108,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1692,12 +1789,12 @@
         960,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 109,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1714,12 +1811,12 @@
         992,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 110,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1736,12 +1833,12 @@
         1024,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 111,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1758,12 +1855,12 @@
         1056,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 112,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1780,12 +1877,12 @@
         1088,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 113,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1802,12 +1899,12 @@
         1120,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 114,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1824,12 +1921,12 @@
         1152,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 115,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1846,12 +1943,12 @@
         1184,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 116,
       "type": "WALL",
+      "category": "",
       "image": "/textures/dungeon/walls_floor.png",
       "layer": 1,
       "source": [
@@ -1868,12 +1965,12 @@
         1216,
         32
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 117,
       "type": "SHELF",
+      "category": "",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 2,
       "source": [
@@ -1890,12 +1987,12 @@
         64,
         0
       ],
-      "attributes": [],
       "inventory": []
     },
     {
       "id": 119,
       "type": "SHELF",
+      "category": "",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 2,
       "source": [
@@ -1912,7 +2009,6 @@
         160,
         0
       ],
-      "attributes": [],
       "inventory": []
     }
   ],
