@@ -27,7 +27,7 @@ public class Renderer {
 
 	public void drawQuad(Colour colour, Vec2f position, Vec2f size) {
 		mContextRef.setFill(new Color((double) colour.getR(), (double) colour.getG(), (double) colour.getB(),
-				(double) colour.getA()));
+				colour.getA() / 255.0));
 		mContextRef.fillRect((double) position.getX(), (double) position.getY(), (double) size.getX(),
 				(double) size.getY());
 	}
