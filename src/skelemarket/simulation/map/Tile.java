@@ -2,7 +2,7 @@ package skelemarket.simulation.map;
 
 import skelemarket.core.*;
 
-public abstract class Tile {
+public class Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
@@ -23,7 +23,9 @@ public abstract class Tile {
 		mTextureCoords = coords;
 	}
 
-	public abstract void update();
+	// NOTE: Can be overwritten by the deriving class
+	public void update() {
+	}
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);

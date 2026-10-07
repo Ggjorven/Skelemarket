@@ -24,7 +24,14 @@ public class MapLayer {
 		}
 	}
 
-	public void addTile(Shelf shelf) {
+	// TODO: Remove the seperate add functions if no custom functionality is
+	// required
+
+	public void addTile(Tile tile) {
+		mTiles.add(tile);
+	}
+
+	public void addShelf(Shelf shelf) {
 		mTiles.add(shelf);
 	}
 }

@@ -148,15 +148,17 @@ public class MapLoader {
 			// Creation
 			switch (type) {
 				case "SHELF":
-					layerRef.addTile(new Shelf(location, size, textureRef, uv)); // TODO: Inventory
+					layerRef.addShelf(new Shelf(location, size, textureRef, uv)); // TODO: Inventory
 					break;
 
-				case "ENTRACE":
+				// TODO: ...
+				case "ENTRANCE":
 				case "EXIT":
 					break;
 
 				default:
-					throw new MapLoadException("Failed to identify Tile type: %s.", type);
+					layerRef.addTile(new Tile(location, size, textureRef, uv));
+					break;
 			}
 
 			Logger.trace("Add new %s to layer %d. Location: %s, size: %s", type, layer, location.toString(),
