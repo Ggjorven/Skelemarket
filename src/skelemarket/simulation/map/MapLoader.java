@@ -13,6 +13,7 @@ import java.util.Set;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import skelemarket.core.Colour;
 import skelemarket.core.Logger;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
@@ -28,6 +29,8 @@ public class MapLoader {
 	private ObjectMapper mJSONMapper = null;
 
 	private JsonNode mRootNode = null;
+
+	private Colour mBackgroundColour = new Colour();
 
 	private java.util.Map<String, Texture> mTextures = new HashMap<>();
 
@@ -61,7 +64,7 @@ public class MapLoader {
 		parseTiles();
 		parsePaths();
 
-		return new Map(mLayers);
+		return new Map(mLayers, mBackgroundColour);
 	}
 
 	///////////////////////////////////////////////////////////
@@ -78,6 +81,9 @@ public class MapLoader {
 					"Map's width (%d) and height (%d) don't line up with the window's width (%d) and height (%d).",
 					width, height, skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT);
 		}
+
+		// TODO: Add
+		// mBackgroundColour = parseColourFromNode(mRootNode, "background");
 	}
 
 	private void parseLayers() throws MapLoadException {
@@ -211,7 +217,7 @@ public class MapLoader {
 	}
 
 	private Vec2i parseVec2iFromNode(JsonNode node, String vecName) throws MapLoadException {
-		List<Integer> rawVec2 = new ArrayList<>(4);
+		List<Integer> rawVec2 = new ArrayList<>(2);
 
 		for (JsonNode value : node.get(vecName)) {
 			rawVec2.add(value.asInt());
@@ -222,6 +228,20 @@ public class MapLoader {
 		}
 
 		return new Vec2i(rawVec2.get(0), rawVec2.get(1));
+	}
+
+	private Colour parseColourFromNode(JsonNode node, String colName) throws MapLoadException {
+		List<Integer> rawCol = new ArrayList<>(4);
+
+		for (JsonNode value : node.get(colName)) {
+			rawCol.add(value.asInt());
+		}
+
+		if (rawCol.size() != 4) {
+			throw new MapLoadException("Colour's array is longer than 4 ints (%d).", rawCol.size());
+		}
+
+		return new Colour(rawCol.get(0), rawCol.get(1), rawCol.get(2), rawCol.get(3));
 	}
 
 	private Set<String> parseStringSetFromNode(JsonNode node, String listName) {
