@@ -14,14 +14,14 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Supermarket() {
+	public Supermarket() throws Exception {
 		// Load map
 		MapLoader loader = new MapLoader();
 		try {
 			mMap = loader.loadFromPath(Config.MAP_FILE);
 		} catch (Exception ex) {
 			Logger.error("Failed to load map due to error: %s.", ex.toString());
-			return;
+			throw new Exception(String.format("Failed to load map due to error: %s.", ex.toString()));
 		}
 
 		// Spawn customers at the door

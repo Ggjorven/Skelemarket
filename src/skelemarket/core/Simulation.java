@@ -26,7 +26,7 @@ public class Simulation {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Simulation(Stage stage) {
+	public Simulation(Stage stage) throws Exception {
 		mStageRef = stage;
 
 		mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
@@ -45,8 +45,13 @@ public class Simulation {
 		mRenderer = new Renderer(mContext);
 		Logger.info("Created renderer.");
 
-		mSupermarket = new Supermarket();
-		Logger.info("Created supermarket.");
+		try {
+			mSupermarket = new Supermarket();
+			Logger.info("Created supermarket.");
+		} catch (Exception ex) {
+			Logger.error("Failed to create Supermarket due to error: %s.", ex.toString());
+			throw new Exception(String.format("Failed to create Supermarket due to error: %s.", ex.toString()));
+		}
 	}
 
 	public void run() {
