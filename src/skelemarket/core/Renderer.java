@@ -37,10 +37,11 @@ public class Renderer {
 			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
 					(double) size.getX(), (double) size.getY());
 		} else {
-			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
-					(double) size.getX(), (double) size.getY(), (double) textureCoords.getX(),
-					(double) textureCoords.getY(), (double) textureCoords.getWidth(),
-					(double) textureCoords.getHeight());
+			mContextRef.drawImage(texture.toUnderlying(),
+					(double) textureCoords.getX(), (double) textureCoords.getY(),
+					(double) textureCoords.getWidth(), (double) textureCoords.getHeight(),
+					(double) position.getX(), (double) position.getY(), (double) size.getX(),
+					(double) size.getY());
 		}
 	}
 }
