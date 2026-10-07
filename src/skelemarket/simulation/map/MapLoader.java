@@ -82,8 +82,7 @@ public class MapLoader {
 					width, height, skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT);
 		}
 
-		// TODO: Add
-		// mBackgroundColour = parseColourFromNode(mRootNode, "background");
+		mBackgroundColour = parseColourFromNode(mRootNode, "background");
 	}
 
 	private void parseLayers() throws MapLoadException {
@@ -136,12 +135,12 @@ public class MapLoader {
 			// Attributes
 			int id = tile.get("id").asInt();
 			String type = tile.get("type").asText();
-			Texture textureRef = parseTextureFromNode(tile, "image");
+			String category = tile.get("category").asText();
 			int layer = tile.get("layer").asInt();
+			Texture textureRef = parseTextureFromNode(tile, "image");
 			UV uv = parseUVFromNode(tile, "source");
 			Vec2i size = parseVec2iFromNode(tile, "size");
 			Vec2i location = parseVec2iFromNode(tile, "location");
-			Set<String> attributes = parseStringSetFromNode(tile, "attributes");
 			Dictionary<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
 
 			// Checks
@@ -242,16 +241,6 @@ public class MapLoader {
 		}
 
 		return new Colour(rawCol.get(0), rawCol.get(1), rawCol.get(2), rawCol.get(3));
-	}
-
-	private Set<String> parseStringSetFromNode(JsonNode node, String listName) {
-		Set<String> strings = new HashSet<>();
-
-		for (JsonNode value : node.get(listName)) {
-			strings.add(value.asText());
-		}
-
-		return strings;
 	}
 }
 
