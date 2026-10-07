@@ -18,6 +18,7 @@ public class Map {
 	///////////////////////////////////////////////////////////
 	public Map(List<MapLayer> layers, Colour backgroundColour) {
 		mLayers = layers;
+		mBackgroundColour = backgroundColour;
 	}
 
 	public void render(Renderer rendererRef) {
