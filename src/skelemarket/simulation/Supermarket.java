@@ -34,9 +34,11 @@ public class Supermarket {
 	}
 
 	public void update() {
+		mMap.update();
+		// TODO: spawn customer at entrance if entrance.isReadyToSpawn() and customers < Config.MAX_CUSTOMERS
 		// Update all customers
-
 		// Update all employees
+		// delete customer when isFinished() using removeIf
 	}
 
 	public void render(Renderer rendererRef) {
