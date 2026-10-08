@@ -60,8 +60,8 @@
         32
       ],
       "location": [
-        416,
-        320
+        448,
+        384
       ],
       "inventory": []
     },
@@ -83,7 +83,7 @@
       ],
       "location": [
         384,
-        320
+        384
       ],
       "inventory": []
     },
@@ -104,8 +104,8 @@
         32
       ],
       "location": [
-        416,
-        288
+        480,
+        256
       ],
       "inventory": []
     },
@@ -126,7 +126,7 @@
         32
       ],
       "location": [
-        384,
+        448,
         288
       ],
       "inventory": []
@@ -148,8 +148,8 @@
         32
       ],
       "location": [
-        384,
-        288
+        416,
+        384
       ],
       "inventory": []
     },
@@ -170,8 +170,8 @@
         32
       ],
       "location": [
-        384,
-        320
+        352,
+        384
       ],
       "inventory": []
     },
@@ -192,8 +192,8 @@
         32
       ],
       "location": [
-        384,
-        288
+        480,
+        320
       ],
       "inventory": []
     },
@@ -214,8 +214,8 @@
         32
       ],
       "location": [
-        416,
-        288
+        544,
+        256
       ],
       "inventory": []
     },
@@ -5428,7 +5428,7 @@
         96
       ],
       "location": [
-        832,
+        448,
         0
       ],
       "inventory": []
@@ -5450,8 +5450,360 @@
         96
       ],
       "location": [
-        992,
+        608,
         0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 402,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        352,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 403,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        352,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 406,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        768,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 407,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        768,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 408,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        832,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 409,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        832,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 411,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        960,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 412,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        960,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 413,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        896,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 414,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        896,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 415,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        1184,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 416,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        1184,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 417,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        768,
+        448
+      ],
+      "inventory": []
+    },
+    {
+      "id": 418,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        1216,
+        448
+      ],
+      "inventory": []
+    },
+    {
+      "id": 420,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        768,
+        576
+      ],
+      "inventory": []
+    },
+    {
+      "id": 423,
+      "type": "SHELF",
+      "category": "",
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        1216,
+        576
       ],
       "inventory": []
     }
