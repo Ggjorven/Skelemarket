@@ -1,7 +1,6 @@
 package skelemarket.simulation.map;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import skelemarket.core.Renderer;
 
@@ -9,7 +8,11 @@ public class MapLayer {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private List<Tile> mTiles = new ArrayList<>();
+	private java.util.Map<Integer, Tile> mIDToTiles = new HashMap<>();
+	private java.util.Map<String, Shelf> mCategoryToShelves = new HashMap<>();
+
+	private Entrance mEntrance = null;
+	// TODO: Exit
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -18,20 +21,18 @@ public class MapLayer {
 	}
 
 	public void render(Renderer rendererRef) {
-		// Render all objects
-		for (Tile tile : mTiles) {
-			tile.render(rendererRef);
+		// Render all tiles
+		for (java.util.Map.Entry<Integer, Tile> tile : mIDToTiles.entrySet()) {
+			tile.getValue().render(rendererRef);
 		}
 	}
 
-	// TODO: Remove the seperate add functions if no custom functionality is
-	// required
-
 	public void addTile(Tile tile) {
-		mTiles.add(tile);
+		mIDToTiles.put(tile.getID(), tile);
 	}
 
 	public void addShelf(Shelf shelf) {
-		mTiles.add(shelf);
+		mIDToTiles.put(shelf.getID(), shelf);
+		mCategoryToShelves.put(shelf.getCategory(), shelf);
 	}
 }

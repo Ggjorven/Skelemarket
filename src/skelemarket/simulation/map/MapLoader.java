@@ -5,10 +5,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -108,19 +106,16 @@ public class MapLoader {
 		for (JsonNode item : mRootNode.get("items")) {
 			String name = item.get("name").asText();
 			int weight = item.get("weight").asInt();
-
-			// Category
 			String category = item.get("category").asText();
+			Texture textureRef = parseTextureFromNode(item, "image");
+			UV uv = parseUVFromNode(item, "source");
 
+			// Checks
 			if (!mProductsPerCategory.containsKey(category)) {
 				throw new MapLoadException(
 						"Found item with category: %s, but this was not previously seen during category loading.",
 						category);
 			}
-
-			// Image & UV
-			Texture textureRef = parseTextureFromNode(item, "image");
-			UV uv = parseUVFromNode(item, "source");
 
 			// Create product
 			List<Product> products = mProductsPerCategory.get(category);
@@ -153,16 +148,15 @@ public class MapLoader {
 			// Creation
 			switch (type) {
 				case "SHELF":
-					layerRef.addShelf(new Shelf(location, size, textureRef, uv)); // TODO: Inventory
+					layerRef.addShelf(new Shelf(id, location, size, textureRef, uv, category)); // TODO: Inventory
 					break;
 
 				// TODO: ...
 				case "ENTRANCE":
-				case "EXIT":
 					break;
 
 				default:
-					layerRef.addTile(new Tile(location, size, textureRef, uv));
+					layerRef.addTile(new Tile(id, location, size, textureRef, uv));
 					break;
 			}
 

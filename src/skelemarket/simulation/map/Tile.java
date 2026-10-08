@@ -6,7 +6,9 @@ public class Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	protected Vec2i mPosition = new Vec2i();
+	private int mID = 0;
+
+	private Vec2i mPosition = new Vec2i();
 	private Vec2i mSize = new Vec2i();
 
 	private Texture mTextureRef = null;
@@ -15,7 +17,9 @@ public class Tile {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Tile(Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+	public Tile(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+		mID = tileID;
+
 		mPosition = position;
 		mSize = size;
 
@@ -29,5 +33,17 @@ public class Tile {
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
+	}
+
+	public int getID() {
+		return mID;
+	}
+
+	public Vec2i getPosition() {
+		return mPosition;
+	}
+
+	public Vec2i getSize() {
+		return mSize;
 	}
 }
