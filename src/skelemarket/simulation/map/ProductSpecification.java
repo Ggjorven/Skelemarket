@@ -1,12 +1,9 @@
 package skelemarket.simulation.map;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 
-public class Product {
+public class ProductSpecification {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
@@ -20,7 +17,7 @@ public class Product {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Product(String name, int weight, String category, Texture textureRef, UV coords) {
+	public ProductSpecification(String name, int weight, String category, Texture textureRef, UV coords) {
 		mName = name;
 		mWeight = weight;
 		mCategory = category;

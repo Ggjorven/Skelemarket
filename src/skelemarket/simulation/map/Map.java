@@ -10,6 +10,8 @@ public class Map {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	private java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts = null;
+
 	private List<MapLayer> mLayers = null;
 	private Colour mBackgroundColour = new Colour();
 
@@ -17,6 +19,8 @@ public class Map {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Map(List<MapLayer> layers, Colour backgroundColour) {
+		// TODO: category
+
 		mLayers = layers;
 		mBackgroundColour = backgroundColour;
 	}

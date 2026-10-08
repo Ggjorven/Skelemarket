@@ -3,7 +3,6 @@ package skelemarket.simulation.map;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -28,12 +27,13 @@ public class MapLoader {
 
 	private JsonNode mRootNode = null;
 
-	private Colour mBackgroundColour = new Colour();
-
 	private java.util.Map<String, Texture> mTextures = new HashMap<>();
 
+	private Colour mBackgroundColour = new Colour();
+
+	private java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts = new HashMap<>();
+
 	private List<MapLayer> mLayers = new ArrayList<>();
-	private java.util.Map<String, List<Product>> mProductsPerCategory = new HashMap<>();
 
 	///////////////////////////////////////////////////////////
 	// Public methods
@@ -97,7 +97,7 @@ public class MapLoader {
 
 	private void parseCategories() throws MapLoadException {
 		for (JsonNode category : mRootNode.get("categories")) {
-			mProductsPerCategory.put(category.asText(), new ArrayList<>());
+			mCategoryToProducts.put(category.asText(), new HashMap<>());
 			Logger.trace("Loaded category: %s.", category);
 		}
 	}
@@ -111,15 +111,15 @@ public class MapLoader {
 			UV uv = parseUVFromNode(item, "source");
 
 			// Checks
-			if (!mProductsPerCategory.containsKey(category)) {
+			if (!mCategoryToProducts.containsKey(category)) {
 				throw new MapLoadException(
 						"Found item with category: %s, but this was not previously seen during category loading.",
 						category);
 			}
 
 			// Create product
-			List<Product> products = mProductsPerCategory.get(category);
-			products.add(new Product(name, weight, category, textureRef, uv));
+			java.util.Map<String, ProductSpecification> products = mCategoryToProducts.get(category);
+			products.put(name, new ProductSpecification(name, weight, category, textureRef, uv));
 
 			Logger.trace("Loaded product with name = %s, weight = %d, category = %s", name, weight, category);
 		}
@@ -136,7 +136,7 @@ public class MapLoader {
 			UV uv = parseUVFromNode(tile, "source");
 			Vec2i size = parseVec2iFromNode(tile, "size");
 			Vec2i location = parseVec2iFromNode(tile, "location");
-			Dictionary<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
+			java.util.Map<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
 
 			// Checks
 			if (layer >= mLayers.size()) {
@@ -148,7 +148,9 @@ public class MapLoader {
 			// Creation
 			switch (type) {
 				case "SHELF":
-					layerRef.addShelf(new Shelf(id, location, size, textureRef, uv, category)); // TODO: Inventory
+					layerRef.addShelf(
+							new Shelf(id, location, size, textureRef, uv, category, inventory, mCategoryToProducts)); // TODO:
+																														// Inventory
 					break;
 
 				// TODO: ...
@@ -196,8 +198,8 @@ public class MapLoader {
 		return new UV(rawSourceUV.get(0), rawSourceUV.get(1), rawSourceUV.get(2), rawSourceUV.get(3));
 	}
 
-	private Dictionary<String, Integer> parseInventoryItemsFromNode(JsonNode node, String inventoryName) {
-		Dictionary<String, Integer> dictionary = new Hashtable<>();
+	private java.util.Map<String, Integer> parseInventoryItemsFromNode(JsonNode node, String inventoryName) {
+		java.util.Map<String, Integer> dictionary = new Hashtable<>();
 
 		for (JsonNode item : node.get(inventoryName)) {
 			String name = item.get("item").asText();
