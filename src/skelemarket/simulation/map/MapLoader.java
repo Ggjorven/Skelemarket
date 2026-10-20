@@ -146,27 +146,33 @@ public class MapLoader {
 					tile = new Shelf(id, location, size, texture, uv, category, parseInventory(raw, categoryProducts),
 							products);
 					layer.addShelf((Shelf) tile);
+					break;
 				}
 				case "ENTRANCE": {
 					tile = new Entrance(id, location, size, texture, uv);
 					layer.addEntrance((Entrance) tile);
+					break;
 				}
 				case "EXIT": {
 					tile = new Exit(id, location, size, texture, uv);
 					layer.addExit((Exit) tile);
+					break;
 				}
 				case "MANNED_CHECKOUT": {
 					tile = new Checkout(id, location, size, texture, uv, false);
 					layer.addCheckout((Checkout) tile);
+					break;
 				}
 				case "SELF_CHECKOUT": {
 					tile = new Checkout(id, location, size, texture, uv, true);
 					layer.addCheckout((Checkout) tile);
+					break;
 				}
 
 				default: {
 					tile = new Tile(id, location, size, texture, uv);
 					layer.addTile(tile);
+					break;
 				}
 			}
 
@@ -201,7 +207,7 @@ public class MapLoader {
 		java.util.Map<Integer, PathNode> nodes = new HashMap<>();
 
 		for (JsonNode raw : requireArray(paths, "nodes")) {
-			int id = parseReferenceID(raw.get("id"), "node");
+			int id = requireInt(raw, "id");
 
 			if (nodes.containsKey(id))
 				throw new MapLoadException("Duplicate node id: %d.", id);
@@ -209,7 +215,7 @@ public class MapLoader {
 			PathNode node = new PathNode(id, requireVec2i(raw, "location"));
 
 			for (JsonNode target : requireArray(raw, "targets")) {
-				int tileID = parseReferenceID(target, "tile");
+				int tileID = parseReferenceID(target, "t", "tile");
 				Tile tile = tiles.get(tileID);
 
 				if (tile == null)
@@ -231,8 +237,8 @@ public class MapLoader {
 			if (!raw.isArray() || raw.size() != 2)
 				throw new MapLoadException("Every path edge must contain two node ids.");
 
-			int firstID = parseReferenceID(raw.get(0), "node");
-			int secondID = parseReferenceID(raw.get(1), "node");
+			int firstID = parseReferenceID(raw.get(0), "n", "node");
+			int secondID = parseReferenceID(raw.get(1), "n", "node");
 			PathNode first = nodes.get(firstID);
 			PathNode second = nodes.get(secondID);
 
@@ -330,12 +336,17 @@ public class MapLoader {
 		return value.asInt();
 	}
 
-	private int parseReferenceID(JsonNode node, String type) throws MapLoadException {
+	private int parseReferenceID(JsonNode node, String prefix, String type) throws MapLoadException {
 		if (node == null || node.isNull())
 			throw new MapLoadException("Missing %s id.", type);
+		if (!node.isTextual())
+			throw new MapLoadException("%s id must start with \"%s\".", type, prefix);
 
 		String rawID = node.asText();
-		String numericID = rawID.replaceFirst("^[A-Za-z]+", "");
+		if (!rawID.startsWith(prefix))
+			throw new MapLoadException("%s id must start with \"%s\": %s.", type, prefix, rawID);
+
+		String numericID = rawID.substring(prefix.length());
 
 		try {
 			return Integer.parseInt(numericID);
