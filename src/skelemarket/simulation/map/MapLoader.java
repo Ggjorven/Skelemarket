@@ -65,8 +65,8 @@ public class MapLoader {
 	private List<MapLayer> parseLayers(JsonNode root, String name) throws MapLoadException {
 		List<MapLayer> layers = new ArrayList<>();
 
-		for (JsonNode layer : root.get("layers")) {
-			String layerName = layer.get("name").asText();
+		for (JsonNode layer : requireArray(root, name)) {
+			String layerName = requireText(layer, "name");
 			// boolean visibility = layer.get("visibility").asBoolean();
 
 			Logger.trace("Found layer: %s.", layerName);
@@ -89,10 +89,10 @@ public class MapLoader {
 		for (JsonNode category : requireArray(root, "categories")) {
 			String name = category.asText();
 
-			if (name.isBlank())
+			if (name.isBlank() || result.containsKey(name))
 				throw new MapLoadException("Categories must have unique non-empty names.");
 
-			result.putIfAbsent(name, new HashMap<>());
+			result.put(name, new HashMap<>());
 		}
 
 		for (JsonNode item : requireArray(root, "items")) {
@@ -115,10 +115,10 @@ public class MapLoader {
 		return result;
 	}
 
-	private void parseTiles(JsonNode rootNode, String tilesName, JsonNode rawTiles, List<MapLayer> layers,
+	private void parseTiles(JsonNode root, String name, List<MapLayer> layers,
 			java.util.Map<String, java.util.Map<String, ProductSpecification>> products,
 			java.util.Map<Integer, Tile> tiles) throws MapLoadException {
-		for (JsonNode raw : rawTiles) {
+		for (JsonNode raw : requireArray(root, name)) {
 			int id = requireInt(raw, "id");
 			int layerIndex = requireInt(raw, "layer");
 
@@ -187,6 +187,8 @@ public class MapLoader {
 				throw new MapLoadException("Inventory contains a product that was not previously created.");
 			if (capacity <= 0)
 				throw new MapLoadException("Capacity of inventory must be positive and non-zero.");
+			if (result.containsKey(product))
+				throw new MapLoadException("Inventory contains product \"%s\" multiple times.", product);
 
 			result.put(product, capacity);
 		}
@@ -198,53 +200,65 @@ public class MapLoader {
 			throws MapLoadException {
 		java.util.Map<Integer, PathNode> nodes = new HashMap<>();
 
-		// for (JsonNode raw : requireArray(paths, "nodes")) {
-		// int id = parseReferenceId(raw.get("id"), "node");
-		//
-		// if (nodes.containsKey(id))
-		// throw new MapLoadException("Duplicate node id: %d.", id);
-		//
-		// PathNode node = new PathNode(id, requireVec2i(raw, "location"));
-		// for (JsonNode target : requireArray(raw, "targets")) {
-		// Tile tile = tiles.get(parseReferenceId(target, "tile"));
-		//
-		// if (tile == null)
-		// throw new MapLoadException("Node %d targets an unknown tile.", id);
-		//
-		// node.addTarget(tile);
-		// }
-		//
-		// nodes.put(id, node);
-		// }
+		for (JsonNode raw : requireArray(paths, "nodes")) {
+			int id = parseReferenceID(raw.get("id"), "node");
+
+			if (nodes.containsKey(id))
+				throw new MapLoadException("Duplicate node id: %d.", id);
+
+			PathNode node = new PathNode(id, requireVec2i(raw, "location"));
+
+			for (JsonNode target : requireArray(raw, "targets")) {
+				int tileID = parseReferenceID(target, "tile");
+				Tile tile = tiles.get(tileID);
+
+				if (tile == null)
+					throw new MapLoadException("Node %d targets unknown tile %d.", id, tileID);
+
+				node.addTarget(tile);
+			}
+
+			nodes.put(id, node);
+		}
 
 		return nodes;
 	}
 
 	private void parseEdges(JsonNode paths, java.util.Map<Integer, PathNode> nodes) throws MapLoadException {
-		// if (paths.isMissingNode() || paths.isNull())
-		// return;
-		// Set<String> seen = new HashSet<>();
-		// for (JsonNode edge : requireArray(paths, "edges")) {
-		// if (!edge.isArray() || edge.size() != 2)
-		// throw new MapLoadException("Every path edge must contain two node ids.");
-		// int a = parseReferenceId(edge.get(0), "node"), b =
-		// parseReferenceId(edge.get(1), "node");
-		// PathNode first = nodes.get(a), second = nodes.get(b);
-		// if (first == null || second == null || a == b)
-		// throw new MapLoadException("Invalid edge between %d and %d.", a, b);
-		// String key = Math.min(a, b) + ":" + Math.max(a, b);
-		// if (!seen.add(key))
-		// throw new MapLoadException("Duplicate edge between %d and %d.", a, b);
-		// first.addNeighbour(second);
-		// second.addNeighbour(first);
-		// }
+		Set<String> seenEdges = new HashSet<>();
+
+		for (JsonNode raw : requireArray(paths, "edges")) {
+			if (!raw.isArray() || raw.size() != 2)
+				throw new MapLoadException("Every path edge must contain two node ids.");
+
+			int firstID = parseReferenceID(raw.get(0), "node");
+			int secondID = parseReferenceID(raw.get(1), "node");
+			PathNode first = nodes.get(firstID);
+			PathNode second = nodes.get(secondID);
+
+			if (first == null || second == null)
+				throw new MapLoadException("Edge contains a node that was not previously created.");
+			if (firstID == secondID)
+				throw new MapLoadException("A path node cannot connect to itself.");
+
+			String edgeID = Math.min(firstID, secondID) + ":" + Math.max(firstID, secondID);
+			if (seenEdges.contains(edgeID))
+				throw new MapLoadException("Duplicate edge between nodes %d and %d.", firstID, secondID);
+
+			seenEdges.add(edgeID);
+			first.addNeighbour(second);
+			second.addNeighbour(first);
+		}
 	}
 
 	private Texture requireTexture(JsonNode node, String name) throws MapLoadException {
-		String imagePath = node.get(name).asText();
+		String imagePath = requireText(node, name);
 
-		if (!mTextures.containsKey(imagePath)) {
-			mTextures.put(imagePath, new Texture(imagePath));
+		try {
+			if (!mTextures.containsKey(imagePath))
+				mTextures.put(imagePath, new Texture(imagePath));
+		} catch (IllegalArgumentException ex) {
+			throw new MapLoadException(ex.getMessage());
 		}
 
 		return mTextures.get(imagePath);
@@ -253,13 +267,12 @@ public class MapLoader {
 	private UV requireUV(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawSourceUV = new ArrayList<>(4);
 
-		for (JsonNode sourceValue : node.get(name)) {
+		for (JsonNode sourceValue : requireArray(node, name)) {
 			rawSourceUV.add(sourceValue.asInt());
 		}
 
-		if (rawSourceUV.size() != 4) {
-			throw new MapLoadException("UV array is longer than 4 ints (%d).", rawSourceUV.size());
-		}
+		if (rawSourceUV.size() != 4)
+			throw new MapLoadException("UV array must contain 4 ints (%d).", rawSourceUV.size());
 
 		return new UV(rawSourceUV.get(0), rawSourceUV.get(1), rawSourceUV.get(2), rawSourceUV.get(3));
 	}
@@ -267,13 +280,12 @@ public class MapLoader {
 	private Vec2i requireVec2i(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawVec2 = new ArrayList<>(2);
 
-		for (JsonNode value : node.get(name)) {
+		for (JsonNode value : requireArray(node, name)) {
 			rawVec2.add(value.asInt());
 		}
 
-		if (rawVec2.size() != 2) {
-			throw new MapLoadException("Vec2 array is longer than 2 ints (%d).", rawVec2.size());
-		}
+		if (rawVec2.size() != 2)
+			throw new MapLoadException("Vec2 array must contain 2 ints (%d).", rawVec2.size());
 
 		return new Vec2i(rawVec2.get(0), rawVec2.get(1));
 	}
@@ -281,15 +293,23 @@ public class MapLoader {
 	private Colour requireColour(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawCol = new ArrayList<>(4);
 
-		for (JsonNode value : node.get(name)) {
+		for (JsonNode value : requireArray(node, name)) {
 			rawCol.add(value.asInt());
 		}
 
-		if (rawCol.size() != 4) {
-			throw new MapLoadException("Colour's array is longer than 4 ints (%d).", rawCol.size());
-		}
+		if (rawCol.size() != 4)
+			throw new MapLoadException("Colour array must contain 4 ints (%d).", rawCol.size());
 
 		return new Colour(rawCol.get(0), rawCol.get(1), rawCol.get(2), rawCol.get(3));
+	}
+
+	private JsonNode requireArray(JsonNode node, String name) throws MapLoadException {
+		JsonNode value = node.get(name);
+
+		if (value == null || !value.isArray())
+			throw new MapLoadException("%s must be an array.", name);
+
+		return value;
 	}
 
 	private String requireText(JsonNode node, String name) throws MapLoadException {
@@ -310,17 +330,19 @@ public class MapLoader {
 		return value.asInt();
 	}
 
-	// private int parseReferenceId(JsonNode value, String type) throws
-	// MapLoadException {
-	// if (value == null || value.isNull())
-	// throw new MapLoadException("Missing %s id.", type);
-	// String raw = value.asText();
-	// try {
-	// return Integer.parseInt(raw.replaceFirst("^[A-Za-z]+", ""));
-	// } catch (NumberFormatException ex) {
-	// throw new MapLoadException("Invalid %s id: %s.", type, raw);
-	// }
-	// }
+	private int parseReferenceID(JsonNode node, String type) throws MapLoadException {
+		if (node == null || node.isNull())
+			throw new MapLoadException("Missing %s id.", type);
+
+		String rawID = node.asText();
+		String numericID = rawID.replaceFirst("^[A-Za-z]+", "");
+
+		try {
+			return Integer.parseInt(numericID);
+		} catch (NumberFormatException ex) {
+			throw new MapLoadException("Invalid %s id: %s.", type, rawID);
+		}
+	}
 }
 
 class MapLoadException extends Exception {
