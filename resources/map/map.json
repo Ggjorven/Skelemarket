@@ -45,9 +45,23 @@
     "FLOOR"
   ],
   "categories": [
-    "FRUIT"
+    "FRUIT",
+    "VEGETABLES"
   ],
-  "items": [],
+  "items": [
+    {
+      "name": "PUMPKIN",
+      "category": "VEGETABLES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    }
+  ],
   "tiles": [
     {
       "id": 120,
@@ -5640,7 +5654,7 @@
     {
       "id": 117,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5657,12 +5671,17 @@
         448,
         0
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 119,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5679,12 +5698,17 @@
         608,
         0
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 402,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5701,12 +5725,17 @@
         352,
         64
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 403,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5723,12 +5752,17 @@
         352,
         192
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 468,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5745,12 +5779,17 @@
         800,
         384
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 469,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5767,12 +5806,17 @@
         960,
         384
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 470,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5789,12 +5833,17 @@
         768,
         448
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 471,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5811,12 +5860,17 @@
         768,
         544
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 472,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5833,12 +5887,17 @@
         1216,
         448
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 473,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5855,12 +5914,17 @@
         1216,
         544
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 474,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5877,12 +5941,17 @@
         864,
         96
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 475,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5899,12 +5968,17 @@
         672,
         448
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 476,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5921,12 +5995,17 @@
         672,
         576
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 477,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5943,12 +6022,17 @@
         448,
         544
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 478,
       "type": "SHELF",
-      "category": "",
+      "category": "VEGETABLES",
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
       "source": [
@@ -5965,7 +6049,12 @@
         256,
         544
       ],
-      "inventory": []
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
     },
     {
       "id": 429,
