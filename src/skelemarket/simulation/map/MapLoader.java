@@ -4,178 +4,244 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import skelemarket.core.Colour;
-import skelemarket.core.Logger;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2i;
+import skelemarket.core.Logger;
 
-///////////////////////////////////////////////////////////
-// MapLoader
-///////////////////////////////////////////////////////////
 public class MapLoader {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private ObjectMapper mJSONMapper = null;
-
-	private JsonNode mRootNode = null;
+	private ObjectMapper mJSONMapper = new ObjectMapper();
 
 	private java.util.Map<String, Texture> mTextures = new HashMap<>();
 
-	private Colour mBackgroundColour = new Colour();
-
-	private java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts = new HashMap<>();
-
-	private List<MapLayer> mLayers = new ArrayList<>();
-
 	///////////////////////////////////////////////////////////
-	// Public methods
+	// Variables
 	///////////////////////////////////////////////////////////
-	public MapLoader() {
-		mJSONMapper = new ObjectMapper();
-	}
-
 	public Map loadFromPath(String path) throws MapLoadException {
-		// Load file
 		try (InputStream stream = getClass().getResourceAsStream(path)) {
-			if (stream == null) {
+			if (stream == null)
 				throw new MapLoadException("Resource not found: %s.", path);
-			}
 
-			mRootNode = mJSONMapper.readTree(stream);
+			return parse(mJSONMapper.readTree(stream));
 		} catch (IOException ex) {
 			throw new MapLoadException("Failed to load/parse JSON, error: %s.", ex.getMessage());
 		}
-
-		// Parse file
-		parseSpecifications();
-		parseLayers();
-		parseCategories();
-		parseItems();
-		parseTiles();
-		parsePaths();
-
-		return new Map(mLayers, mBackgroundColour);
 	}
 
-	///////////////////////////////////////////////////////////
-	// Private methods
-	///////////////////////////////////////////////////////////
-	private void parseSpecifications() throws MapLoadException {
-		int width = mRootNode.get("width").asInt();
-		int height = mRootNode.get("height").asInt();
+	public Map parse(JsonNode root) throws MapLoadException {
+		validateCanvas(root);
 
-		Logger.trace("Loading map with width and height: %d, %d.", width, height);
+		List<MapLayer> layers = parseLayers(root, "layers");
 
-		if (width != skelemarket.core.Config.WIDTH || height != skelemarket.core.Config.HEIGHT) {
-			throw new MapLoadException(
-					"Map's width (%d) and height (%d) don't line up with the window's width (%d) and height (%d).",
-					width, height, skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT);
-		}
+		java.util.Map<String, java.util.Map<String, ProductSpecification>> products = parseProducts(root);
 
-		mBackgroundColour = parseColourFromNode(mRootNode, "background");
+		java.util.Map<Integer, Tile> tiles = new HashMap<>();
+		parseTiles(root, "tiles", layers, products, tiles);
+
+		java.util.Map<Integer, PathNode> nodes = parseNodes(root.path("paths"), tiles);
+		parseEdges(root.path("paths"), nodes);
+
+		return new Map(layers, requireColour(root, "background"), products, nodes);
 	}
 
-	private void parseLayers() throws MapLoadException {
-		for (JsonNode layer : mRootNode.get("layers")) {
-			String name = layer.get("name").asText();
+	private void validateCanvas(JsonNode root) throws MapLoadException {
+		int width = requireInt(root, "width"), height = requireInt(root, "height");
+		if (width != skelemarket.core.Config.WIDTH || height != skelemarket.core.Config.HEIGHT)
+			throw new MapLoadException("Map dimensions (%d, %d) must be (%d, %d).", width, height,
+					skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT);
+	}
+
+	private List<MapLayer> parseLayers(JsonNode root, String name) throws MapLoadException {
+		List<MapLayer> layers = new ArrayList<>();
+
+		for (JsonNode layer : root.get("layers")) {
+			String layerName = layer.get("name").asText();
 			// boolean visibility = layer.get("visibility").asBoolean();
 
-			Logger.trace("Found layer: %s.", name);
+			Logger.trace("Found layer: %s.", layerName);
 
 			// We don't need the name or visibility
-			mLayers.add(new MapLayer());
+			layers.add(new MapLayer());
 		}
+
+		if (layers.isEmpty())
+			throw new MapLoadException("A map must have at least one layer.");
+
+		return layers;
 	}
 
-	private void parseCategories() throws MapLoadException {
-		for (JsonNode category : mRootNode.get("categories")) {
-			mCategoryToProducts.put(category.asText(), new HashMap<>());
-			Logger.trace("Loaded category: %s.", category);
+	private java.util.Map<String, java.util.Map<String, ProductSpecification>> parseProducts(JsonNode root)
+			throws MapLoadException {
+		java.util.Map<String, java.util.Map<String, ProductSpecification>> result = new HashMap<>();
+		Set<String> productNames = new HashSet<>();
+
+		for (JsonNode category : requireArray(root, "categories")) {
+			String name = category.asText();
+
+			if (name.isBlank())
+				throw new MapLoadException("Categories must have unique non-empty names.");
+
+			result.putIfAbsent(name, new HashMap<>());
 		}
+
+		for (JsonNode item : requireArray(root, "items")) {
+			String name = requireText(item, "name");
+			String category = requireText(item, "category");
+			int weight = requireInt(item, "weight");
+
+			if (weight <= 0)
+				throw new MapLoadException("Weight must be a positive non 0 integer.");
+			if (!result.containsKey(category))
+				throw new MapLoadException("Product's category does not exist.");
+			if (!productNames.add(name))
+				throw new MapLoadException("Product names must be unique: \"%s\" found multiple times.", name);
+
+			Texture texture = requireTexture(item, "image");
+			UV uv = requireUV(item, "source");
+			result.get(category).put(name, new ProductSpecification(name, weight, category, texture, uv));
+		}
+
+		return result;
 	}
 
-	private void parseItems() throws MapLoadException {
-		for (JsonNode item : mRootNode.get("items")) {
-			String name = item.get("name").asText();
-			int weight = item.get("weight").asInt();
-			String category = item.get("category").asText();
-			Texture textureRef = parseTextureFromNode(item, "image");
-			UV uv = parseUVFromNode(item, "source");
+	private void parseTiles(JsonNode rootNode, String tilesName, JsonNode rawTiles, List<MapLayer> layers,
+			java.util.Map<String, java.util.Map<String, ProductSpecification>> products,
+			java.util.Map<Integer, Tile> tiles) throws MapLoadException {
+		for (JsonNode raw : rawTiles) {
+			int id = requireInt(raw, "id");
+			int layerIndex = requireInt(raw, "layer");
 
-			// Checks
-			if (!mCategoryToProducts.containsKey(category)) {
-				throw new MapLoadException(
-						"Found item with category: %s, but this was not previously seen during category loading.",
-						category);
-			}
+			if (tiles.containsKey(id))
+				throw new MapLoadException("Duplicate tile id: %d.", id);
+			if (layerIndex < 0 || layerIndex >= layers.size())
+				throw new MapLoadException("Invalid layer: %d.", layerIndex);
 
-			// Create product
-			java.util.Map<String, ProductSpecification> products = mCategoryToProducts.get(category);
-			products.put(name, new ProductSpecification(name, weight, category, textureRef, uv));
+			String type = requireText(raw, "type");
+			Texture texture = requireTexture(raw, "image");
+			UV uv = requireUV(raw, "source");
+			Vec2i size = requireVec2i(raw, "size"), location = requireVec2i(raw, "location");
+			MapLayer layer = layers.get(layerIndex);
 
-			Logger.trace("Loaded product with name = %s, weight = %d, category = %s", name, weight, category);
-		}
-	}
-
-	private void parseTiles() throws MapLoadException {
-		for (JsonNode tile : mRootNode.get("tiles")) {
-			// Attributes
-			int id = tile.get("id").asInt();
-			String type = tile.get("type").asText();
-			String category = tile.get("category").asText();
-			int layer = tile.get("layer").asInt();
-			Texture textureRef = parseTextureFromNode(tile, "image");
-			UV uv = parseUVFromNode(tile, "source");
-			Vec2i size = parseVec2iFromNode(tile, "size");
-			Vec2i location = parseVec2iFromNode(tile, "location");
-			java.util.Map<String, Integer> inventory = parseInventoryItemsFromNode(tile, "inventory");
-
-			// Checks
-			if (layer >= mLayers.size()) {
-				throw new MapLoadException("Trying to create a tile on layer %d, but there are only %d layers.", layer,
-						mLayers.size());
-			}
-			MapLayer layerRef = mLayers.get(layer);
-
-			// Creation
+			Tile tile;
 			switch (type) {
-				case "SHELF":
-					layerRef.addShelf(
-							new Shelf(id, location, size, textureRef, uv, category, inventory, mCategoryToProducts)); // TODO:
-																														// Inventory
-					break;
+				case "SHELF": {
+					String category = requireText(raw, "category");
 
-				// TODO: ...
-				case "ENTRANCE":
-					break;
+					if (category.isBlank() || !products.containsKey(category))
+						throw new MapLoadException("Shelf %d has unknown category %s.", id, category);
 
-				default:
-					layerRef.addTile(new Tile(id, location, size, textureRef, uv));
-					break;
+					java.util.Map<String, ProductSpecification> categoryProducts = products.get(category);
+
+					tile = new Shelf(id, location, size, texture, uv, category, parseInventory(raw, categoryProducts),
+							products);
+					layer.addShelf((Shelf) tile);
+				}
+				case "ENTRANCE": {
+					tile = new Entrance(id, location, size, texture, uv);
+					layer.addEntrance((Entrance) tile);
+				}
+				case "EXIT": {
+					tile = new Exit(id, location, size, texture, uv);
+					layer.addExit((Exit) tile);
+				}
+				case "MANNED_CHECKOUT": {
+					tile = new Checkout(id, location, size, texture, uv, false);
+					layer.addCheckout((Checkout) tile);
+				}
+				case "SELF_CHECKOUT": {
+					tile = new Checkout(id, location, size, texture, uv, true);
+					layer.addCheckout((Checkout) tile);
+				}
+
+				default: {
+					tile = new Tile(id, location, size, texture, uv);
+					layer.addTile(tile);
+				}
 			}
 
-			Logger.trace("Add new %s to layer %d. Location: %s, size: %s", type, layer, location.toString(),
-					size.toString());
+			tiles.put(id, tile);
 		}
 	}
 
-	private void parsePaths() throws MapLoadException {
+	private java.util.Map<String, Integer> parseInventory(JsonNode raw,
+			java.util.Map<String, ProductSpecification> products)
+			throws MapLoadException {
+		java.util.Map<String, Integer> result = new HashMap<>();
 
+		for (JsonNode entry : requireArray(raw, "inventory")) {
+			String product = requireText(entry, "item");
+			int capacity = requireInt(entry, "capacity");
+
+			if (!products.containsKey(product))
+				throw new MapLoadException("Inventory contains a product that was not previously created.");
+			if (capacity <= 0)
+				throw new MapLoadException("Capacity of inventory must be positive and non-zero.");
+
+			result.put(product, capacity);
+		}
+
+		return result;
 	}
 
-	///////////////////////////////////////////////////////////
-	// Helper methods
-	///////////////////////////////////////////////////////////
-	private Texture parseTextureFromNode(JsonNode node, String textureName) {
-		String imagePath = node.get(textureName).asText();
+	private java.util.Map<Integer, PathNode> parseNodes(JsonNode paths, java.util.Map<Integer, Tile> tiles)
+			throws MapLoadException {
+		java.util.Map<Integer, PathNode> nodes = new HashMap<>();
+
+		// for (JsonNode raw : requireArray(paths, "nodes")) {
+		// int id = parseReferenceId(raw.get("id"), "node");
+		//
+		// if (nodes.containsKey(id))
+		// throw new MapLoadException("Duplicate node id: %d.", id);
+		//
+		// PathNode node = new PathNode(id, requireVec2i(raw, "location"));
+		// for (JsonNode target : requireArray(raw, "targets")) {
+		// Tile tile = tiles.get(parseReferenceId(target, "tile"));
+		//
+		// if (tile == null)
+		// throw new MapLoadException("Node %d targets an unknown tile.", id);
+		//
+		// node.addTarget(tile);
+		// }
+		//
+		// nodes.put(id, node);
+		// }
+
+		return nodes;
+	}
+
+	private void parseEdges(JsonNode paths, java.util.Map<Integer, PathNode> nodes) throws MapLoadException {
+		// if (paths.isMissingNode() || paths.isNull())
+		// return;
+		// Set<String> seen = new HashSet<>();
+		// for (JsonNode edge : requireArray(paths, "edges")) {
+		// if (!edge.isArray() || edge.size() != 2)
+		// throw new MapLoadException("Every path edge must contain two node ids.");
+		// int a = parseReferenceId(edge.get(0), "node"), b =
+		// parseReferenceId(edge.get(1), "node");
+		// PathNode first = nodes.get(a), second = nodes.get(b);
+		// if (first == null || second == null || a == b)
+		// throw new MapLoadException("Invalid edge between %d and %d.", a, b);
+		// String key = Math.min(a, b) + ":" + Math.max(a, b);
+		// if (!seen.add(key))
+		// throw new MapLoadException("Duplicate edge between %d and %d.", a, b);
+		// first.addNeighbour(second);
+		// second.addNeighbour(first);
+		// }
+	}
+
+	private Texture requireTexture(JsonNode node, String name) throws MapLoadException {
+		String imagePath = node.get(name).asText();
 
 		if (!mTextures.containsKey(imagePath)) {
 			mTextures.put(imagePath, new Texture(imagePath));
@@ -184,10 +250,10 @@ public class MapLoader {
 		return mTextures.get(imagePath);
 	}
 
-	private UV parseUVFromNode(JsonNode node, String uvName) throws MapLoadException {
+	private UV requireUV(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawSourceUV = new ArrayList<>(4);
 
-		for (JsonNode sourceValue : node.get(uvName)) {
+		for (JsonNode sourceValue : node.get(name)) {
 			rawSourceUV.add(sourceValue.asInt());
 		}
 
@@ -198,23 +264,10 @@ public class MapLoader {
 		return new UV(rawSourceUV.get(0), rawSourceUV.get(1), rawSourceUV.get(2), rawSourceUV.get(3));
 	}
 
-	private java.util.Map<String, Integer> parseInventoryItemsFromNode(JsonNode node, String inventoryName) {
-		java.util.Map<String, Integer> dictionary = new Hashtable<>();
-
-		for (JsonNode item : node.get(inventoryName)) {
-			String name = item.get("item").asText();
-			int capacity = item.get("capacity").asInt();
-
-			dictionary.put(name, capacity);
-		}
-
-		return dictionary;
-	}
-
-	private Vec2i parseVec2iFromNode(JsonNode node, String vecName) throws MapLoadException {
+	private Vec2i requireVec2i(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawVec2 = new ArrayList<>(2);
 
-		for (JsonNode value : node.get(vecName)) {
+		for (JsonNode value : node.get(name)) {
 			rawVec2.add(value.asInt());
 		}
 
@@ -225,10 +278,10 @@ public class MapLoader {
 		return new Vec2i(rawVec2.get(0), rawVec2.get(1));
 	}
 
-	private Colour parseColourFromNode(JsonNode node, String colName) throws MapLoadException {
+	private Colour requireColour(JsonNode node, String name) throws MapLoadException {
 		List<Integer> rawCol = new ArrayList<>(4);
 
-		for (JsonNode value : node.get(colName)) {
+		for (JsonNode value : node.get(name)) {
 			rawCol.add(value.asInt());
 		}
 
@@ -238,17 +291,44 @@ public class MapLoader {
 
 		return new Colour(rawCol.get(0), rawCol.get(1), rawCol.get(2), rawCol.get(3));
 	}
-}
 
-///////////////////////////////////////////////////////////
-// MapLoadException
-///////////////////////////////////////////////////////////
-class MapLoadException extends Exception {
-	public MapLoadException(String errorMessage) {
-		super(errorMessage);
+	private String requireText(JsonNode node, String name) throws MapLoadException {
+		JsonNode value = node.get(name);
+
+		if (value == null || value.isNull())
+			throw new MapLoadException("%s must be text.", name);
+
+		return value.asText();
 	}
 
-	public MapLoadException(String format, Object... args) {
+	private int requireInt(JsonNode node, String name) throws MapLoadException {
+		JsonNode value = node.get(name);
+
+		if (value == null || !value.canConvertToInt())
+			throw new MapLoadException("%s must be an integer.", name);
+
+		return value.asInt();
+	}
+
+	// private int parseReferenceId(JsonNode value, String type) throws
+	// MapLoadException {
+	// if (value == null || value.isNull())
+	// throw new MapLoadException("Missing %s id.", type);
+	// String raw = value.asText();
+	// try {
+	// return Integer.parseInt(raw.replaceFirst("^[A-Za-z]+", ""));
+	// } catch (NumberFormatException ex) {
+	// throw new MapLoadException("Invalid %s id: %s.", type, raw);
+	// }
+	// }
+}
+
+class MapLoadException extends Exception {
+	MapLoadException(String message) {
+		super(message);
+	}
+
+	MapLoadException(String format, Object... args) {
 		super(String.format(format, args));
 	}
 }
