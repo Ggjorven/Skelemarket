@@ -42,7 +42,7 @@ public class Supermarket {
 	public void update() {
 		mMap.update();
 		Entrance entrance = mMap.getEntrance();
-		if(entrance != null && mCustomers.size() < Config.MAX_CUSTOMERS && entrance.isReadyToSpawn()) {
+		if (entrance != null && mCustomers.size() < Config.MAX_CUSTOMERS && entrance.isReadyToSpawn()) {
 			List<PathNode> entranceNodes = mMap.getNodesForTile(entrance.getID());
 
 			if (!entranceNodes.isEmpty()) {
@@ -50,25 +50,25 @@ public class Supermarket {
 				Vec2i nodeLocation = firstNode.getLocation();
 
 				Vec2f spawnPosition = new Vec2f(
-						nodeLocation.getX() - Config.CUSTOMER_WIDTH /2,
+						nodeLocation.getX() - Config.CUSTOMER_WIDTH / 2,
 						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
 
-				Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
+				Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0, 0, 7, 16));
 				mCustomers.add(customer);
 			}
 		}
 
-		for (Customer customer : mCustomers){
+		for (Customer customer : mCustomers) {
 			customer.update();
 		}
 		// TODO: Update all employees
-		// TODO: delete customer when isFinished() using removeIf
+		mCustomers.removeIf(Customer::isFinished);
 	}
 
 	public void render(Renderer rendererRef) {
 		mMap.render(rendererRef);
 
-		for (Customer customer : mCustomers){
+		for (Customer customer : mCustomers) {
 			customer.render(rendererRef);
 		}
 
