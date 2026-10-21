@@ -39,6 +39,19 @@ public class Customer extends Person {
 
 	@Override
 	public void update() {
+		// Temporary walk test: walk 50 pixels down, then finish
+		if (mCurrentState == State.TakeCart) {
+			setDestination(new Vec2f(mPosition.getX(), mPosition.getY() + 500));
+			mCurrentState = State.Walk;
+		}
+
+		if (mCurrentState == State.Walk) {
+			stepTowardsDestination();
+
+			if (hasArrived()) {
+				mCurrentState = State.Finished;
+			}
+		}
 		// TODO: Take a cart
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf
