@@ -26,9 +26,8 @@ public class Entrance extends Tile {
 
 	@Override
 	public void update(Map mapRef) {
-		if (mCountDownTick > 0) {
-			mCountDownTick--;
-		}
+		countDown();
+
 
 		// TODO: Use some kind of UpdateRegister or Employee/CustomerRegister which
 		// is passed down through the update function instead of having to call a
@@ -60,6 +59,12 @@ public class Entrance extends Tile {
 			return true;
 		} else {
 			return false;
+		}
+	}
+
+	void countDown() {
+		if (mCountDownTick > 0) {
+			mCountDownTick--;
 		}
 	}
 }

@@ -28,31 +28,30 @@ public class EntranceTest {
 	}
 
 	// TODO(Stephan): Update the tests below
-	// @Test
-	// void readyAgainAfterSpawnInterval() {
-	// Entrance entrance = new Entrance(2, new Vec2i(), new Vec2i(), null, null);
-	// entrance.isReadyToSpawn();
-	//
-	// for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS; i++) {
-	// entrance.update();
-	// }
-	// boolean ready = entrance.isReadyToSpawn();
-	//
-	// assertTrue(ready, "Customer is ready to be spawned in");
-	//
-	// }
-	//
-	// @Test
-	// void notReadyOneTickBeforeInterval() {
-	// Entrance entrance = new Entrance(3, new Vec2i(), new Vec2i(), null, null);
-	// entrance.isReadyToSpawn();
-	//
-	// for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS - 1; i++) {
-	// entrance.update();
-	// }
-	// boolean ready = entrance.isReadyToSpawn();
-	//
-	// assertFalse(ready, "Customer should not spawn one tick before the
-	// interval.");
-	// }
+	 @Test
+	 void readyAgainAfterSpawnInterval() {
+	 Entrance entrance = new Entrance(2, new Vec2i(), new Vec2i(), null, null);
+	 entrance.isReadyToSpawn();
+
+	 for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS; i++) {
+		 entrance.countDown();
+	 }
+	 boolean ready = entrance.isReadyToSpawn();
+
+	 assertTrue(ready, "Customer is ready to be spawned in");
+
+	 }
+
+	 @Test
+	 void notReadyOneTickBeforeInterval() {
+	 Entrance entrance = new Entrance(3, new Vec2i(), new Vec2i(), null, null);
+	 entrance.isReadyToSpawn();
+
+	 for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS - 1; i++) {
+		 entrance.countDown();
+	 }
+	 boolean ready = entrance.isReadyToSpawn();
+
+	 assertFalse(ready, "Customer should not spawn one tick before the interval.");
+	 }
 }
