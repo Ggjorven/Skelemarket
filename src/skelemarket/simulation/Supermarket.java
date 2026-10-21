@@ -5,6 +5,7 @@ import skelemarket.simulation.map.Entrance;
 import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.MapLoader;
 import skelemarket.simulation.people.Customer;
+import skelemarket.simulation.map.PathNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +43,19 @@ public class Supermarket {
 		mMap.update();
 		Entrance entrance = mMap.getEntrance();
 		if(entrance != null && mCustomers.size() < Config.MAX_CUSTOMERS && entrance.isReadyToSpawn()) {
-			Vec2i entrancePosition = entrance.getPosition();
-			Vec2i entranceSize = entrance.getSize();
-			int offsetX = (entranceSize.getX() - Config.CUSTOMER_WIDTH)/2;
-			int offsetY = entranceSize.getY() - Config.CUSTOMER_HEIGHT;
-			Vec2f spawnPosition = new Vec2f(entrancePosition.getX() + offsetX, entrancePosition.getY() + offsetY);
-			Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
-			mCustomers.add(customer);
+			List<PathNode> entranceNodes = mMap.getNodesForTile(entrance.getID());
 
+			if (!entranceNodes.isEmpty()) {
+				PathNode firstNode = entranceNodes.get(0);
+				Vec2i nodeLocation = firstNode.getLocation();
+
+				Vec2f spawnPosition = new Vec2f(
+						nodeLocation.getX() - Config.CUSTOMER_WIDTH /2,
+						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
+
+				Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
+				mCustomers.add(customer);
+			}
 		}
 
 		for (Customer customer : mCustomers){
