@@ -1,9 +1,7 @@
 package skelemarket.simulation.people;
 
-import skelemarket.core.Renderer;
-import skelemarket.core.Texture;
-import skelemarket.core.UV;
-import skelemarket.core.Vec2f;
+import skelemarket.core.*;
+import skelemarket.simulation.Config;
 
 public abstract class Person {
 	///////////////////////////////////////////////////////////
@@ -11,7 +9,7 @@ public abstract class Person {
 	///////////////////////////////////////////////////////////
 	protected Vec2f mPosition = new Vec2f();
 	private Vec2f mSize = new Vec2f();
-
+	private Vec2f mDestination = null;
 	private Texture mTextureRef = null;
 	private UV mTextureCoords = new UV();
 	protected int mRemainingTicks;
@@ -25,6 +23,34 @@ public abstract class Person {
 
 		mTextureRef = textureRef;
 		mTextureCoords = coords;
+	}
+
+	protected void setDestination(Vec2f destination) {
+		mDestination = destination;
+	}
+
+	protected void stepTowardsDestination() {
+		if (hasArrived()) {
+			return;
+		}
+
+		float dx = mDestination.getX() - mPosition.getX();
+		float dy = mDestination.getY() - mPosition.getY();
+
+		float distance = (float) Math.sqrt(dx * dx + dy * dy);
+
+		if (distance <= Config.PERSON_SPEED) {
+			mPosition.setX(mDestination.getX());
+			mPosition.setY(mDestination.getY());
+			mDestination = null;
+			return;
+		}
+		mPosition.setX(mPosition.getX() + dx / distance * Config.PERSON_SPEED);
+		mPosition.setY(mPosition.getY() + dy / distance * Config.PERSON_SPEED);
+	}
+
+	protected boolean hasArrived() {
+		return mDestination == null;
 	}
 
 	public abstract void update();

@@ -11,4 +11,5 @@ public class Config {
 	public static final int CUSTOMER_HEIGHT = 48;
 	public static final int MAX_CUSTOMERS = 50;
 	public static final int CUSTOMER_SPAWN_INTERVAL_TICKS = 240;
+	public static final float PERSON_SPEED = 1.0f; // pixels per tick
 }
