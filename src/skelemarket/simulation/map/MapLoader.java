@@ -221,7 +221,7 @@ public class MapLoader {
 				if (tile == null)
 					throw new MapLoadException("Node %d targets unknown tile %d.", id, tileID);
 
-				node.addTarget(tile);
+				node.setTarget(tile);
 			}
 
 			nodes.put(id, node);

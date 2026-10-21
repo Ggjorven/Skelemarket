@@ -34,7 +34,7 @@ public class MapLoaderTest {
 				"nodes": [
 				  {"id": 1, "location": [64, 0], "targets": ["t2"]},
 				  {"id": 2, "location": [32, 0], "targets": ["t1"]},
-				  {"id": 3, "location": [96, 0], "targets": ["t3", "t4"]}
+				  {"id": 3, "location": [96, 0], "targets": ["t3"]}
 				],
 				"edges": [["n1", "n2"], ["n2", "n3"]]
 			  }
@@ -56,9 +56,8 @@ public class MapLoaderTest {
 		assertInstanceOf(Entrance.class, map.getTile(2).orElseThrow());
 		assertInstanceOf(Exit.class, map.getTile(3).orElseThrow());
 		assertInstanceOf(Checkout.class, map.getTile(4).orElseThrow());
-		assertTrue(entranceNode.getTargets().contains(map.getTile(2).orElseThrow()));
-		assertTrue(destinationNode.getTargets().contains(map.getTile(3).orElseThrow()));
-		assertTrue(destinationNode.getTargets().contains(map.getTile(4).orElseThrow()));
+		assertEquals(map.getTile(2).orElseThrow(), entranceNode.getTarget());
+		assertEquals(map.getTile(3).orElseThrow(), destinationNode.getTarget());
 	}
 
 	@Test
@@ -78,7 +77,7 @@ public class MapLoaderTest {
 		PathNode node = map.getNode(1).orElseThrow();
 
 		assertEquals(0, node.getNeighbours().size());
-		assertTrue(node.getTargets().contains(map.getTile(2).orElseThrow()));
+		assertEquals(map.getTile(2).orElseThrow(), node.getTarget());
 	}
 
 	@Test

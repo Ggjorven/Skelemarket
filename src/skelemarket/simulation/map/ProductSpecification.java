@@ -53,4 +53,8 @@ public class ProductSpecification {
 	public UV getTextureCoords() {
 		return mTextureCoords;
 	}
+
+	public ProductSpecification clone() {
+		return new ProductSpecification(mName, mWeight, mCategory, mTextureRef, mTextureCoords);
+	}
 }
