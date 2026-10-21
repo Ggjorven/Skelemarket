@@ -60,4 +60,11 @@ public class Renderer {
 					(double) size.getY());
 		}
 	}
+
+	public void drawLine(Colour colour, Vec2i start, Vec2i end) {
+		mContextRef.setStroke(new Color(colour.getR() / 255.0, colour.getG() / 255.0, colour.getB() / 255.0,
+				colour.getA() / 255.0));
+		mContextRef.strokeLine((double) start.getX(), (double) start.getY(), (double) end.getX(),
+				(double) end.getY());
+	}
 }
