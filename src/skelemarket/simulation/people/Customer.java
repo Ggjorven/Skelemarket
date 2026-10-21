@@ -1,22 +1,40 @@
 package skelemarket.simulation.people;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.PathNode;
 
 public class Customer extends Person {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
 	private State mCurrentState = State.TakeCart;
-	// TODO: carrier (basket or cart), type = shared superclass of both
-	// TODO: shopping list, a list of products (filled when spawning)
+	private final List<String> mShoppingList = new ArrayList<>();
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
 		super(position, size, textureRef, coords);
+	}
+
+	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, List<String> shoppingList) {
+		this(position, size, textureRef, coords);
+		mShoppingList.addAll(shoppingList);
+	}
+
+	public List<String> getShoppingList() {
+		return List.copyOf(mShoppingList);
+	}
+
+	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
+		// TODO: Make readable
+		return mShoppingList.stream().map(map::getDestinationNodeForProduct).flatMap(Optional::stream).findFirst();
 	}
 
 	@Override

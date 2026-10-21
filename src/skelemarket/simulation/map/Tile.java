@@ -2,11 +2,13 @@ package skelemarket.simulation.map;
 
 import skelemarket.core.*;
 
-public abstract class Tile {
+public class Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	protected Vec2i mPosition = new Vec2i();
+	private int mID = 0;
+
+	private Vec2i mPosition = new Vec2i();
 	private Vec2i mSize = new Vec2i();
 
 	private Texture mTextureRef = null;
@@ -15,7 +17,9 @@ public abstract class Tile {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Tile(Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+	public Tile(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+		mID = tileID;
+
 		mPosition = position;
 		mSize = size;
 
@@ -23,13 +27,23 @@ public abstract class Tile {
 		mTextureCoords = coords;
 	}
 
-	public abstract void update();
+	// NOTE: Can be overwritten by the deriving class
+	public void update() {
+	}
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
 	}
 
-	public Vec2i getPosition(){
+	public int getID() {
+		return mID;
+	}
+
+	public Vec2i getPosition() {
 		return mPosition;
+	}
+
+	public Vec2i getSize() {
+		return mSize;
 	}
 }

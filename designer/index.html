@@ -52,6 +52,9 @@
       <input type="number" id="mapW" class="w70" value="1280" min="1" title="Map width">
       <span class="muted2">×</span>
       <input type="number" id="mapH" class="w70" value="738" min="1" title="Map height">
+      <span class="lbl" style="margin-left:4px">Background</span>
+      <input type="color" id="bgColor" value="#ffffff" title="Map background colour (RGB)">
+      <input type="number" id="bgAlpha" class="w52" value="255" min="0" max="255" title="Background alpha, 0 to 255">
     </div>
 
     <div class="spacer"></div>
@@ -163,17 +166,10 @@
           <div class="field"><label>Targeted by path nodes</label><div class="srcline" id="tLinks">—</div></div>
         </div>
 
-        <div id="attrBlock" class="block hidden">
-          <div class="subhead">Attributes</div>
-          <div class="attrchips" id="attrChips"></div>
-          <div class="inline">
-            <input type="text" id="attrInput" list="catDatalist" placeholder="Add tag, e.g. CHECKOUT" spellcheck="false">
-            <button id="attrAdd">Add</button>
-          </div>
-          <datalist id="catDatalist"></datalist>
-          <div class="sublabel">Item categories</div>
-          <div class="catpick" id="attrCats"></div>
-          <div class="hintline" id="attrHint"></div>
+        <div id="catBlock" class="block hidden">
+          <div class="subhead">Category</div>
+          <select id="tCat" title="Item category this tile holds"></select>
+          <div class="hintline" id="tCatHint"></div>
         </div>
 
         <div id="invBlock" class="block hidden">
@@ -195,7 +191,7 @@
             <button id="dupBtn">Duplicate</button>
             <button class="danger" id="delTile">Delete</button>
           </div>
-          <button id="moveToLayer">Move to active layer</button>
+          <select id="moveLayerSel" title="Move the selected tiles to another layer"></select>
         </div>
 
         <div id="noSel" class="noselect">Nothing selected.<br>Click a tile to edit it, drag to box-select, or pick a palette tile to place.</div>
