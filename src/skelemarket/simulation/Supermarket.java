@@ -15,8 +15,9 @@ public class Supermarket {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private Map mMap = null;
-	private List<Customer> mCustomers = new ArrayList<>();
+
 	private Texture mCustomerTexture = null;
+	private List<Customer> mCustomers = new ArrayList<>();
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -53,7 +54,9 @@ public class Supermarket {
 						nodeLocation.getX() - Config.CUSTOMER_WIDTH / 2,
 						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
 
-				Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0, 0, 7, 16));
+				Customer customer = new Customer(spawnPosition,
+						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture,
+						new UV(0, 0, 7, 16));
 				mCustomers.add(customer);
 			}
 		}

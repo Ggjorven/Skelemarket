@@ -23,6 +23,12 @@ public class MapLayer {
 	public MapLayer() {
 	}
 
+	public void update() {
+		for (Tile tile : mIDToTiles.values()) {
+			tile.update();
+		}
+	}
+
 	public void render(Renderer rendererRef) {
 		// Render all tiles
 		for (java.util.Map.Entry<Integer, Tile> tile : mIDToTiles.entrySet()) {
@@ -50,7 +56,7 @@ public class MapLayer {
 	}
 
 	public void addShelf(Shelf shelf) {
-		mIDToTiles.put(shelf.getID(), shelf);
+		addTile(shelf);
 
 		if (!mCategoryToShelves.containsKey(shelf.getCategory())) {
 			mCategoryToShelves.put(shelf.getCategory(), new ArrayList<>());
@@ -60,12 +66,12 @@ public class MapLayer {
 		shelves.add(shelf);
 	}
 
-	public void addEntrance(Entrance entrance) {
+	public void setEntrance(Entrance entrance) {
 		addTile(entrance);
 		mEntrance = entrance;
 	}
 
-	public void addExit(Exit exit) {
+	public void setExit(Exit exit) {
 		addTile(exit);
 		mExit = exit;
 	}
@@ -97,11 +103,5 @@ public class MapLayer {
 
 	public List<Tile> getTiles() {
 		return List.copyOf(mIDToTiles.values());
-	}
-
-	public void update() {
-		for (Tile tile : mIDToTiles.values()) {
-			tile.update();
-		}
 	}
 }

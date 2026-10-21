@@ -36,14 +36,17 @@ public class Map {
 		mCategoryToProducts = categoryToProducts;
 		mNodes = nodes;
 
+		for (String category : mCategoryToProducts.keySet()) {
+			mCategoryToShelves.put(category, new ArrayList<Shelf>());
+		}
+
 		for (MapLayer layer : mLayers) {
 			for (Tile tile : layer.getTiles()) {
 				mTiles.put(tile.getID(), tile);
 
-				if (tile instanceof Shelf shelf)
-					mCategoryToShelves.computeIfAbsent(shelf.getCategory(), ignored -> new ArrayList<>()).add(shelf);
-				if (tile instanceof Entrance entrance)
-					mEntrance = entrance;
+				if (tile instanceof Shelf shelf) {
+					mCategoryToShelves.get(shelf.getCategory()).add(shelf);
+				}
 			}
 		}
 
@@ -54,6 +57,12 @@ public class Map {
 		}
 	}
 
+	public void update() {
+		for (MapLayer layerRef : mLayers) {
+			layerRef.update();
+		}
+	}
+
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mBackgroundColour, new Vec2i(0, 0),
 				new Vec2i(skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT));
@@ -61,7 +70,7 @@ public class Map {
 		for (MapLayer layerRef : mLayers)
 			layerRef.render(rendererRef);
 
-		// DEBUG: Remove this line to hide path nodes and their target links.
+		// TODO: Remove this line to hide path nodes and their target links
 		PathNodeDebugRenderer.render(rendererRef, mNodes.values());
 	}
 
@@ -133,19 +142,12 @@ public class Map {
 	}
 
 	public Entrance getEntrance() {
-		return mEntrance;
-	}
-
-	public void render(Renderer rendererRef) {
-		rendererRef.drawQuad(mBackgroundColour, new Vec2i(0, 0),
-				new Vec2i(skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT));
-		for (MapLayer layerRef : mLayers)
-			layerRef.render(rendererRef);
-	}
-
-	public void update() {
-		for (MapLayer layerRef : mLayers) {
-			layerRef.update();
+		for (MapLayer layer : mLayers) {
+			if (layer.getEntrance() != null)
+				return layer.getEntrance();
 		}
+
+		Logger.error("No MapLayer had an Entrance.");
+		return null;
 	}
 }

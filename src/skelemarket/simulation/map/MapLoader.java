@@ -150,12 +150,12 @@ public class MapLoader {
 				}
 				case "ENTRANCE": {
 					tile = new Entrance(id, location, size, texture, uv);
-					layer.addEntrance((Entrance) tile);
+					layer.setEntrance((Entrance) tile);
 					break;
 				}
 				case "EXIT": {
 					tile = new Exit(id, location, size, texture, uv);
-					layer.addExit((Exit) tile);
+					layer.setExit((Exit) tile);
 					break;
 				}
 				case "MANNED_CHECKOUT": {
