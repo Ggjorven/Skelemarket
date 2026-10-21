@@ -12,7 +12,9 @@
     }
   ],
   "types": [
-    "SHELF"
+    "SHELF",
+    "ENTRANCE",
+    "EXIT"
   ],
   "categories": [
     "FRUIT",
@@ -139,6 +141,50 @@
       "location": [
         224,
         160
+      ],
+      "attributes": [],
+      "inventory": []
+    },
+    {
+      "id": 5,
+      "type": "ENTRANCE",
+      "image": "/textures/dungeon/doors_lever_chest_animation.png",
+      "layer": 0,
+      "source": [
+        32,
+        160,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        192,
+        0
+      ],
+      "attributes": [],
+      "inventory": []
+    },
+    {
+      "id": 6,
+      "type": "EXIT",
+      "image": "/textures/dungeon/doors_lever_chest_animation.png",
+      "layer": 0,
+      "source": [
+        96,
+        160,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        0
       ],
       "attributes": [],
       "inventory": []

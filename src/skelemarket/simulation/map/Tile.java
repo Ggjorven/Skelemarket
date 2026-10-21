@@ -28,4 +28,8 @@ public abstract class Tile {
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
 	}
+
+	public Vec2i getPosition(){
+		return mPosition;
+	}
 }
