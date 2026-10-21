@@ -83,8 +83,8 @@ public class MapLoaderTest {
 
 	@Test
 	void productTextureAndSourceAreRequired() {
-		String invalidMap = MAP.replace(
-				"\"image\": \"/textures/enhanced/walls_floor.png\",\n    \"source\": [0, 0, 32, 32]",
+		String invalidMap = MAP.replaceFirst(
+				"\"image\": \"/textures/enhanced/walls_floor\\.png\",\\s*\"source\": \\[0, 0, 32, 32\\]",
 				"\"image\": null,\n    \"source\": null");
 
 		assertThrows(MapLoadException.class, () -> load(invalidMap));
