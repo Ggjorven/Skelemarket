@@ -27,7 +27,6 @@ public class EntranceTest {
 		assertFalse(ready, "No new customer should spawn right after the previous one.");
 	}
 
-	// TODO(Stephan): Update the tests below
 	 @Test
 	 void readyAgainAfterSpawnInterval() {
 	 Entrance entrance = new Entrance(2, new Vec2i(), new Vec2i(), null, null);
