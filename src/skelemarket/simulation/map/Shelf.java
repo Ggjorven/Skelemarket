@@ -1,47 +1,83 @@
 package skelemarket.simulation.map;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
-import skelemarket.core.Vec2;
-import skelemarket.simulation.map.Product.ProductCategory;
-import skelemarket.simulation.map.Product.ProductType;
+import skelemarket.core.Vec2i;
 
-public class Shelf {
+import java.util.HashMap;
+
+public class Shelf extends Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private Vec2 mPosition = new Vec2();
-	private Vec2 mSize = new Vec2();
+	private String mCategory = "";
+	private java.util.Map<String, Integer> mProductToCapacity = null;
 
-	private Texture mTextureRef = null;
-	private UV mTextureCoords = new UV();
-
-	private ProductCategory mCategory = ProductCategory.Fruit;
-	private Map<ProductType, Integer> mProducts = new HashMap<>(); // TOOD: Fix
+	private java.util.Map<String, Integer> mProductToCount = new HashMap<>();
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Shelf(Vec2 position, Vec2 size, ProductCategory category, Texture textureRef, UV coords) {
-		mPosition = position;
-		mSize = size;
+	public Shelf(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords, String category,
+			java.util.Map<String, Integer> productCapacities,
+			java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts) {
+		super(tileID, position, size, textureRef, coords);
 
-		mTextureRef = textureRef;
-		mTextureCoords = coords;
+		// Asserts
+		if (category.isBlank())
+			throw new IllegalArgumentException("Shelf must have a category...");
+		if (productCapacities.isEmpty())
+			throw new IllegalArgumentException("Shelf must hold some products...");
 
 		mCategory = category;
+		mProductToCapacity = new HashMap<>(productCapacities);
 
-		// TODO: Add random amount of products for category
+		for (java.util.Map.Entry<String, Integer> entry : mProductToCapacity.entrySet()) {
+			if (category.isBlank() || !categoryToProducts.get(category).containsKey(entry.getKey())
+					|| entry.getValue() < 0) {
+				throw new IllegalArgumentException("Invalid shelf inventory entry: " + entry.getKey());
+			}
+			mProductToCount.put(entry.getKey(), entry.getValue());
+		}
 	}
 
-	public void render(Renderer rendererRef) {
-		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
-		
+	@Override
+	public void update(Map mapRef) {
+		// TODO: Update map
 	}
 
-	// TODO: Add and take methods
+	public int addProduct(String productName, int amount) {
+		if (amount < 0 || !mProductToCapacity.containsKey(productName))
+			return 0;
+
+		int accepted = Math.min(amount, mProductToCapacity.get(productName) - getProductCount(productName));
+		mProductToCount.put(productName, getProductCount(productName) + accepted);
+		return accepted;
+	}
+
+	public boolean takeProduct(String productName) {
+		int count = getProductCount(productName);
+
+		if (count == 0)
+			return false;
+
+		mProductToCount.put(productName, count - 1);
+		return true;
+	}
+
+	public int getProductCount(String productName) {
+		return mProductToCount.getOrDefault(productName, 0);
+	}
+
+	public int getProductCapacity(String productName) {
+		return mProductToCapacity.getOrDefault(productName, 0);
+	}
+
+	public java.util.Map<String, Integer> getProductCapacities() {
+		return java.util.Map.copyOf(mProductToCapacity);
+	}
+
+	public String getCategory() {
+		return mCategory;
+	}
 }

@@ -1,6 +1,7 @@
 package skelemarket.core;
 
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Renderer {
 	///////////////////////////////////////////////////////////
@@ -13,22 +14,57 @@ public class Renderer {
 	///////////////////////////////////////////////////////////
 	public Renderer(GraphicsContext contextRef) {
 		mContextRef = contextRef;
+
+		// Disable linear filtering
+		mContextRef.setImageSmoothing(false);
 	}
 
 	public void clear() {
-		mContextRef.clearRect(0.0, 0.0, (double)Config.WIDTH, (double)Config.HEIGHT);
+		mContextRef.clearRect(0.0, 0.0, (double) Config.WIDTH, (double) Config.HEIGHT);
 	}
 
-	public void drawQuad(Texture texture, Vec2 position, Vec2 size) {
+	public void drawQuad(Colour colour, Vec2i position, Vec2i size) {
+		drawQuad(colour, new Vec2f((float) position.getX(), (float) position.getY()),
+				new Vec2f((float) size.getX(), (float) size.getY()));
+	}
+
+	public void drawQuad(Colour colour, Vec2f position, Vec2f size) {
+		mContextRef.setFill(new Color(colour.getR() / 255.0, colour.getG() / 255.0, colour.getB() / 255.0,
+				colour.getA() / 255.0));
+		mContextRef.fillRect((double) position.getX(), (double) position.getY(), (double) size.getX(),
+				(double) size.getY());
+	}
+
+	public void drawQuad(Texture texture, Vec2i position, Vec2i size) {
 		drawQuad(texture, position, size, null);
 	}
 
-	public void drawQuad(Texture texture, Vec2 position, Vec2 size, UV textureCoords) {
+	public void drawQuad(Texture texture, Vec2f position, Vec2f size) {
+		drawQuad(texture, position, size, null);
+	}
+
+	public void drawQuad(Texture texture, Vec2i position, Vec2i size, UV textureCoords) {
+		drawQuad(texture, new Vec2f(position.getX(), position.getY()), new Vec2f(size.getX(), size.getY()),
+				textureCoords);
+	}
+
+	public void drawQuad(Texture texture, Vec2f position, Vec2f size, UV textureCoords) {
 		if (textureCoords == null) {
-			mContextRef.drawImage(texture.toUnderlying(), (double)position.getX(), (double)position.getY(), (double)size.getX(), (double)size.getY());
+			mContextRef.drawImage(texture.toUnderlying(), (double) position.getX(), (double) position.getY(),
+					(double) size.getX(), (double) size.getY());
+		} else {
+			mContextRef.drawImage(texture.toUnderlying(),
+					(double) textureCoords.getX(), (double) textureCoords.getY(),
+					(double) textureCoords.getWidth(), (double) textureCoords.getHeight(),
+					(double) position.getX(), (double) position.getY(), (double) size.getX(),
+					(double) size.getY());
 		}
-		else {
-			mContextRef.drawImage(texture.toUnderlying(), (double)position.getX(), (double)position.getY(), (double)size.getX(), (double)size.getY(), (double)textureCoords.getX(), (double)textureCoords.getY(), (double)textureCoords.getWidth(), (double)textureCoords.getHeight());
-		}
+	}
+
+	public void drawLine(Colour colour, Vec2i start, Vec2i end) {
+		mContextRef.setStroke(new Color(colour.getR() / 255.0, colour.getG() / 255.0, colour.getB() / 255.0,
+				colour.getA() / 255.0));
+		mContextRef.strokeLine((double) start.getX(), (double) start.getY(), (double) end.getX(),
+				(double) end.getY());
 	}
 }

@@ -26,109 +26,46 @@ public class Simulation {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Simulation(Stage stage) {
+	public Simulation(Stage stage) throws Exception {
 		mStageRef = stage;
 
-        mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
-        mContext = mCanvas.getGraphicsContext2D();
+		mCanvas = new Canvas(Config.WIDTH, Config.HEIGHT);
+		mContext = mCanvas.getGraphicsContext2D();
 		Logger.info("Created canvas.");
 
-        mPane = new Pane(mCanvas);
+		mPane = new Pane(mCanvas);
 		mScene = new Scene(mPane);
 
-        stage.setScene(mScene);
-        stage.setTitle(Config.TITLE);
+		stage.setScene(mScene);
+		stage.setTitle(Config.TITLE);
 		stage.setResizable(false);
-        stage.show();
+		stage.show();
 		Logger.info("Created scene & pane.");
 
 		mRenderer = new Renderer(mContext);
 		Logger.info("Created renderer.");
 
-		mSupermarket = new Supermarket();
-		Logger.info("Created supermarket.");
+		try {
+			mSupermarket = new Supermarket();
+			Logger.info("Created supermarket.");
+		} catch (Exception ex) {
+			Logger.error("Failed to create Supermarket due to error: %s.", ex.toString());
+			throw new Exception(String.format("Failed to create Supermarket due to error: %s.", ex.toString()));
+		}
 	}
 
 	public void run() {
 		Logger.info("Started simulation");
 
-		SimulationUpdater updater = new SimulationUpdater(mSupermarket, Config.SIMULATION_FPS);
-
-		// Update
-		updater.start();
-
-		// Renderer
+		// Update & render
 		new Timer() {
 			@Override
 			public void handle(long now) {
+				mSupermarket.update();
+
 				mRenderer.clear();
 				mSupermarket.render(mRenderer);
-				// Logger.trace("Update");
 			}
-		}.start();;
-
-		// Close handling
-		mStageRef.setOnCloseRequest(event -> {
-			Logger.info("Closing application...");
-
-			// Interrupt and wait on updater thread
-			try {
-				updater.stopRunning();
-				updater.join();
-			}
-			catch (Exception ex) {
-				System.out.printf("Exception caught: %s", ex.toString());
-			}
-		});
+		}.start();
 	}
-}
-
-
-
-class SimulationUpdater extends Thread {
-	///////////////////////////////////////////////////////////
-	// Variables
-	///////////////////////////////////////////////////////////
-	private Supermarket mSupermarketRef = null;
-
-	private int mFPS = 0;
-	public long mNsPerFrame = 0;
-
-	private volatile boolean mRunning = false;
-
-	///////////////////////////////////////////////////////////
-	// Methods
-	///////////////////////////////////////////////////////////
-	public SimulationUpdater(Supermarket supermarketRef, int fps) {
-		mSupermarketRef = supermarketRef;
-		mFPS = fps;
-
-		mNsPerFrame = (long)((1.0 / mFPS) * 1_000_000_000);
-	}
-
-	public void run() {
-		mRunning = true;
-
-		long timePassed = 0;
-		long previousTime = System.nanoTime();
-
-		while (mRunning) {
-			long now = System.nanoTime();
-			long deltaTime = now - previousTime;
-			timePassed += deltaTime;
-			previousTime = now;
-
-			if (timePassed >= mNsPerFrame) {
-				mSupermarketRef.update();
-
-				// Logger.trace(String.format("Render - %d - %d - %d", mNsPerFrame, deltaTime, timePassed));
-				timePassed = 0;
-			}
-		}
-	}
-
-	public void stopRunning() {
-        mRunning = false;
-        interrupt(); // Unblocks sleep/wait
-    }
 }
