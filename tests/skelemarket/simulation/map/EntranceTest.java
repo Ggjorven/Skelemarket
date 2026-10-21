@@ -10,7 +10,7 @@ import skelemarket.simulation.Config;
 public class EntranceTest {
 	@Test
 	void firstCallIsReadyToSpawn() {
-		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
+		Entrance entrance = new Entrance(0, new Vec2i(), new Vec2i(), null, null);
 
 		boolean ready = entrance.isReadyToSpawn();
 
@@ -19,7 +19,7 @@ public class EntranceTest {
 
 	@Test
 	void notReadyRightAfterSpawn() {
-		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
+		Entrance entrance = new Entrance(1, new Vec2i(), new Vec2i(), null, null);
 		entrance.isReadyToSpawn();
 
 		boolean ready = entrance.isReadyToSpawn();
@@ -29,7 +29,7 @@ public class EntranceTest {
 
 	@Test
 	void readyAgainAfterSpawnInterval() {
-		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
+		Entrance entrance = new Entrance(2, new Vec2i(), new Vec2i(), null, null);
 		entrance.isReadyToSpawn();
 
 		for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS; i++) {
@@ -43,7 +43,7 @@ public class EntranceTest {
 
 	@Test
 	void notReadyOneTickBeforeInterval() {
-		Entrance entrance = new Entrance(new Vec2i(), new Vec2i(), null, null);
+		Entrance entrance = new Entrance(3, new Vec2i(), new Vec2i(), null, null);
 		entrance.isReadyToSpawn();
 
 		for (int i = 0; i < Config.CUSTOMER_SPAWN_INTERVAL_TICKS - 1; i++) {

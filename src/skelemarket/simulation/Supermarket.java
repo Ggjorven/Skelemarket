@@ -20,13 +20,13 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Supermarket() {
+	public Supermarket() throws Exception {
 		MapLoader loader = new MapLoader();
 		try {
 			mMap = loader.loadFromPath(Config.MAP_FILE);
 		} catch (Exception ex) {
 			Logger.error("Failed to load map due to error: %s.", ex.toString());
-			return;
+			throw new Exception(String.format("Failed to load map due to error: %s.", ex.toString()));
 		}
 
 		mCustomerTexture = new Texture(Config.CUSTOMER_TEXTURE);
@@ -47,7 +47,7 @@ public class Supermarket {
 			Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
 
 			mCustomers.add(customer);
-			Logger.trace("Spawned customer, total: %d", mCustomers.size());
+
 		}
 
 		for (Customer customer : mCustomers){

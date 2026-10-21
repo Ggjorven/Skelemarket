@@ -54,6 +54,11 @@ button:focus-visible, select:focus-visible { outline: 2px solid var(--blue); out
 
 input[type=number], input[type=text], select { font-family: var(--mono); font-size: 12px; color: var(--text); background: #15171c; border: 1px solid var(--line); border-radius: 5px; padding: 5px 7px; width: 100%; min-width: 0; }
 select { font-family: var(--sans); }
+select:disabled, input:disabled { opacity: .5; cursor: not-allowed; }
+input[type=color] { width: 30px; height: 26px; padding: 2px; border: 1px solid var(--line); border-radius: 5px; background: #15171c; cursor: pointer; flex: 0 0 auto; }
+input[type=color]::-webkit-color-swatch-wrapper { padding: 0; }
+input[type=color]::-webkit-color-swatch { border: none; border-radius: 3px; }
+input[type=color]::-moz-color-swatch { border: none; border-radius: 3px; }
 input:focus, select:focus { outline: none; border-color: var(--accent); }
 input.bad, select.bad { border-color: var(--danger); }
 .w52 { width: 58px !important; flex: 0 0 auto; }
@@ -144,18 +149,12 @@ input.lname:focus { background: #15171c; border-color: var(--accent); }
 .attrchips { display: flex; flex-wrap: wrap; gap: 5px; }
 .chip { display: inline-flex; align-items: center; gap: 4px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 12px; padding: 3px 5px 3px 9px; font-size: 11px; font-family: var(--mono); max-width: 100%; }
 .chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.chip.cat { border-color: rgba(62,207,142,.5); color: #c6f3de; }
 .chip.tgt { border-color: rgba(242,184,75,.5); color: #f7dca6; }
 .chip.type { cursor: default; }
 .chip.type small { font-size: 9.5px; color: var(--muted-2); }
-.chip.partial { opacity: .6; border-style: dashed; }
 .chip button { width: 16px; height: 16px; padding: 0; border: none; background: transparent; color: var(--muted); font-size: 13px; line-height: 1; border-radius: 50%; }
 .chip button:hover { color: var(--danger); background: rgba(255,107,107,.14); }
 .attrempty { color: var(--muted-2); font-size: 11px; }
-.catpick { display: flex; flex-wrap: wrap; gap: 5px; }
-.catpick button { padding: 3px 10px; border-radius: 12px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
-.catpick button.on { background: rgba(62,207,142,.16); border-color: var(--accent); color: var(--text); }
-.catpick button.partial { border-style: dashed; border-color: var(--accent); color: var(--text); }
 
 .invlist { display: flex; flex-direction: column; gap: 5px; }
 .invrow { display: flex; align-items: center; gap: 7px; padding: 4px 5px 4px 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--panel-2); }

@@ -14,9 +14,8 @@ public class Entrance extends Tile {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Entrance(Vec2i position, Vec2i size, Texture textureRef, UV coords) {
-		super(position, size, textureRef, coords);
-
+	public Entrance(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+		super(tileID, position, size, textureRef, coords);
 	}
 
 	@Override

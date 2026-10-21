@@ -20,13 +20,16 @@ const basename = p => String(p || '').split('/').pop();
 const byName = (a, b) => a.name.localeCompare(b.name);
 const sameSrc = (a, b) => !!a && !!b && a[0] === b[0] && a[1] === b[1] && a[2] === b[2] && a[3] === b[3];
 const toWeight = v => { const n = Math.floor(Number(v)); return Number.isFinite(n) && n >= 1 ? n : 1; };   // whole number >= 1
+const toByte = v => clamp(Math.round(Number(v)) || 0, 0, 255);
+const DEFAULT_BG = [255, 255, 255, 255];
+const hexOf = rgb => '#' + rgb.slice(0, 3).map(v => toByte(v).toString(16).padStart(2, '0')).join('');
 const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
 const readFile = f => new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.readAsDataURL(f); });
 
 /* ---------- State ---------- */
 const S = {
   view: 'map',
-  mapW: 1280, mapH: 738, gridX: 32, gridY: 32, snap: true, showGrid: true, dimTiles: true,
+  mapW: 1280, mapH: 738, bg: [255, 255, 255, 255], gridX: 32, gridY: 32, snap: true, showGrid: true, dimTiles: true,
   zoom: 1, panX: 60, panY: 60, needFit: false,
   resRoot: 'resources',   // exported image paths start at this folder: resources/textures/a.png
 
@@ -37,7 +40,7 @@ const S = {
   // Document — in undo history
   layers: [],      // {id, name, visible, locked}
   types: [],       // {id, name} tile types (SHELF, WALL…); a placed tile has the type of its palette tile
-  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, attrs:[string], inv:[{itemId, capacity}]}
+  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, catId, inv:[{itemId, capacity}]}  (inv only holds items of catId)
   categories: [],  // {id, name}
   items: [],       // {id, name, categoryId, weight, path, source:[x,y,w,h]}
   nodes: [],       // {id:'n1', x, y, targets:['t1', ...]}
@@ -69,9 +72,13 @@ const typeById = id => S.types.find(t => t.id === id);
 const typeByName = n => S.types.find(t => lower(t.name) === lower(n));
 const tileType = t => { const a = assetById(t.assetId); return a ? typeById(a.typeId) : null; };
 const exportId = id => Number(String(id).replace(/^\D+/, ''));   // internal 't10' / 'n3' -> 10 / 3
-const tileAttrs = t => t.attrs || (t.attrs = []);
+const tileCat = t => catById(t.catId) || null;
+/** A tile can only stock items of its own category; a tile without a category stocks nothing. */
+const fitsTile = (t, it) => !!it && t.catId != null && it.categoryId === t.catId;
 const tileInv = t => t.inv || (t.inv = []);
 const selectableLayer = id => { const l = layerById(id); return !!(l && l.visible && !l.locked); };
+/** Map selection only works on the active layer, and only while it is visible and unlocked. */
+const onActiveLayer = t => !!t && t.layerId === S.activeLayer && selectableLayer(t.layerId);
 const isSel = id => S.sel.includes(id);
 const selTiles = () => S.tiles.filter(t => isSel(t.id));
 const selNodes = () => S.nsel.map(nodeById).filter(Boolean);
@@ -187,8 +194,11 @@ function purgeRefs() {
   const itemIds = new Set(S.items.map(i => i.id));
   for (const n of S.nodes) n.targets = n.targets.filter(id => tileIds.has(id));
   S.edges = S.edges.filter(([a, b]) => nodeIds.has(a) && nodeIds.has(b));
-  for (const t of S.tiles) t.inv = tileInv(t).filter(e => itemIds.has(e.itemId));
-  S.sel = S.sel.filter(id => tileIds.has(id));
+  for (const t of S.tiles) {
+    if (!catById(t.catId)) t.catId = null;
+    t.inv = tileInv(t).filter(e => fitsTile(t, itemById(e.itemId)));
+  }
+  S.sel = S.sel.filter(id => tileIds.has(id) && onActiveLayer(tileById(id)));
   S.nsel = S.nsel.filter(id => nodeIds.has(id));
   if (S.linkFrom && !nodeIds.has(S.linkFrom)) S.linkFrom = null;
   if (S.selItem && !itemIds.has(S.selItem)) S.selItem = null;
@@ -216,7 +226,7 @@ function snapshot() {
     tiles: S.tiles, layers: S.layers, types: S.types, categories: S.categories, items: S.items,
     assetTypes: Object.fromEntries(S.assets.map(a => [a.id, a.typeId ?? null])),
     nodes: S.nodes, edges: S.edges, sel: S.sel, nsel: S.nsel,
-    activeLayer: S.activeLayer, mapW: S.mapW, mapH: S.mapH,
+    activeLayer: S.activeLayer, mapW: S.mapW, mapH: S.mapH, bg: S.bg,
   });
 }
 function pushHistory() {
@@ -238,13 +248,13 @@ function restore(str) {
   const d = JSON.parse(str);
   Object.assign(S, {
     tiles: d.tiles, layers: d.layers, types: d.types || [], categories: d.categories, items: d.items,
-    nodes: d.nodes, edges: d.edges, mapW: d.mapW, mapH: d.mapH, activeLayer: d.activeLayer,
+    nodes: d.nodes, edges: d.edges, mapW: d.mapW, mapH: d.mapH, bg: d.bg || [...DEFAULT_BG], activeLayer: d.activeLayer,
     sel: d.sel || [], nsel: d.nsel || [],
   });
   if (!layerById(S.activeLayer)) S.activeLayer = S.layers[0] && S.layers[0].id;
   for (const a of S.assets) if (d.assetTypes && a.id in d.assetTypes) a.typeId = d.assetTypes[a.id];
   purgeRefs(); renderAssets();
-  $('#mapW').value = S.mapW; $('#mapH').value = S.mapH;
+  $('#mapW').value = S.mapW; $('#mapH').value = S.mapH; syncBgInputs();
   refreshAll();
 }
 function undo() { if (!S.history.length) return; S.future.push(snapshot()); restore(S.history.pop()); }
@@ -287,9 +297,10 @@ function render() {
   ctx.save(); ctx.translate(S.panX, S.panY); ctx.scale(z, z);
 
   ctx.fillStyle = '#20242b'; ctx.fillRect(-2, -2, S.mapW + 4, S.mapH + 4);
-  ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, S.mapW, S.mapH);
+  if (S.bg[3] < 255) { ctx.fillStyle = checkerPattern(); ctx.fillRect(0, 0, S.mapW, S.mapH); }   // shows transparency
+  ctx.fillStyle = `rgba(${S.bg[0]},${S.bg[1]},${S.bg[2]},${S.bg[3] / 255})`; ctx.fillRect(0, 0, S.mapW, S.mapH);
   if (S.showGrid && Math.min(S.gridX, S.gridY) * z > 3) {
-    ctx.lineWidth = 1 / z; ctx.strokeStyle = 'rgba(0,0,0,0.08)'; ctx.beginPath();
+    ctx.lineWidth = 1 / z; ctx.strokeStyle = bgIsDark() ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'; ctx.beginPath();
     for (let x = 0; x <= S.mapW; x += S.gridX) { ctx.moveTo(x, 0); ctx.lineTo(x, S.mapH); }
     for (let y = 0; y <= S.mapH; y += S.gridY) { ctx.moveTo(0, y); ctx.lineTo(S.mapW, y); }
     ctx.stroke();
@@ -305,6 +316,22 @@ function render() {
   if (paths) drawPaths(); else drawMapOverlay();
   drawMarquee();
   ctx.restore();
+}
+let checker = null;
+function checkerPattern() {
+  if (!checker) {
+    const c = document.createElement('canvas'); c.width = c.height = 16;
+    const x = c.getContext('2d');
+    x.fillStyle = '#ffffff'; x.fillRect(0, 0, 16, 16);
+    x.fillStyle = '#d6d9de'; x.fillRect(0, 0, 8, 8); x.fillRect(8, 8, 8, 8);
+    checker = ctx.createPattern(c, 'repeat') || null;
+  }
+  return checker || '#ffffff';
+}
+/** Is the background (as shown over the light checker) dark? Decides the grid line colour. */
+function bgIsDark() {
+  const a = S.bg[3] / 255, mix = v => v * a + 255 * (1 - a);
+  return 0.299 * mix(S.bg[0]) + 0.587 * mix(S.bg[1]) + 0.114 * mix(S.bg[2]) < 128;
 }
 function drawTile(t) {
   const a = assetById(t.assetId), z = S.zoom;
@@ -324,7 +351,7 @@ function drawMapOverlay() {
   for (const t of renderList()) {
     if (t.w * z < 14) continue;
     let cx = t.x + t.w - pad;
-    if (t.attrs && t.attrs.length) { dot(cx, t.y + pad, r, '#3ecf8e'); cx -= r * 2.8; }
+    if (tileCat(t)) { dot(cx, t.y + pad, r, '#3ecf8e'); cx -= r * 2.8; }
     if (t.inv && t.inv.length) dot(cx, t.y + pad, r, '#f2b84b');
   }
   ctx.strokeStyle = '#5aa9ff'; ctx.lineWidth = 1.5 / z;
@@ -388,9 +415,8 @@ function drawMarquee() {
 }
 
 /* ---------- Hit testing ---------- */
-function topTileAt(mx, my) {   // selectable (visible + unlocked) tiles only
-  const list = renderList();
-  for (let i = list.length - 1; i >= 0; i--) { const t = list[i]; if (selectableLayer(t.layerId) && inside(t, mx, my)) return t; }
+function topTileAt(mx, my) {   // top-most tile on the active layer (S.tiles order is draw order within a layer)
+  for (let i = S.tiles.length - 1; i >= 0; i--) { const t = S.tiles[i]; if (onActiveLayer(t) && inside(t, mx, my)) return t; }
   return null;
 }
 function tileAtAny(mx, my) {   // any visible tile (link targets can live on locked layers)
@@ -410,7 +436,7 @@ function handleAt(mx, my, t) {
 }
 
 /* ---------- Selection ---------- */
-function setSel(ids) { S.sel = [...new Set(ids)].filter(tileById); syncInspector(); draw(); }
+function setSel(ids) { S.sel = [...new Set(ids)].filter(id => onActiveLayer(tileById(id))); syncInspector(); draw(); }
 function toggleSel(id) { if (!tileById(id)) return; S.sel = isSel(id) ? S.sel.filter(x => x !== id) : [...S.sel, id]; syncInspector(); draw(); }
 function clearSel() { S.sel = []; syncInspector(); draw(); }
 function setNSel(ids) { S.nsel = [...new Set(ids)].filter(nodeById); syncInspector(); draw(); }
@@ -521,7 +547,7 @@ window.addEventListener('mouseup', () => {
     const x1 = Math.min(drag.sx, drag.cx), y1 = Math.min(drag.sy, drag.cy), x2 = Math.max(drag.sx, drag.cx), y2 = Math.max(drag.sy, drag.cy);
     if (drag.mode === 'marquee') {
       if (drag.moved) {
-        const picked = renderList().filter(t => selectableLayer(t.layerId) && !(t.x > x2 || t.x + t.w < x1 || t.y > y2 || t.y + t.h < y1)).map(t => t.id);
+        const picked = S.tiles.filter(t => onActiveLayer(t) && !(t.x > x2 || t.x + t.w < x1 || t.y > y2 || t.y + t.h < y1)).map(t => t.id);
         setSel(drag.additive ? [...S.sel, ...picked] : picked);
       } else if (!drag.additive) clearSel();
     } else {
@@ -589,7 +615,7 @@ function placeTile(mx, my) {
   const a = assetById(S.selAsset);
   pushHistory();
   const w = a.pw, h = a.ph;
-  const t = { id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: clampX(snapX(mx - w / 2), w), y: clampY(snapY(my - h / 2), h), w, h, attrs: [], inv: [] };
+  const t = { id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: clampX(snapX(mx - w / 2), w), y: clampY(snapY(my - h / 2), h), w, h, catId: null, inv: [] };
   S.tiles.push(t); setSel([t.id]); refreshCount(); renderLayers();
 }
 function paintTile(mx, my) {
@@ -603,7 +629,7 @@ function paintTile(mx, my) {
   if (drag) drag.last = key;
   if (S.tiles.some(t => t.layerId === S.activeLayer && t.assetId === a.id && t.x === gx && t.y === gy)) return;
   ensurePushed();
-  S.tiles.push({ id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: gx, y: gy, w, h, attrs: [], inv: [] });
+  S.tiles.push({ id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: gx, y: gy, w, h, catId: null, inv: [] });
   refreshCount(); renderLayers(); draw();
 }
 
@@ -826,7 +852,7 @@ workspace.addEventListener('drop', e => { if (S.view === 'map') uploadTileFiles(
 function addLayer() {
   pushHistory();
   const L = { id: nid(), name: `Layer ${S.layers.length + 1}`, visible: true, locked: false };
-  S.layers.push(L); S.activeLayer = L.id; renderLayers(); draw();
+  S.layers.push(L); setActiveLayer(L.id);
 }
 function deleteLayer(id) {
   if (S.layers.length <= 1) { toast('A map needs at least one layer.'); return; }
@@ -843,9 +869,16 @@ function moveLayer(id, dir) {
   if (j < 0 || j >= S.layers.length) return;
   pushHistory(); const [L] = S.layers.splice(i, 1); S.layers.splice(j, 0, L); renderLayers(); draw();
 }
+/** Switching layers drops the selection of tiles on other layers. */
+function setActiveLayer(id) {
+  if (!layerById(id)) return;
+  S.activeLayer = id;
+  S.sel = S.sel.filter(sid => onActiveLayer(tileById(sid)));
+  renderLayers(); syncInspector(); draw();
+}
 function toggleLayerFlag(id, flag) {
   const L = layerById(id); pushHistory(); L[flag] = !L[flag];
-  S.sel = S.sel.filter(sid => { const t = tileById(sid); return t && selectableLayer(t.layerId); });
+  S.sel = S.sel.filter(sid => onActiveLayer(tileById(sid)));
   renderLayers(); syncInspector(); draw();
 }
 function renderLayers() {
@@ -860,7 +893,7 @@ function renderLayers() {
       <span class="cnt">${cnt}</span>
       <span class="ord"><button class="up" title="Move up">▲</button><button class="dn" title="Move down">▼</button></span>
       <button class="ic del" title="Delete layer">✕</button>`;
-    row.addEventListener('click', ev => { if (ev.target.closest('button') || ev.target.tagName === 'INPUT') return; S.activeLayer = L.id; renderLayers(); });
+    row.addEventListener('click', ev => { if (ev.target.closest('button') || ev.target.tagName === 'INPUT') return; setActiveLayer(L.id); });
     row.querySelector('.vis').addEventListener('click', () => toggleLayerFlag(L.id, 'visible'));
     row.querySelector('.lock').addEventListener('click', () => toggleLayerFlag(L.id, 'locked'));
     row.querySelector('.up').addEventListener('click', () => moveLayer(L.id, 1));
@@ -873,6 +906,7 @@ function renderLayers() {
   });
   const L = layerById(S.activeLayer);
   $('#stLayer').textContent = L ? L.name : '—';
+  updateMode();
 }
 $('#addLayerBtn').addEventListener('click', addLayer);
 
@@ -893,7 +927,7 @@ function syncTransformFields() {
 function syncMapInspector() {
   const n = S.sel.length;
   $('#tileEdit').classList.toggle('hidden', n !== 1);
-  $('#attrBlock').classList.toggle('hidden', n < 1);
+  $('#catBlock').classList.toggle('hidden', n < 1);
   $('#invBlock').classList.toggle('hidden', n < 1);
   $('#selActions').classList.toggle('hidden', n < 1);
   $('#noSel').classList.toggle('hidden', n > 0 || !!S.selAsset);
@@ -908,78 +942,39 @@ function syncMapInspector() {
     $('#tLinks').textContent = from.length ? from.join(', ') : '—';
   }
   syncTransformFields();
-  if (n >= 1) { renderAttrEditor(); renderInvEditor(); }
+  if (n >= 1) { renderCatEditor(); renderInvEditor(); fillMoveLayerSelect(); }
 }
 
-function renderAttrEditor() {
+function renderCatEditor() {
   const tiles = selTiles(); if (!tiles.length) return;
-  const count = {};
-  for (const t of tiles) for (const a of tileAttrs(t)) count[a] = (count[a] || 0) + 1;
-  const keys = Object.keys(count).sort();
-
-  const chips = $('#attrChips');
-  chips.innerHTML = keys.length ? '' : `<span class="attrempty">No attributes on ${tiles.length > 1 ? 'these tiles' : 'this tile'} yet.</span>`;
-  for (const k of keys) {
-    const all = count[k] === tiles.length;
-    const chip = document.createElement('span');
-    chip.className = 'chip' + (catByName(k) ? ' cat' : '') + (all ? '' : ' partial');
-    if (!all) chip.title = `On ${count[k]} of ${tiles.length} selected`;
-    chip.innerHTML = `<span>${esc(k)}</span><button title="Remove">×</button>`;
-    chip.querySelector('button').addEventListener('click', () => removeAttr(k));
-    chips.appendChild(chip);
-  }
-
-  // Category picker: click toggles the category on the whole selection
-  const pick = $('#attrCats'); pick.innerHTML = '';
-  if (!S.categories.length) pick.innerHTML = '<span class="attrempty">No categories yet. Create them in the Items tab.</span>';
-  for (const c of [...S.categories].sort(byName)) {
-    const k = count[c.name] || 0, all = k === tiles.length;
-    const b = document.createElement('button');
-    b.textContent = c.name; b.className = all ? 'on' : k ? 'partial' : '';
-    b.title = all ? 'Remove from selection' : 'Add to selection';
-    b.addEventListener('click', () => (all ? removeAttr(c.name) : addAttrs([c.name])));
-    pick.appendChild(b);
-  }
-  $('#catDatalist').innerHTML = S.categories.map(c => `<option value="${esc(c.name)}">`).join('');
-  $('#attrHint').textContent = tiles.length > 1
-    ? `Changes apply to all ${tiles.length} selected tiles. Dashed means only some have it.`
-    : 'Type any tag, or toggle one of your item categories.';
+  const ids = new Set(tiles.map(t => t.catId ?? null)), mixed = ids.size > 1, cur = [...ids][0];
+  const sel = $('#tCat');
+  sel.innerHTML = (mixed ? '<option value="__mixed">Mixed</option>' : '')
+    + '<option value="">None</option>'
+    + S.categories.slice().sort(byName).map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('');
+  sel.value = mixed ? '__mixed' : cur == null ? '' : String(cur);
+  $('#tCatHint').textContent = !S.categories.length ? 'No categories yet. Create them in the Items tab.'
+    : tiles.length > 1 ? `Sets the category of all ${tiles.length} selected tiles.` : 'Only items of this category can be stocked here.';
 }
-function addAttrs(tags) {
-  if (!tags.length || !S.sel.length) return;
+/** Set the category of the selected tiles; inventory entries that no longer match are removed (after a confirm). */
+function setTileCategory(catId) {
+  const changed = selTiles().filter(t => (t.catId ?? null) !== catId);
+  if (!changed.length) return;
+  const drop = changed.reduce((n, t) => n + tileInv(t).filter(e => !fitsTile({ catId }, itemById(e.itemId))).length, 0);
+  if (drop && !confirm(`${plural(drop, 'inventory entry does', 'inventory entries do')} not match the new category and will be removed. Continue?`)) { renderCatEditor(); return; }
   pushHistory();
-  for (const t of selTiles()) { const a = tileAttrs(t); for (const tag of tags) if (!a.includes(tag)) a.push(tag); }
-  renderAttrEditor(); draw();
+  for (const t of changed) { t.catId = catId; t.inv = tileInv(t).filter(e => fitsTile(t, itemById(e.itemId))); }
+  syncInspector(); draw();
 }
-function addAttrFromInput() {
-  // A typed tag that matches a category (case-insensitive) is stored with the category's exact spelling
-  const tags = $('#attrInput').value.split(',').map(s => s.trim()).filter(Boolean).map(s => (catByName(s) ? catByName(s).name : s));
-  if (!tags.length) return;
-  $('#attrInput').value = '';
-  addAttrs(tags);
-}
-function removeAttr(tag) {
-  if (!S.sel.length) return;
-  pushHistory();
-  for (const t of selTiles()) t.attrs = tileAttrs(t).filter(a => a !== tag);
-  renderAttrEditor(); draw();
-}
-$('#attrAdd').addEventListener('click', addAttrFromInput);
-$('#attrInput').addEventListener('keydown', e => { if (e.key === 'Enter') { addAttrFromInput(); e.preventDefault(); } });
+$('#tCat').addEventListener('change', e => { if (e.target.value !== '__mixed') setTileCategory(e.target.value ? +e.target.value : null); });
 
-function fillItemSelect(sel) {
+/** Fill the inventory item picker with the items of one category. */
+function fillItemSelect(sel, catId) {
   const prev = sel.value;
-  if (!S.items.length) { sel.innerHTML = '<option value="">No items yet</option>'; sel.disabled = true; return; }
-  sel.disabled = false; sel.innerHTML = '';
-  const groups = S.categories.slice().sort(byName).map(c => ({ label: c.name, items: S.items.filter(i => i.categoryId === c.id) }));
-  groups.push({ label: 'Uncategorized', items: S.items.filter(i => !catById(i.categoryId)) });
-  for (const g of groups) {
-    if (!g.items.length) continue;
-    const og = document.createElement('optgroup'); og.label = g.label;
-    for (const it of g.items.slice().sort(byName)) { const o = document.createElement('option'); o.value = it.id; o.textContent = it.name; og.appendChild(o); }
-    sel.appendChild(og);
-  }
-  if (prev && itemById(+prev)) sel.value = prev;
+  const items = catId == null ? [] : S.items.filter(i => i.categoryId === catId).sort(byName);
+  sel.disabled = !items.length;
+  sel.innerHTML = items.length ? items.map(it => `<option value="${it.id}">${esc(it.name)}</option>`).join('') : '<option value="">No items</option>';
+  if (items.some(i => String(i.id) === prev)) sel.value = prev;
 }
 function renderInvEditor() {
   const tiles = selTiles(); if (!tiles.length) return;
@@ -990,10 +985,10 @@ function renderInvEditor() {
 
   const list = $('#invList'); list.innerHTML = rows.length ? '' : '<div class="attrempty">Empty.</div>';
   for (const { it, a } of rows) {
-    const cat = catById(it.categoryId), url = itemSprite(it);
+    const url = itemSprite(it);
     const row = document.createElement('div'); row.className = 'invrow';
     row.innerHTML = `<span class="ithumb checker">${url ? `<img src="${url}" alt="">` : ''}</span>
-      <span class="nm"><b>${esc(it.name)}</b><small>${cat ? esc(cat.name) : 'Uncategorized'}</small></span>
+      <span class="nm"><b>${esc(it.name)}</b><small>weight ${toWeight(it.weight)}</small></span>
       ${single ? `<input type="number" min="1" value="${a.total}" title="Capacity">` : `<span class="qty" title="Total capacity · tiles holding it">${a.total} in ${a.k}/${tiles.length}</span>`}
       <button class="x" title="${single ? 'Remove' : 'Remove from all selected'}">×</button>`;
     if (single) row.querySelector('input').addEventListener('input', ev => {
@@ -1004,16 +999,23 @@ function renderInvEditor() {
     row.querySelector('.x').addEventListener('click', () => removeFromInv(it.id));
     list.appendChild(row);
   }
-  fillItemSelect($('#invItem'));
-  $('#invAdd').disabled = !S.items.length;
-  $('#invHint').textContent = !S.items.length ? 'No items yet. Create them in the Items tab.'
-    : single ? 'Adding an item that is already here raises its capacity.' : `Adds to all ${tiles.length} selected tiles.`;
+  const cats = new Set(tiles.map(t => t.catId ?? null));
+  const mixed = cats.size > 1, c = mixed ? null : catById([...cats][0]);
+  fillItemSelect($('#invItem'), c ? c.id : null);
+  const canAdd = !!c && !$('#invItem').disabled;
+  $('#invAdd').disabled = !canAdd; $('#invCapacity').disabled = !canAdd;
+  $('#invHint').textContent = mixed ? 'The selected tiles have different categories. Select tiles of one category to add items.'
+    : !c ? `Give ${single ? 'this tile' : 'these tiles'} a category to stock items.`
+    : !canAdd ? `No ${c.name} items yet. Create them in the Items tab.`
+    : single ? `Only ${c.name} items. Adding one that is already here raises its capacity.` : `Adds to all ${tiles.length} selected ${c.name} tiles.`;
 }
 function addToInv() {
   const id = +$('#invItem').value, cnt = Math.max(1, parseInt($('#invCapacity').value, 10) || 1);
-  if (!itemById(id) || !S.sel.length) return;
+  const it = itemById(id), tiles = selTiles();
+  if (!it || !tiles.length) return;
+  if (!tiles.every(t => fitsTile(t, it))) { toast(`${it.name} does not match the category of every selected tile.`); return; }
   pushHistory();
-  for (const t of selTiles()) { const inv = tileInv(t), e = inv.find(x => x.itemId === id); if (e) e.capacity += cnt; else inv.push({ itemId: id, capacity: cnt }); }
+  for (const t of tiles) { const inv = tileInv(t), e = inv.find(x => x.itemId === id); if (e) e.capacity += cnt; else inv.push({ itemId: id, capacity: cnt }); }
   renderInvEditor(); draw();
 }
 function removeFromInv(id) { pushHistory(); for (const t of selTiles()) t.inv = tileInv(t).filter(e => e.itemId !== id); renderInvEditor(); draw(); }
@@ -1046,15 +1048,29 @@ $('#toFront').addEventListener('click', () => { if (!S.sel.length) return; pushH
 $('#toBack').addEventListener('click', () => { if (!S.sel.length) return; pushHistory(); S.tiles = selTiles().concat(S.tiles.filter(t => !isSel(t.id))); draw(); });
 $('#dupBtn').addEventListener('click', dupSel);
 $('#delTile').addEventListener('click', delSel);
-$('#moveToLayer').addEventListener('click', () => {
-  if (!S.sel.length || !activeLayerOK()) return;
-  pushHistory(); for (const t of selTiles()) t.layerId = S.activeLayer; renderLayers(); syncInspector(); draw();
+function fillMoveLayerSelect() {
+  const others = [...S.layers].reverse().filter(L => L.id !== S.activeLayer);   // same order as the Layers panel
+  const sel = $('#moveLayerSel');
+  sel.innerHTML = '<option value="">Move to layer…</option>' + others.map(L => {
+    const why = !L.visible ? ' (hidden)' : L.locked ? ' (locked)' : '';
+    return `<option value="${L.id}"${why ? ' disabled' : ''}>${esc(L.name)}${why}</option>`;
+  }).join('');
+  sel.disabled = !others.length;
+}
+$('#moveLayerSel').addEventListener('change', e => {
+  const L = layerById(+e.target.value); e.target.value = '';
+  if (!L || !S.sel.length) return;
+  pushHistory();
+  for (const t of selTiles()) t.layerId = L.id;
+  S.activeLayer = L.id;   // follow the tiles so they stay selected
+  renderLayers(); syncInspector(); draw();
+  toast(`Moved ${plural(S.sel.length, 'tile', 'tiles')} to ${L.name}. That layer is now active.`);
 });
 function dupSel() {
   if (!S.sel.length) return;
   pushHistory();
   const copies = selTiles().map(t => {
-    const c = { ...t, id: newTileId(), x: t.x + S.gridX, y: t.y + S.gridY, attrs: [...tileAttrs(t)], inv: tileInv(t).map(e => ({ ...e })) };
+    const c = { ...t, id: newTileId(), x: t.x + S.gridX, y: t.y + S.gridY, inv: tileInv(t).map(e => ({ ...e })) };
     clampTile(c); return c;
   });
   S.tiles.push(...copies); setSel(copies.map(c => c.id)); refreshCount(); renderLayers();
@@ -1172,22 +1188,19 @@ function renameCategory(id, value) {
   if (!v || (clash && clash.id !== id)) { toast(v ? `Category "${clash.name}" already exists.` : 'A category needs a name.'); renderCategories(); return; }
   if (v === c.name) return;
   pushHistory();
-  const old = c.name; c.name = v;
-  for (const t of S.tiles) {
-    const a = tileAttrs(t), i = a.indexOf(old);
-    if (i >= 0) { if (a.includes(v)) a.splice(i, 1); else a[i] = v; }
-  }
+  c.name = v;   // tiles refer to the category by id, so they follow automatically
   renderItemsView();
 }
 function deleteCategory(id) {
   const c = catById(id); if (!c) return;
-  const items = S.items.filter(i => i.categoryId === id).length, tiles = S.tiles.filter(t => tileAttrs(t).includes(c.name)).length;
-  if ((items || tiles) && !confirm(`Delete "${c.name}"? ${plural(items, 'item becomes', 'items become')} uncategorized and it is removed from ${plural(tiles, 'tile', 'tiles')}' attributes.`)) return;
+  const items = S.items.filter(i => i.categoryId === id).length, tiles = S.tiles.filter(t => t.catId === id);
+  const stocked = tiles.filter(t => tileInv(t).length).length;
+  if ((items || tiles.length) && !confirm(`Delete "${c.name}"? ${plural(items, 'item becomes', 'items become')} uncategorized and ${plural(tiles.length, 'tile loses', 'tiles lose')} its category${stocked ? `, which empties the inventory of ${plural(stocked, 'tile', 'tiles')}` : ''}.`)) return;
   pushHistory();
   S.categories = S.categories.filter(x => x.id !== id);
   for (const it of S.items) if (it.categoryId === id) it.categoryId = null;
-  for (const t of S.tiles) t.attrs = tileAttrs(t).filter(a => a !== c.name);
-  renderItemsView();
+  for (const t of tiles) { t.catId = null; t.inv = []; }
+  renderItemsView(); syncInspector(); draw();
 }
 $('#catAdd').addEventListener('click', addCategory);
 $('#catNew').addEventListener('keydown', e => { if (e.key === 'Enter') { addCategory(); e.preventDefault(); } });
@@ -1272,7 +1285,15 @@ $('#iName').addEventListener('blur', () => { const it = itemById(S.selItem); if 
 $('#iName').addEventListener('keydown', e => { if (e.key === 'Enter') e.target.blur(); });
 $('#iCat').addEventListener('change', e => {
   const it = itemById(S.selItem); if (!it) return;
-  pushHistory(); it.categoryId = e.target.value ? +e.target.value : null; renderItemsView();
+  const next = e.target.value ? +e.target.value : null;
+  if (next === it.categoryId) return;
+  // Tiles only stock items of their own category, so every tile stocking this item would no longer match
+  const holders = S.tiles.filter(t => tileInv(t).some(x => x.itemId === it.id));
+  if (holders.length && !confirm(`${it.name} is stocked on ${plural(holders.length, 'tile', 'tiles')} of category ${catById(it.categoryId) ? catById(it.categoryId).name : '—'}. Changing its category removes it from those inventories. Continue?`)) { renderItemEditor(); return; }
+  pushHistory();
+  it.categoryId = next;
+  for (const t of holders) t.inv = tileInv(t).filter(x => x.itemId !== it.id);
+  renderItemsView();
 });
 $('#iWeight').addEventListener('input', e => {
   const it = itemById(S.selItem); if (!it) return;
@@ -1477,19 +1498,20 @@ function buildJSON() {
     const o = {
       id: exportId(t.id),
       type: ty ? ty.name : null,
+      category: tileCat(t) ? tileCat(t).name : '',
       image: a ? toClasspath(a.path) : '/missing.png',
       layer: layerIndex.get(L.id),
       source: a && a.source ? a.source.map(Math.round) : [0, 0, Math.round(t.w), Math.round(t.h)],
       size: [Math.round(t.w), Math.round(t.h)],
       location: [Math.round(t.x), Math.round(t.y)],
     };
-    o.attributes = [...tileAttrs(t)];
     o.inventory = tileInv(t).filter(e => itemById(e.itemId)).map(e => ({ item: itemById(e.itemId).name, capacity: e.capacity }));
     tiles.push(o);
   }
   return {
     width: S.mapW,
     height: S.mapH,
+    background: S.bg.map(toByte),
     layers: S.layers.map(L => ({ name: L.name, visible: L.visible })),
     types: S.types.map(t => t.name),
     categories: S.categories.map(c => c.name),
@@ -1541,7 +1563,9 @@ function importJSON(text) {
   const arr = v => (Array.isArray(v) ? v : []);
 
   S.mapW = parseInt(data.width, 10) || S.mapW; S.mapH = parseInt(data.height, 10) || S.mapH;
-  $('#mapW').value = S.mapW; $('#mapH').value = S.mapH;
+  const bg = Array.isArray(data.background) ? data.background : null;
+  S.bg = bg && bg.length >= 3 ? [toByte(bg[0]), toByte(bg[1]), toByte(bg[2]), bg.length > 3 ? toByte(bg[3]) : 255] : [...DEFAULT_BG];
+  $('#mapW').value = S.mapW; $('#mapH').value = S.mapH; syncBgInputs();
 
   const rawLayers = arr(data.layers).length ? data.layers : [{ name: 'Layer 1' }];
   S.layers = rawLayers.map((L, i) => ({ id: nid(), name: (L && L.name) || `Layer ${i + 1}`, visible: !L || L.visible !== false, locked: false }));
@@ -1580,7 +1604,7 @@ function importJSON(text) {
   const rawTiles = arr(data.tiles);
   const { ids: tIds, dupes: tDupes } = reserveIds(rawTiles, 't');
   if (tDupes) warn.push(`${plural(tDupes, 'duplicate tile id was', 'duplicate tile ids were')} renumbered`);
-  let missingInv = 0, untyped = 0;
+  let missingInv = 0, untyped = 0, converted = 0, dropped = 0;
   S.tiles = rawTiles.map((t, i) => {
     const size = Array.isArray(t.size) ? t.size : [S.gridX, S.gridY], loc = Array.isArray(t.location) ? t.location : [0, 0];
     const path = (t.image && fromJsonPath(t.image)) || `${resRoot()}/missing.png`, sh = sheetByPath(path);
@@ -1605,12 +1629,28 @@ function importJSON(text) {
       const cnt = Math.max(1, parseInt(e.capacity ?? e.count, 10) || 1), ex = inv.find(x => x.itemId === it.id);   // 'count' = older files
       if (ex) ex.capacity += cnt; else inv.push({ itemId: it.id, capacity: cnt });
     }
+    // Category. Older files have "attributes" instead: use the category most of the inventory belongs to,
+    // or else the first attribute that names a category.
+    let catId = null;
+    if (typeof t.category === 'string') catId = t.category.trim() ? ensureCat(t.category) : null;
+    else if (Array.isArray(t.attributes)) {
+      const votes = new Map();
+      for (const e of inv) { const c = itemById(e.itemId).categoryId; if (c != null) votes.set(c, (votes.get(c) || 0) + 1); }
+      const best = [...votes].sort((x, y) => y[1] - x[1])[0];
+      const named = t.attributes.map(v => catByName(String(v))).find(Boolean);
+      catId = best ? best[0] : named ? named.id : null;
+      if (t.attributes.length) converted++;
+    }
+    const kept = inv.filter(e => fitsTile({ catId }, itemById(e.itemId)));
+    dropped += inv.length - kept.length;
     return {
       id: tIds[i], assetId: a.id, layerId: S.layers[li].id,
       x: +loc[0] || 0, y: +loc[1] || 0, w: +size[0] || S.gridX, h: +size[1] || S.gridY,
-      attrs: [...new Set(arr(t.attributes).map(String))], inv,
+      catId, inv: kept,
     };
   });
+  if (converted) warn.push(`converted the attributes of ${plural(converted, 'tile', 'tiles')} to a single category`);
+  if (dropped) warn.push(`${plural(dropped, 'inventory entry did', 'inventory entries did')} not match the tile's category and ${dropped === 1 ? 'was' : 'were'} dropped`);
   if (untyped) warn.push(`${plural(untyped, 'tile has', 'tiles have')} no type; give their palette tiles one`);
   if (missingInv) warn.push(`${plural(missingInv, 'inventory entry refers', 'inventory entries refer')} to unknown items`);
 
@@ -1667,7 +1707,7 @@ $('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeM
 
 /* ---------- Views, tools, toolbar ---------- */
 const HINTS = {
-  map: 'Drag empty space to box-select · Shift-click to add or remove · Space or middle mouse to pan',
+  map: 'only its tiles can be selected · Shift-click to add or remove · Space to pan',
   select: 'Drag nodes to move them · drag empty space to box-select · Shift-click to add or remove',
   node: 'Click to add a node · Shift-click to add one connected to the selected node',
   link: 'Click a node, then another node to connect it, or an object to target it',
@@ -1692,7 +1732,8 @@ function setPTool(t) {
 function updateMode() {
   const v = S.view;
   $('#stMode').textContent = v === 'items' ? 'Items' : v === 'paths' ? `Paths · ${cap(S.ptool)} tool` : `${cap(S.tool)} mode`;
-  $('#hint').textContent = v === 'paths' ? HINTS[S.ptool] : HINTS.map;
+  const L = layerById(S.activeLayer);
+  $('#hint').textContent = v === 'paths' ? HINTS[S.ptool] : `Editing layer ${L ? L.name : '—'} · ${HINTS.map}`;
 }
 $('#viewTabs').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setView(b.dataset.view); });
 $('#toolSeg').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setTool(b.dataset.tool); });
@@ -1703,6 +1744,15 @@ $('#gridX').addEventListener('input', e => { const v = parseInt(e.target.value, 
 $('#gridY').addEventListener('input', e => { const v = parseInt(e.target.value, 10); if (v > 0) { S.gridY = v; draw(); } });
 $('#mapW').addEventListener('input', e => { const v = parseInt(e.target.value, 10); if (v > 0) { beginMutation(); S.mapW = v; draw(); } });
 $('#mapH').addEventListener('input', e => { const v = parseInt(e.target.value, 10); if (v > 0) { beginMutation(); S.mapH = v; draw(); } });
+function syncBgInputs() { $('#bgColor').value = hexOf(S.bg); $('#bgAlpha').value = S.bg[3]; }
+function setBg(rgba) { beginMutation(); S.bg = rgba; draw(); }
+$('#bgColor').addEventListener('input', e => {
+  const h = e.target.value;
+  setBg([parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16), S.bg[3]]);
+});
+$('#bgColor').addEventListener('change', () => { S.editing = false; });   // one undo step per picker session
+$('#bgAlpha').addEventListener('input', e => { if (e.target.value.trim() !== '') setBg([...S.bg.slice(0, 3), toByte(e.target.value)]); });
+$('#bgAlpha').addEventListener('blur', e => { e.target.value = S.bg[3]; });
 $('#resRoot').addEventListener('input', e => { S.resRoot = e.target.value.trim(); });
 $('#folderBtn').addEventListener('click', () => $('#folderInput').click());
 $('#folderInput').addEventListener('change', e => { const files = [...e.target.files]; e.target.value = ''; loadFolder(files); });
@@ -1762,7 +1812,7 @@ function nudge(e, objs) {
   syncTransformFields(); draw(); e.preventDefault();
 }
 function mapKeys(e, mod, k) {
-  if (mod && k === 'a') { setSel(renderList().filter(t => selectableLayer(t.layerId)).map(t => t.id)); e.preventDefault(); return; }
+  if (mod && k === 'a') { setSel(S.tiles.filter(onActiveLayer).map(t => t.id)); e.preventDefault(); return; }
   if (mod && k === 'd') { if (S.sel.length) { dupSel(); e.preventDefault(); } return; }
   if (mod) return;
   if (e.key === 'Delete' || e.key === 'Backspace') { if (S.sel.length) { delSel(); e.preventDefault(); } return; }
@@ -1809,6 +1859,6 @@ S.layers = [
   { id: nid(), name: 'Shelves', visible: true, locked: false },
 ];
 S.activeLayer = S.layers[0].id;
-setView('map'); setTool('select'); setPTool('select'); fillTypeSelect($('#slType'));
+setView('map'); setTool('select'); setPTool('select'); fillTypeSelect($('#slType')); syncBgInputs();
 renderAssets(); refreshAll();
 resizeCanvas(); fitView();
