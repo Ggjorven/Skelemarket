@@ -47,7 +47,7 @@ public class Supermarket {
 			Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
 
 			mCustomers.add(customer);
-			Logger.trace("Spawned customer, total: %d", mCustomers.size());
+
 		}
 
 		for (Customer customer : mCustomers){
