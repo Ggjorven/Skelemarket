@@ -59,7 +59,7 @@ public class Map {
 
 	public void update() {
 		for (MapLayer layerRef : mLayers) {
-			layerRef.update();
+			layerRef.update(this);
 		}
 	}
 

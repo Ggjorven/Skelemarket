@@ -42,7 +42,7 @@ public class Shelf extends Tile {
 	}
 
 	@Override
-	public void update() {
+	public void update(Map mapRef) {
 		// TODO: Update map
 	}
 

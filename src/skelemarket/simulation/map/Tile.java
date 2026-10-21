@@ -28,7 +28,7 @@ public class Tile {
 	}
 
 	// NOTE: Can be overwritten by the deriving class
-	public void update() {
+	public void update(Map mapRef) {
 	}
 
 	public void render(Renderer rendererRef) {

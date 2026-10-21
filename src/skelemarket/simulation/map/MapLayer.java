@@ -23,9 +23,9 @@ public class MapLayer {
 	public MapLayer() {
 	}
 
-	public void update() {
+	public void update(Map mapRef) {
 		for (Tile tile : mIDToTiles.values()) {
-			tile.update();
+			tile.update(mapRef);
 		}
 	}
 

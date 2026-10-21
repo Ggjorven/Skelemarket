@@ -1,11 +1,11 @@
 package skelemarket.simulation;
 
-import skelemarket.core.*;
-import skelemarket.simulation.map.Entrance;
+import skelemarket.core.Renderer;
+import skelemarket.core.Texture;
+import skelemarket.core.Logger;
 import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.MapLoader;
 import skelemarket.simulation.people.Customer;
-import skelemarket.simulation.map.PathNode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,8 +14,13 @@ public class Supermarket {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	// TODO: Remove singleton instance
+	private static Supermarket mThis = null;
+
 	private Map mMap = null;
 
+	// TODO: Remove customer texture and customers and replace
+	// with some kind of storage class which handles employees/customers
 	private Texture mCustomerTexture = null;
 	private List<Customer> mCustomers = new ArrayList<>();
 
@@ -23,6 +28,8 @@ public class Supermarket {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Supermarket() throws Exception {
+		mThis = this;
+
 		MapLoader loader = new MapLoader();
 		try {
 			mMap = loader.loadFromPath(Config.MAP_FILE);
@@ -42,28 +49,11 @@ public class Supermarket {
 
 	public void update() {
 		mMap.update();
-		Entrance entrance = mMap.getEntrance();
-		if (entrance != null && mCustomers.size() < Config.MAX_CUSTOMERS && entrance.isReadyToSpawn()) {
-			List<PathNode> entranceNodes = mMap.getNodesForTile(entrance.getID());
-
-			if (!entranceNodes.isEmpty()) {
-				PathNode firstNode = entranceNodes.get(0);
-				Vec2i nodeLocation = firstNode.getLocation();
-
-				Vec2f spawnPosition = new Vec2f(
-						nodeLocation.getX() - Config.CUSTOMER_WIDTH / 2,
-						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
-
-				Customer customer = new Customer(spawnPosition,
-						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture,
-						new UV(0, 0, 7, 16));
-				mCustomers.add(customer);
-			}
-		}
 
 		for (Customer customer : mCustomers) {
 			customer.update();
 		}
+
 		// TODO: Update all employees
 		mCustomers.removeIf(Customer::isFinished);
 	}
@@ -76,5 +66,25 @@ public class Supermarket {
 		}
 
 		// TODO: Render employees
+	}
+
+	// TODO: Remove singleton and pass through necessary constructs through update
+	public static Supermarket get() {
+		return mThis;
+	}
+
+	// TODO: Remove once singleton is gone
+	public int getCustomerCount() {
+		return mCustomers.size();
+	}
+
+	// TODO: Remove once singleton is gone
+	public void addCustomer(Customer customer) {
+		mCustomers.add(customer);
+	}
+
+	// TODO: Remove once singleton is gone
+	public Texture getCustomerTexture() {
+		return mCustomerTexture;
 	}
 }
