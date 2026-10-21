@@ -15,7 +15,7 @@ public class PathNode {
 	private Vec2i mLocation = new Vec2i();
 
 	private Set<PathNode> mNeighbours = new LinkedHashSet<>();
-	private Set<Tile> mTargets = new LinkedHashSet<>();
+	private Tile mTarget = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -33,20 +33,24 @@ public class PathNode {
 		return mLocation;
 	}
 
-	public Set<PathNode> getNeighbours() {
-		return Collections.unmodifiableSet(mNeighbours);
-	}
-
-	public Set<Tile> getTargets() {
-		return Collections.unmodifiableSet(mTargets);
-	}
-
 	void addNeighbour(PathNode neighbour) {
 		if (neighbour != this)
 			mNeighbours.add(neighbour);
 	}
 
-	void addTarget(Tile tile) {
-		mTargets.add(tile);
+	public Set<PathNode> getNeighbours() {
+		return Collections.unmodifiableSet(mNeighbours);
+	}
+
+	void setTarget(Tile tile) {
+		mTarget = tile;
+	}
+
+	public Tile getTarget() {
+		return mTarget;
+	}
+
+	public boolean hasTarget() {
+		return mTarget != null;
 	}
 }
