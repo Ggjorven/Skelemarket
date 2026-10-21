@@ -43,9 +43,11 @@ public class Supermarket {
 		Entrance entrance = mMap.getEntrance();
 		if(entrance != null && mCustomers.size() < Config.MAX_CUSTOMERS && entrance.isReadyToSpawn()) {
 			Vec2i entrancePosition = entrance.getPosition();
-			Vec2f spawnPosition = new Vec2f(entrancePosition.getX(), entrancePosition.getY());
+			Vec2i entranceSize = entrance.getSize();
+			int offsetX = (entranceSize.getX() - Config.CUSTOMER_WIDTH)/2;
+			int offsetY = entranceSize.getY() - Config.CUSTOMER_HEIGHT;
+			Vec2f spawnPosition = new Vec2f(entrancePosition.getX() + offsetX, entrancePosition.getY() + offsetY);
 			Customer customer = new Customer(spawnPosition, new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), mCustomerTexture, new UV(0,0,7,16));
-
 			mCustomers.add(customer);
 
 		}
