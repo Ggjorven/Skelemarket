@@ -42,6 +42,8 @@ public class Map {
 
 				if (tile instanceof Shelf shelf)
 					mCategoryToShelves.computeIfAbsent(shelf.getCategory(), ignored -> new ArrayList<>()).add(shelf);
+				if (tile instanceof Entrance entrance)
+					mEntrance = entrance;
 			}
 		}
 
@@ -128,5 +130,22 @@ public class Map {
 
 	public List<MapLayer> getLayers() {
 		return mLayers;
+	}
+
+	public Entrance getEntrance() {
+		return mEntrance;
+	}
+
+	public void render(Renderer rendererRef) {
+		rendererRef.drawQuad(mBackgroundColour, new Vec2i(0, 0),
+				new Vec2i(skelemarket.core.Config.WIDTH, skelemarket.core.Config.HEIGHT));
+		for (MapLayer layerRef : mLayers)
+			layerRef.render(rendererRef);
+	}
+
+	public void update() {
+		for (MapLayer layerRef : mLayers) {
+			layerRef.update();
+		}
 	}
 }

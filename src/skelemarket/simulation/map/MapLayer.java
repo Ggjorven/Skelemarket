@@ -98,4 +98,10 @@ public class MapLayer {
 	public List<Tile> getTiles() {
 		return List.copyOf(mIDToTiles.values());
 	}
+
+	public void update() {
+		for (Tile tile : mIDToTiles.values()) {
+			tile.update();
+		}
+	}
 }
