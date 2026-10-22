@@ -3,17 +3,17 @@ package skelemarket.simulation.people;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.simulation.Config;
+import skelemarket.simulation.map.Map;
 
 public class PeopleRegister {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private final Map<String, Texture> mTextures = new HashMap<>();
+	private final java.util.Map<String, Texture> mTextures = new HashMap<>();
 
 	private final List<Customer> mCustomers = new ArrayList<>();
 	// TODO: Add a list of employees once employee spawning is implemented.
@@ -21,8 +21,14 @@ public class PeopleRegister {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public PeopleRegister() {
+	public PeopleRegister(Map mapRef) {
 		mTextures.put(Config.CUSTOMER_TEXTURE, new Texture(Config.CUSTOMER_TEXTURE));
+
+		// TODO: Spawn manager
+
+		// TODO: Spawn cashier
+
+		// TODO: Spawn 3 random stockers
 	}
 
 	public void update() {

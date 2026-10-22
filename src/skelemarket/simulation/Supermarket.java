@@ -25,13 +25,7 @@ public class Supermarket {
 			throw new Exception(String.format("Failed to load map due to error: %s.", ex.toString()));
 		}
 
-		mPeopleRegister = new PeopleRegister();
-
-		// TODO: Spawn manager
-
-		// TODO: Spawn cashier
-
-		// TODO: Spawn 3 random stockers
+		mPeopleRegister = new PeopleRegister(mMap);
 	}
 
 	public void update() {
