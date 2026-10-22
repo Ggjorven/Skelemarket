@@ -30,7 +30,8 @@ public class Customer extends Person {
 
 	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
 		// TODO: Make readable
-		return mShoppingList.stream().map(map::getDestinationNodeForProduct).flatMap(Optional::stream).findFirst();
+		return mShoppingList.stream().map(product -> map.getDestinationNodeForProduct(product, false))
+				.flatMap(Optional::stream).findFirst();
 	}
 
 	@Override
