@@ -49,6 +49,19 @@ public abstract class Person {
 		mPosition.setY(mPosition.getY() + dy / distance * Config.PERSON_SPEED);
 	}
 
+	protected void startAction(int ticks) {
+		mRemainingTicks = ticks;
+	}
+
+	protected void tickAction(){
+		if (mRemainingTicks > 0){
+			mRemainingTicks--;
+		}
+	}
+	protected boolean isActionDone(){
+		return mRemainingTicks == 0;
+	}
+
 	protected boolean hasArrived() {
 		return mDestination == null;
 	}
