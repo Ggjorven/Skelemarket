@@ -30,7 +30,7 @@ public class Supermarket {
 
 	public void update() {
 		mMap.update(mPeopleRegister);
-		mPeopleRegister.update();
+		mPeopleRegister.update(mMap);
 	}
 
 	public void render(Renderer rendererRef) {

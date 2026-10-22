@@ -31,9 +31,9 @@ public class PeopleRegister {
 		// TODO: Spawn 3 random stockers
 	}
 
-	public void update() {
+	public void update(Map mapRef) {
 		for (Customer customer : mCustomers) {
-			customer.update();
+			customer.update(mapRef);
 		}
 
 		mCustomers.removeIf(Customer::isFinished);

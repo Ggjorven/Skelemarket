@@ -4,6 +4,7 @@ import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.Map;
 
 public abstract class Person {
 	///////////////////////////////////////////////////////////
@@ -27,7 +28,7 @@ public abstract class Person {
 		mTextureCoords = coords;
 	}
 
-	public abstract void update();
+	public abstract void update(Map mapRef);
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);

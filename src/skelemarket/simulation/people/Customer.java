@@ -7,6 +7,7 @@ import java.util.Optional;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.PathNode;
 
 public class Customer extends Person {
@@ -27,17 +28,13 @@ public class Customer extends Person {
 		// TODO: new Carrier based on the amount of products
 	}
 
-	public List<String> getShoppingList() {
-		return List.copyOf(mShoppingList);
-	}
-
 	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
 		// TODO: Make readable
 		return mShoppingList.stream().map(map::getDestinationNodeForProduct).flatMap(Optional::stream).findFirst();
 	}
 
 	@Override
-	public void update() {
+	public void update(Map mapRef) {
 		// TODO: Take a cart
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf
