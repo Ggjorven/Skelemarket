@@ -20,7 +20,7 @@ public class Customer extends Person {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
+	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
 
 		// TODO: Generate the shopping list

@@ -24,7 +24,7 @@ public class PeopleRegister {
 	public PeopleRegister(Map mapRef) {
 		mTextures.put(Config.CUSTOMER_TEXTURE, new Texture(Config.CUSTOMER_TEXTURE));
 
-		// TODO: Spawn manager
+		// TODO: Create manager
 
 		// TODO: Spawn cashier
 
