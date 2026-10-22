@@ -1,6 +1,7 @@
 package skelemarket.simulation.map;
 
 import skelemarket.core.*;
+import skelemarket.simulation.people.PeopleRegister;
 
 public class Tile {
 	///////////////////////////////////////////////////////////
@@ -28,7 +29,7 @@ public class Tile {
 	}
 
 	// NOTE: Can be overwritten by the deriving class
-	public void update(Map mapRef) {
+	public void update(Map mapRef, PeopleRegister peopleRegister) {
 	}
 
 	public void render(Renderer rendererRef) {

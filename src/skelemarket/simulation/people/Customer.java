@@ -7,6 +7,7 @@ import java.util.Optional;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.PathNode;
 
 public class Customer extends Person {
@@ -19,16 +20,12 @@ public class Customer extends Person {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
+	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
 
 		// TODO: Generate the shopping list
 
 		// TODO: new Carrier based on the amount of products
-	}
-
-	public List<String> getShoppingList() {
-		return List.copyOf(mShoppingList);
 	}
 
 	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
@@ -37,7 +34,7 @@ public class Customer extends Person {
 	}
 
 	@Override
-	public void update() {
+	public void update(Map mapRef) {
 		// TODO: Take a cart
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf

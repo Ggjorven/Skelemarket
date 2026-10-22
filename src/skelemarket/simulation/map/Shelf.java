@@ -3,6 +3,7 @@ package skelemarket.simulation.map;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2i;
+import skelemarket.simulation.people.PeopleRegister;
 
 import java.util.HashMap;
 
@@ -42,7 +43,7 @@ public class Shelf extends Tile {
 	}
 
 	@Override
-	public void update(Map mapRef) {
+	public void update(Map mapRef, PeopleRegister peopleRegister) {
 		// TODO: Update map
 	}
 

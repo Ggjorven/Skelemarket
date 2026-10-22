@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import skelemarket.core.Renderer;
+import skelemarket.simulation.people.PeopleRegister;
 
 public class MapLayer {
 	///////////////////////////////////////////////////////////
@@ -23,9 +24,9 @@ public class MapLayer {
 	public MapLayer() {
 	}
 
-	public void update(Map mapRef) {
+	public void update(Map mapRef, PeopleRegister peopleRegister) {
 		for (Tile tile : mIDToTiles.values()) {
-			tile.update(mapRef);
+			tile.update(mapRef, peopleRegister);
 		}
 	}
 
