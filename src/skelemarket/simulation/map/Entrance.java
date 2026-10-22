@@ -28,7 +28,6 @@ public class Entrance extends Tile {
 	public void update(Map mapRef) {
 		countDown();
 
-
 		// TODO: Use some kind of UpdateRegister or Employee/CustomerRegister which
 		// is passed down through the update function instead of having to call a
 		// singleton function (Supermarket::get()) and retrieve information through that
@@ -62,7 +61,7 @@ public class Entrance extends Tile {
 		}
 	}
 
-	void countDown() {
+	private void countDown() {
 		if (mCountDownTick > 0) {
 			mCountDownTick--;
 		}
