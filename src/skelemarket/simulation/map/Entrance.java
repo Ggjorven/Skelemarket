@@ -42,7 +42,8 @@ public class Entrance extends Tile {
 
 				Customer customer = new Customer(spawnPosition,
 						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), peopleRegister.getCustomerTexture(),
-						new UV(0, 0, 7, 16),
+						new UV(Config.CUSTOMER_TEXTURE_X, Config.CUSTOMER_TEXTURE_Y, Config.CUSTOMER_TEXTURE_WIDTH,
+								Config.CUSTOMER_TEXTURE_HEIGHT),
 						mapRef);
 
 				peopleRegister.addCustomer(customer);
