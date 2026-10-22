@@ -9,6 +9,7 @@ import skelemarket.core.Colour;
 import skelemarket.core.Logger;
 import skelemarket.core.Renderer;
 import skelemarket.core.Vec2i;
+import skelemarket.simulation.people.PeopleRegister;
 
 public class Map {
 	///////////////////////////////////////////////////////////
@@ -57,9 +58,9 @@ public class Map {
 		}
 	}
 
-	public void update() {
+	public void update(PeopleRegister peopleRegister) {
 		for (MapLayer layerRef : mLayers) {
-			layerRef.update(this);
+			layerRef.update(this, peopleRegister);
 		}
 	}
 
