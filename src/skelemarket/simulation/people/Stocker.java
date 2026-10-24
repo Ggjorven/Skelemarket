@@ -3,6 +3,7 @@ package skelemarket.simulation.people;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.Map;
 
 public class Stocker extends Employee {
 	///////////////////////////////////////////////////////////
@@ -17,11 +18,10 @@ public class Stocker extends Employee {
 	///////////////////////////////////////////////////////////
 	public Stocker(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
 		super(position, size, textureRef, coords);
-
 	}
 
 	@Override
-	public void update() {
+	public void update(Map mapRef) {
 		// TODO: If no task: wait until the supermarket assigns a refill task
 		// TODO: Walk to the storage
 		// TODO: Take the products for the task out of the storage

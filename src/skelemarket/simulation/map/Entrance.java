@@ -6,8 +6,8 @@ import skelemarket.core.Vec2f;
 import skelemarket.core.Vec2i;
 
 import skelemarket.simulation.Config;
-import skelemarket.simulation.Supermarket;
 import skelemarket.simulation.people.Customer;
+import skelemarket.simulation.people.PeopleRegister;
 
 import java.util.Optional;
 
@@ -25,15 +25,12 @@ public class Entrance extends Tile {
 	}
 
 	@Override
-	public void update(Map mapRef) {
-		countDown();
+	public void update(Map mapRef, PeopleRegister peopleRegister) {
+		if (mCountDownTick > 0) {
+			mCountDownTick--;
+		}
 
-		// TODO: Use some kind of UpdateRegister or Employee/CustomerRegister which
-		// is passed down through the update function instead of having to call a
-		// singleton function (Supermarket::get()) and retrieve information through that
-		Supermarket supermarket = Supermarket.get();
-
-		if (supermarket.getCustomerCount() < Config.MAX_CUSTOMERS && isReadyToSpawn()) {
+		if (peopleRegister.getCustomerCount() < Config.MAX_CUSTOMERS && isReadyToSpawn()) {
 			Optional<PathNode> entranceNode = mapRef.getNodeForTile(getID());
 
 			if (entranceNode.isPresent()) {
@@ -44,10 +41,12 @@ public class Entrance extends Tile {
 						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
 
 				Customer customer = new Customer(spawnPosition,
-						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), supermarket.getCustomerTexture(),
-						new UV(0, 0, 7, 16));
+						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), peopleRegister.getCustomerTexture(),
+						new UV(Config.CUSTOMER_TEXTURE_X, Config.CUSTOMER_TEXTURE_Y, Config.CUSTOMER_TEXTURE_WIDTH,
+								Config.CUSTOMER_TEXTURE_HEIGHT),
+						mapRef);
 
-				supermarket.addCustomer(customer);
+				peopleRegister.addCustomer(customer);
 			}
 		}
 	}
@@ -58,12 +57,6 @@ public class Entrance extends Tile {
 			return true;
 		} else {
 			return false;
-		}
-	}
-
-	private void countDown() {
-		if (mCountDownTick > 0) {
-			mCountDownTick--;
 		}
 	}
 }

@@ -40,7 +40,7 @@ const S = {
   // Document — in undo history
   layers: [],      // {id, name, visible, locked}
   types: [],       // {id, name} tile types (SHELF, WALL…); a placed tile has the type of its palette tile
-  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, catId, inv:[{itemId, capacity}]}  (inv only holds items of catId)
+  tiles: [],       // {id:'t1', assetId, layerId, x, y, w, h, catId, magazine, inv:[{itemId, capacity}]}  (inv only holds items of catId)
   categories: [],  // {id, name}
   items: [],       // {id, name, categoryId, weight, path, source:[x,y,w,h]}
   nodes: [],       // {id:'n1', x, y, targets:['t1', ...]}
@@ -268,8 +268,10 @@ let DPR = window.devicePixelRatio || 1;
 function resizeCanvas() {
   const r = workspace.getBoundingClientRect();
   DPR = window.devicePixelRatio || 1;
-  canvas.width = Math.round(r.width * DPR); canvas.height = Math.round(r.height * DPR);
-  canvas.style.width = r.width + 'px'; canvas.style.height = r.height + 'px';
+  // Whole device pixels, with a CSS size that maps onto them exactly, so the browser never rescales
+  // (and blurs) the canvas. CSS image-rendering: pixelated covers fractional page offsets.
+  canvas.width = Math.max(1, Math.floor(r.width * DPR)); canvas.height = Math.max(1, Math.floor(r.height * DPR));
+  canvas.style.width = canvas.width / DPR + 'px'; canvas.style.height = canvas.height / DPR + 'px';
   if (S.needFit) fitView(); else draw();
 }
 new ResizeObserver(resizeCanvas).observe(workspace);
@@ -351,6 +353,7 @@ function drawMapOverlay() {
   for (const t of renderList()) {
     if (t.w * z < 14) continue;
     let cx = t.x + t.w - pad;
+    if (t.magazine) { dot(cx, t.y + pad, r, '#b48cff'); cx -= r * 2.8; }
     if (tileCat(t)) { dot(cx, t.y + pad, r, '#3ecf8e'); cx -= r * 2.8; }
     if (t.inv && t.inv.length) dot(cx, t.y + pad, r, '#f2b84b');
   }
@@ -615,7 +618,7 @@ function placeTile(mx, my) {
   const a = assetById(S.selAsset);
   pushHistory();
   const w = a.pw, h = a.ph;
-  const t = { id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: clampX(snapX(mx - w / 2), w), y: clampY(snapY(my - h / 2), h), w, h, catId: null, inv: [] };
+  const t = { id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: clampX(snapX(mx - w / 2), w), y: clampY(snapY(my - h / 2), h), w, h, catId: null, magazine: false, inv: [] };
   S.tiles.push(t); setSel([t.id]); refreshCount(); renderLayers();
 }
 function paintTile(mx, my) {
@@ -629,7 +632,7 @@ function paintTile(mx, my) {
   if (drag) drag.last = key;
   if (S.tiles.some(t => t.layerId === S.activeLayer && t.assetId === a.id && t.x === gx && t.y === gy)) return;
   ensurePushed();
-  S.tiles.push({ id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: gx, y: gy, w, h, catId: null, inv: [] });
+  S.tiles.push({ id: newTileId(), assetId: a.id, layerId: S.activeLayer, x: gx, y: gy, w, h, catId: null, magazine: false, inv: [] });
   refreshCount(); renderLayers(); draw();
 }
 
@@ -928,6 +931,7 @@ function syncMapInspector() {
   const n = S.sel.length;
   $('#tileEdit').classList.toggle('hidden', n !== 1);
   $('#catBlock').classList.toggle('hidden', n < 1);
+  $('#magBlock').classList.toggle('hidden', n < 1);
   $('#invBlock').classList.toggle('hidden', n < 1);
   $('#selActions').classList.toggle('hidden', n < 1);
   $('#noSel').classList.toggle('hidden', n > 0 || !!S.selAsset);
@@ -942,7 +946,7 @@ function syncMapInspector() {
     $('#tLinks').textContent = from.length ? from.join(', ') : '—';
   }
   syncTransformFields();
-  if (n >= 1) { renderCatEditor(); renderInvEditor(); fillMoveLayerSelect(); }
+  if (n >= 1) { renderCatEditor(); renderMagazine(); renderInvEditor(); fillMoveLayerSelect(); }
 }
 
 function renderCatEditor() {
@@ -967,6 +971,22 @@ function setTileCategory(catId) {
   syncInspector(); draw();
 }
 $('#tCat').addEventListener('change', e => { if (e.target.value !== '__mixed') setTileCategory(e.target.value ? +e.target.value : null); });
+
+/** Magazine checkbox: checked when every selected tile is a magazine, indeterminate when only some are. */
+function renderMagazine() {
+  const tiles = selTiles(); if (!tiles.length) return;
+  const on = tiles.filter(t => t.magazine).length, cb = $('#tMagazine');
+  cb.checked = on === tiles.length; cb.indeterminate = on > 0 && on < tiles.length;
+  $('#tMagHint').textContent = tiles.length > 1
+    ? (cb.indeterminate ? `Mixed: ${on} of ${tiles.length} selected tiles are magazines. Click to set all.` : `Applies to all ${tiles.length} selected tiles.`)
+    : 'Exported as "magazine" on this tile.';
+}
+$('#tMagazine').addEventListener('change', e => {
+  const tiles = selTiles(); if (!tiles.length) return;
+  pushHistory();
+  for (const t of tiles) t.magazine = e.target.checked;
+  syncInspector(); draw();
+});
 
 /** Fill the inventory item picker with the items of one category. */
 function fillItemSelect(sel, catId) {
@@ -1499,6 +1519,7 @@ function buildJSON() {
       id: exportId(t.id),
       type: ty ? ty.name : null,
       category: tileCat(t) ? tileCat(t).name : '',
+      magazine: !!t.magazine,
       image: a ? toClasspath(a.path) : '/missing.png',
       layer: layerIndex.get(L.id),
       source: a && a.source ? a.source.map(Math.round) : [0, 0, Math.round(t.w), Math.round(t.h)],
@@ -1646,7 +1667,7 @@ function importJSON(text) {
     return {
       id: tIds[i], assetId: a.id, layerId: S.layers[li].id,
       x: +loc[0] || 0, y: +loc[1] || 0, w: +size[0] || S.gridX, h: +size[1] || S.gridY,
-      catId, inv: kept,
+      catId, magazine: t.magazine === true, inv: kept,
     };
   });
   if (converted) warn.push(`converted the attributes of ${plural(converted, 'tile', 'tiles')} to a single category`);

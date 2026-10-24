@@ -25,7 +25,7 @@ public class MapLoaderTest {
 				"source": [0, 0, 32, 32]
 			  }],
 			  "tiles": [
-				{"id": 1, "type": "SHELF", "category": "FRUIT", "image": "/textures/enhanced/walls_floor.png", "layer": 1, "source": [0, 0, 32, 32], "size": [32, 32], "location": [32, 0], "inventory": [{"item": "APPLE", "capacity": 4}]},
+				{"id": 1, "type": "SHELF", "category": "FRUIT", "magazine": false, "image": "/textures/enhanced/walls_floor.png", "layer": 1, "source": [0, 0, 32, 32], "size": [32, 32], "location": [32, 0], "inventory": [{"item": "APPLE", "capacity": 4}]},
 				{"id": 2, "type": "ENTRANCE", "category": "", "image": "/textures/enhanced/walls_floor.png", "layer": 1, "source": [0, 0, 32, 32], "size": [32, 32], "location": [64, 0], "inventory": []},
 				{"id": 3, "type": "EXIT", "category": "", "image": "/textures/enhanced/walls_floor.png", "layer": 1, "source": [0, 0, 32, 32], "size": [32, 32], "location": [96, 0], "inventory": []},
 				{"id": 4, "type": "SELF_CHECKOUT", "category": "", "image": "/textures/enhanced/walls_floor.png", "layer": 1, "source": [0, 0, 32, 32], "size": [32, 32], "location": [128, 0], "inventory": []}
@@ -87,5 +87,18 @@ public class MapLoaderTest {
 				"\"image\": null,\n    \"source\": null");
 
 		assertThrows(MapLoadException.class, () -> load(invalidMap));
+	}
+
+	@Test
+	void destinationNodesMatchTheRequestedShelfType() throws Exception {
+		Map normalShelfMap = load(MAP);
+		Map magazineShelfMap = load(MAP.replace("\"magazine\": false", "\"magazine\": true"));
+
+		assertEquals(normalShelfMap.getNode(2).orElseThrow(),
+				normalShelfMap.getDestinationNodeForProduct("APPLE", false).orElseThrow());
+		assertTrue(normalShelfMap.getDestinationNodeForProduct("APPLE", true).isEmpty());
+		assertEquals(magazineShelfMap.getNode(2).orElseThrow(),
+				magazineShelfMap.getDestinationNodeForProduct("APPLE", true).orElseThrow());
+		assertTrue(magazineShelfMap.getDestinationNodeForProduct("APPLE", false).isEmpty());
 	}
 }

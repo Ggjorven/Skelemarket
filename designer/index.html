@@ -11,16 +11,15 @@
 
   <!-- ================= Toolbar ================= -->
   <header class="toolbar">
-    <div class="brand"><span class="dot"></span>Supermarket Map Designer</div>
+    <div class="brand" title="Supermarket Map Designer"><span class="dot"></span><span class="name">Supermarket Map Designer</span></div>
 
     <nav class="tabs" id="viewTabs">
-      <button data-view="map" class="on" title="Tiles, attributes and inventory">Map</button>
+      <button data-view="map" class="on" title="Tiles, categories and inventory">Map</button>
       <button data-view="items" title="Categories and items">Items</button>
       <button data-view="paths" title="Path nodes">Paths</button>
     </nav>
 
     <div class="tbgroup canvas-only">
-      <span class="lbl">Tool</span>
       <div class="seg map-only" id="toolSeg">
         <button data-tool="select" class="on" title="Select, move and resize (V)">Select</button>
         <button data-tool="place" title="Place one tile (B)">Place</button>
@@ -34,36 +33,34 @@
     </div>
 
     <div class="tbgroup">
-      <button class="ghost" id="undoBtn" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
-      <button class="ghost" id="redoBtn" title="Redo (Ctrl+Y)" disabled>↷ Redo</button>
+      <button class="ghost icon" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>↶</button>
+      <button class="ghost icon" id="redoBtn" title="Redo (Ctrl+Y)" aria-label="Redo" disabled>↷</button>
     </div>
 
     <div class="tbgroup canvas-only">
       <label class="chk"><input type="checkbox" id="snapChk" checked> Snap</label>
-      <label class="chk"><input type="checkbox" id="gridChk" checked> Grid</label>
-      <span class="lbl" style="margin-left:4px">Grid</span>
-      <input type="number" id="gridX" class="w52" value="32" min="1" title="Grid width (X)">
+      <label class="chk" title="Show grid lines"><input type="checkbox" id="gridChk" checked> Grid</label>
+      <input type="number" id="gridX" class="num3" value="32" min="1" title="Grid width (X)">
       <span class="muted2">×</span>
-      <input type="number" id="gridY" class="w52" value="32" min="1" title="Grid height (Y)">
+      <input type="number" id="gridY" class="num3" value="32" min="1" title="Grid height (Y)">
     </div>
 
     <div class="tbgroup canvas-only">
       <span class="lbl">Map</span>
-      <input type="number" id="mapW" class="w70" value="1280" min="1" title="Map width">
+      <input type="number" id="mapW" class="num4" value="1280" min="1" title="Map width">
       <span class="muted2">×</span>
-      <input type="number" id="mapH" class="w70" value="738" min="1" title="Map height">
-      <span class="lbl" style="margin-left:4px">Background</span>
+      <input type="number" id="mapH" class="num4" value="738" min="1" title="Map height">
+      <span class="lbl gap">Background</span>
       <input type="color" id="bgColor" value="#ffffff" title="Map background colour (RGB)">
-      <input type="number" id="bgAlpha" class="w52" value="255" min="0" max="255" title="Background alpha, 0 to 255">
+      <input type="number" id="bgAlpha" class="num3" value="255" min="0" max="255" title="Background alpha, 0 to 255">
     </div>
 
     <div class="spacer"></div>
 
     <div class="tbgroup noborder">
-      <button class="ghost canvas-only" id="fitBtn" title="Fit map to view (F)">Fit</button>
-      <button class="ghost" id="folderBtn" title="Load every image in your resources folder (or project folder) with its real path">Open resources folder</button>
-      <button class="ghost" id="importBtn">Import JSON</button>
-      <button class="primary" id="exportBtn">Export JSON</button>
+      <button class="ghost" id="folderBtn" title="Open your resources folder (or project folder) to load every image with its real path">Open folder</button>
+      <button class="ghost" id="importBtn" title="Import a map JSON">Import</button>
+      <button class="primary" id="exportBtn" title="Export the map as JSON">Export</button>
     </div>
   </header>
 
@@ -136,6 +133,7 @@
         <button id="zoomOut" title="Zoom out">−</button>
         <span class="zval" id="zoomVal">100%</span>
         <button id="zoomIn" title="Zoom in">+</button>
+        <button id="fitBtn" title="Fit map to view (F)">Fit</button>
       </div>
     </div>
 
@@ -170,6 +168,11 @@
           <div class="subhead">Category</div>
           <select id="tCat" title="Item category this tile holds"></select>
           <div class="hintline" id="tCatHint"></div>
+        </div>
+
+        <div id="magBlock" class="block hidden">
+          <label class="chk"><input type="checkbox" id="tMagazine"> Magazine</label>
+          <div class="hintline" id="tMagHint"></div>
         </div>
 
         <div id="invBlock" class="block hidden">

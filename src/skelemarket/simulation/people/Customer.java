@@ -7,6 +7,7 @@ import java.util.Optional;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.PathNode;
 
 public class Customer extends Person {
@@ -19,29 +20,25 @@ public class Customer extends Person {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords) {
+	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
-	}
 
-	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, List<String> shoppingList) {
-		this(position, size, textureRef, coords);
-		mShoppingList.addAll(shoppingList);
-	}
+		// TODO: Generate the shopping list
 
-	public List<String> getShoppingList() {
-		return List.copyOf(mShoppingList);
+		// TODO: new Carrier based on the amount of products
 	}
 
 	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
 		// TODO: Make readable
-		return mShoppingList.stream().map(map::getDestinationNodeForProduct).flatMap(Optional::stream).findFirst();
+		return mShoppingList.stream().map(product -> map.getDestinationNodeForProduct(product, false))
+				.flatMap(Optional::stream).findFirst();
 	}
 
 	@Override
-	public void update() {
+	public void update(Map mapRef) {
 		// Temporary walk test: walk 50 pixels down, then finish
 		if (mCurrentState == State.TakeCart) {
-			setDestination(new Vec2f(mPosition.getX(), mPosition.getY() + 500));
+			setDestination(new Vec2f(mPosition.getX(), mPosition.getY() + 50));
 			mCurrentState = State.Walk;
 		}
 
@@ -55,7 +52,8 @@ public class Customer extends Person {
 		// TODO: Take a cart
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf
-		// TODO: take item, if no item than skip item (maybe in the future angry customer)
+		// TODO: take item, if no item than skip item (maybe in the future angry
+		// customer)
 		// TODO: walk to the next shelf, or walk to the cash register
 		// TODO: wait in line
 		// TODO: Buy the products

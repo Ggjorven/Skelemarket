@@ -3,6 +3,7 @@ package skelemarket.simulation.map;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2i;
+import skelemarket.simulation.people.PeopleRegister;
 
 import java.util.HashMap;
 
@@ -11,6 +12,7 @@ public class Shelf extends Tile {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private String mCategory = "";
+	private boolean mIsMagazine;
 	private java.util.Map<String, Integer> mProductToCapacity = null;
 
 	private java.util.Map<String, Integer> mProductToCount = new HashMap<>();
@@ -19,6 +21,7 @@ public class Shelf extends Tile {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Shelf(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords, String category,
+			boolean isMagazine,
 			java.util.Map<String, Integer> productCapacities,
 			java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts) {
 		super(tileID, position, size, textureRef, coords);
@@ -30,6 +33,7 @@ public class Shelf extends Tile {
 			throw new IllegalArgumentException("Shelf must hold some products...");
 
 		mCategory = category;
+		mIsMagazine = isMagazine;
 		mProductToCapacity = new HashMap<>(productCapacities);
 
 		for (java.util.Map.Entry<String, Integer> entry : mProductToCapacity.entrySet()) {
@@ -42,7 +46,7 @@ public class Shelf extends Tile {
 	}
 
 	@Override
-	public void update(Map mapRef) {
+	public void update(Map mapRef, PeopleRegister peopleRegister) {
 		// TODO: Update map
 	}
 
@@ -79,5 +83,9 @@ public class Shelf extends Tile {
 
 	public String getCategory() {
 		return mCategory;
+	}
+
+	public boolean isMagazine() {
+		return mIsMagazine;
 	}
 }

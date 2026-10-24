@@ -2,6 +2,7 @@ package skelemarket.simulation.people;
 
 import skelemarket.core.*;
 import skelemarket.simulation.Config;
+import skelemarket.simulation.map.Map;
 
 public abstract class Person {
 	///////////////////////////////////////////////////////////
@@ -66,7 +67,7 @@ public abstract class Person {
 		return mDestination == null;
 	}
 
-	public abstract void update();
+	public abstract void update(Map mapRef);
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);

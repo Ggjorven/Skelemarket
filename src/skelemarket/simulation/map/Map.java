@@ -9,6 +9,7 @@ import skelemarket.core.Colour;
 import skelemarket.core.Logger;
 import skelemarket.core.Renderer;
 import skelemarket.core.Vec2i;
+import skelemarket.simulation.people.PeopleRegister;
 
 public class Map {
 	///////////////////////////////////////////////////////////
@@ -57,9 +58,9 @@ public class Map {
 		}
 	}
 
-	public void update() {
+	public void update(PeopleRegister peopleRegister) {
 		for (MapLayer layerRef : mLayers) {
-			layerRef.update(this);
+			layerRef.update(this, peopleRegister);
 		}
 	}
 
@@ -88,8 +89,10 @@ public class Map {
 		return getProduct(productName).map(ProductSpecification::getCategory);
 	}
 
-	public List<Shelf> getShelvesForCategory(String category) {
-		return List.copyOf(mCategoryToShelves.getOrDefault(category, List.of()));
+	public List<Shelf> getShelvesForCategory(String category, boolean isMagazine) {
+		return mCategoryToShelves.getOrDefault(category, List.of()).stream()
+				.filter(shelf -> shelf.isMagazine() == isMagazine)
+				.toList();
 	}
 
 	public Optional<PathNode> getNodeForTile(int tileID) {
@@ -100,11 +103,11 @@ public class Map {
 		return Optional.ofNullable(mTileToNode.get(shelf.getID()));
 	}
 
-	public Optional<PathNode> getDestinationNodeForProduct(String productName) {
+	public Optional<PathNode> getDestinationNodeForProduct(String productName, boolean isMagazine) {
 		Optional<String> category = getCategoryForProduct(productName);
 
 		if (category.isPresent()) {
-			return getDestinationNodeForCategory(category.get());
+			return getDestinationNodeForCategory(category.get(), isMagazine);
 		}
 
 		Logger.warn("Tried retrieving a node for product: %s, but there is no category present.", productName);
@@ -112,8 +115,8 @@ public class Map {
 	}
 
 	// TODO: Based on current location
-	public Optional<PathNode> getDestinationNodeForCategory(String category) {
-		List<Shelf> shelves = getShelvesForCategory(category);
+	public Optional<PathNode> getDestinationNodeForCategory(String category, boolean isMagazine) {
+		List<Shelf> shelves = getShelvesForCategory(category, isMagazine);
 
 		for (Shelf shelf : shelves) {
 			Optional<PathNode> node = getNodeForShelf(shelf);

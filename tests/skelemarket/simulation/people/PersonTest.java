@@ -9,7 +9,7 @@ import skelemarket.core.Vec2f;
 public class PersonTest {
     @Test
     void arrivesAfterExactNumberOfSteps() {
-        Customer customer = new Customer(new Vec2f(0, 0), new Vec2f(), null, null);
+        Customer customer = new Customer(new Vec2f(0, 0), new Vec2f(), null, null, null);
         customer.setDestination(new Vec2f(10, 0));
 
         for (int i = 0; i < 9; i++) {
@@ -23,7 +23,7 @@ public class PersonTest {
 
     @Test
     void diagonalStepHasSameLength() {
-        Customer customer = new Customer(new Vec2f(0, 0), new Vec2f(), null, null);
+        Customer customer = new Customer(new Vec2f(0, 0), new Vec2f(), null, null, null);
         customer.setDestination(new Vec2f(30, 40));
 
         customer.stepTowardsDestination();
@@ -34,7 +34,7 @@ public class PersonTest {
 
     @Test
     void doesNotMoveWithoutDestination(){
-        Customer customer = new Customer(new Vec2f(5,5), new Vec2f(), null, null);
+        Customer customer = new Customer(new Vec2f(5,5), new Vec2f(), null, null, null);
 
         customer.stepTowardsDestination();
 

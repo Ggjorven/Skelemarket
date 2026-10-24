@@ -137,13 +137,15 @@ public class MapLoader {
 			switch (type) {
 				case "SHELF": {
 					String category = requireText(raw, "category");
+					boolean isMagazine = requireBoolean(raw, "magazine");
 
 					if (category.isBlank() || !products.containsKey(category))
 						throw new MapLoadException("Shelf %d has unknown category %s.", id, category);
 
 					java.util.Map<String, ProductSpecification> categoryProducts = products.get(category);
 
-					tile = new Shelf(id, location, size, texture, uv, category, parseInventory(raw, categoryProducts),
+					tile = new Shelf(id, location, size, texture, uv, category, isMagazine,
+							parseInventory(raw, categoryProducts),
 							products);
 					layer.addShelf((Shelf) tile);
 					break;
@@ -334,6 +336,15 @@ public class MapLoader {
 			throw new MapLoadException("%s must be an integer.", name);
 
 		return value.asInt();
+	}
+
+	private boolean requireBoolean(JsonNode node, String name) throws MapLoadException {
+		JsonNode value = node.get(name);
+
+		if (value == null || !value.isBoolean())
+			throw new MapLoadException("%s must be a boolean.", name);
+
+		return value.asBoolean();
 	}
 
 	private int parseReferenceID(JsonNode node, String prefix, String type) throws MapLoadException {
