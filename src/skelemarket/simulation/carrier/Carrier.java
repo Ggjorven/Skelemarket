@@ -1,10 +1,16 @@
 package skelemarket.simulation.carrier;
 
+import skelemarket.simulation.map.ProductSpecification;
+import skelemarket.simulation.people.Customer;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Carrier {
     ///////////////////////////////////////////////////////////
     // Variables
     ///////////////////////////////////////////////////////////
-    //TODO: list with the products in the carrier
+    private final List<ProductSpecification> mProducts = new ArrayList<>();
     private final int mMaxCapacity; // in units (e.g. apple = 1, bread = 2)
 
     ///////////////////////////////////////////////////////////
@@ -14,8 +20,29 @@ public abstract class Carrier {
         mMaxCapacity = maxCapacity;
     }
 
-    //TODO: add a product
-    //TODO: check if a product still fits
-    //TODO: remove a product
-    //TODO: remove everything (at the checkout)
+    public int getTotalWeight(){
+        int total = 0;
+        for (ProductSpecification product : mProducts){
+            total = total + product.getWeight();
+        }
+        return total;
+    }
+
+    public boolean canAdd(ProductSpecification product){
+        return getTotalWeight() + product.getWeight() <= mMaxCapacity;
+    }
+
+    public void add(ProductSpecification product) {
+        mProducts.add(product);
+    }
+
+    public void remove(ProductSpecification product) {
+        mProducts.remove(product);
+    }
+
+    public List<ProductSpecification> takeAll() {
+        List<ProductSpecification> products = new ArrayList<>(mProducts);
+        mProducts.clear();
+        return products;
+    }
 }
