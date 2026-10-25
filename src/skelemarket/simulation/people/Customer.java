@@ -5,16 +5,12 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import skelemarket.core.Texture;
-import skelemarket.core.UV;
-import skelemarket.core.Vec2f;
+import skelemarket.core.*;
 import skelemarket.simulation.carrier.Basket;
 import skelemarket.simulation.carrier.Carrier;
 import skelemarket.simulation.carrier.ShoppingCart;
-import skelemarket.simulation.map.Map;
-import skelemarket.simulation.map.PathNode;
+import skelemarket.simulation.map.*;
 import skelemarket.simulation.Config;
-import skelemarket.simulation.map.ProductSpecification;
 
 public class Customer extends Person {
 	///////////////////////////////////////////////////////////
@@ -23,6 +19,8 @@ public class Customer extends Person {
 	private State mCurrentState = State.TakeCart;
 	private final List<String> mShoppingList = new ArrayList<>();
 	private Carrier mCarrier = null;
+	private String mCurrentProduct  = null;
+	private Shelf mTargetShelf  = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -66,34 +64,74 @@ public class Customer extends Person {
 
 	@Override
 	public void update(Map mapRef) {
-		// Temporary walk test: walk 50 pixels down, then finish
 		if (mCurrentState == State.TakeCart) {
-			setDestination(new Vec2f(mPosition.getX(), mPosition.getY() + 50));
-			mCurrentState = State.Walk;
+			chooseNextProduct(mapRef);
 		}
 
 		if (mCurrentState == State.Walk) {
 			stepTowardsDestination();
 
 			if (hasArrived()) {
-				mCurrentState = State.Finished;
+				startAction(Config.TAKE_PRODUCT_TICKS);
+				mCurrentState = State.TakeProduct;
 			}
 		}
 
-		// TODO: Get first item from shopping list
-		// TODO: Walk to the first shelf
-		// TODO: take item, if no item than skip item (maybe in the future angry
-		// customer)
-		// TODO: walk to the next shelf, or walk to the cash register
+		if (mCurrentState == State.TakeProduct) {
+			tickAction();
+
+			if (isActionDone()) {
+				takeCurrentProduct(mapRef);
+				mShoppingList.remove(0);
+				chooseNextProduct(mapRef);
+			}
+		}
+
 		// TODO: wait in line
 		// TODO: Buy the products
 		// TODO: walk to the end point of the Store
 		// TODO: Customer Finished
 	}
+	private void takeCurrentProduct(Map mapRef) {
+		Optional<ProductSpecification> product = mapRef.getProduct(mCurrentProduct);
 
+		if (product.isPresent() && mTargetShelf != null
+				&& mCarrier.canAdd(product.get())
+				&& mTargetShelf.takeProduct(mCurrentProduct)) {
+			mCarrier.add(product.get());
+		}
+	}
 	public boolean isFinished() {
 		return mCurrentState == State.Finished;
 	}
+	private void chooseNextProduct(Map mapRef) {
+		if (mShoppingList.isEmpty()) {
+			mCurrentState = State.Finished;   // later: naar de kassa
+			return;
+		}
+
+		mCurrentProduct = mShoppingList.get(0);
+
+		Optional<PathNode> node = mapRef.getDestinationNodeForProduct(mCurrentProduct, false);
+		if (!node.isPresent()){
+			mShoppingList.remove(0);
+			chooseNextProduct(mapRef);
+			return;
+		}
+
+		mTargetShelf = null;
+
+		Tile target = node.get().getTarget();
+		if (target instanceof Shelf shelf) {
+			mTargetShelf = shelf;
+		}
+		// TODO: Replace straight-line walking with a route from Jorben's pathfinding:
+		//       walk the List<PathNode> node by node instead of straight to the shelf node.
+		Vec2i location = node.get().getLocation();
+		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2, location.getY() - Config.CUSTOMER_HEIGHT));
+		mCurrentState = State.Walk;
+	}
+
 
 	private enum State {
 		TakeCart,
