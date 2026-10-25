@@ -1,7 +1,6 @@
 package skelemarket.simulation.carrier;
 
 import skelemarket.simulation.map.ProductSpecification;
-import skelemarket.simulation.people.Customer;
 
 import java.util.ArrayList;
 import java.util.List;

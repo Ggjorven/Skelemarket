@@ -8,9 +8,13 @@ import java.util.Random;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.carrier.Basket;
+import skelemarket.simulation.carrier.Carrier;
+import skelemarket.simulation.carrier.ShoppingCart;
 import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.PathNode;
 import skelemarket.simulation.Config;
+import skelemarket.simulation.map.ProductSpecification;
 
 public class Customer extends Person {
 	///////////////////////////////////////////////////////////
@@ -18,12 +22,15 @@ public class Customer extends Person {
 	///////////////////////////////////////////////////////////
 	private State mCurrentState = State.TakeCart;
 	private final List<String> mShoppingList = new ArrayList<>();
+	private Carrier mCarrier = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
+
+		int totalUnits = 0;
 
 		if (mapRef != null) {
 			List<String> productNames = mapRef.getProductNames();
@@ -35,11 +42,20 @@ public class Customer extends Person {
 				for (int i = 0; i < amount; i++) {
 					String name = productNames.get(random.nextInt(productNames.size()));
 					mShoppingList.add(name);
+
+					Optional<ProductSpecification> product = mapRef.getProduct(name);
+					if (product.isPresent()) {
+						totalUnits = totalUnits + product.get().getWeight();
+					}
 				}
 			}
 		}
 
-		// TODO: new Carrier based on the amount of products
+		if (totalUnits <= Config.BASKET_CAPACITY) {
+			mCarrier = new Basket();
+		} else {
+			mCarrier = new ShoppingCart();
+		}
 	}
 
 	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map map) {
@@ -63,7 +79,7 @@ public class Customer extends Person {
 				mCurrentState = State.Finished;
 			}
 		}
-		// TODO: Take a cart
+
 		// TODO: Get first item from shopping list
 		// TODO: Walk to the first shelf
 		// TODO: take item, if no item than skip item (maybe in the future angry
