@@ -3,12 +3,14 @@ package skelemarket.simulation.people;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
 import skelemarket.simulation.map.Map;
 import skelemarket.simulation.map.PathNode;
+import skelemarket.simulation.Config;
 
 public class Customer extends Person {
 	///////////////////////////////////////////////////////////
@@ -23,7 +25,19 @@ public class Customer extends Person {
 	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
 
-		// TODO: Generate the shopping list
+		if (mapRef != null) {
+			List<String> productNames = mapRef.getProductNames();
+
+			if (!productNames.isEmpty()) {
+				Random random = new Random();
+				int amount = random.nextInt(Config.MAX_SHOPPING_LIST_SIZE) + 1;
+
+				for (int i = 0; i < amount; i++) {
+					String name = productNames.get(random.nextInt(productNames.size()));
+					mShoppingList.add(name);
+				}
+			}
+		}
 
 		// TODO: new Carrier based on the amount of products
 	}
