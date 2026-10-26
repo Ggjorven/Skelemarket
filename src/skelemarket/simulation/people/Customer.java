@@ -208,11 +208,11 @@ public class Customer extends Person {
 			return;
 		}
 
-		// TODO: Use pathfinding route instead of walking straight to the exit
-		Vec2i location = node.get().getLocation();
-		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2,
-				location.getY() - Config.CUSTOMER_HEIGHT));
-		mCurrentState = State.WalkToExit;
+		if (planPath(mapRef, node.get())) {
+			mCurrentState = State.WalkToExit;
+		} else {
+			mCurrentState = State.Finished;
+		}
 	}
 
 	private enum State {
