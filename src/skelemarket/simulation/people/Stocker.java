@@ -1,5 +1,7 @@
 package skelemarket.simulation.people;
 
+import java.util.Optional;
+
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
@@ -10,8 +12,8 @@ public class Stocker extends Employee {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private State mCurrentState = State.Idle;
+	private Optional<String> mTargetProduct = Optional.empty();
 	// TODO: carrier (RollContainer)
-	// TODO: refill task from the supermarket (which products, for which shelf)
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -31,6 +33,10 @@ public class Stocker extends Employee {
 		// and put them back
 		// TODO: Walk to the next shelf, or back to the storage for more products
 		// TODO: If the task is done: become idle again
+	}
+
+	public void setTargetProduct(String productName) {
+		mTargetProduct = Optional.of(productName);
 	}
 
 	private enum State {
