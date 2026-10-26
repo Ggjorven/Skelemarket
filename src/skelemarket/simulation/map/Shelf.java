@@ -4,8 +4,10 @@ import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2i;
 import skelemarket.simulation.people.PeopleRegister;
+import skelemarket.simulation.Config;
 
 import java.util.HashMap;
+import java.util.Random;
 
 public class Shelf extends Tile {
 	///////////////////////////////////////////////////////////
@@ -35,13 +37,17 @@ public class Shelf extends Tile {
 		mCategory = category;
 		mIsMagazine = isMagazine;
 		mProductToCapacity = new HashMap<>(productCapacities);
+		Random random = new Random();
 
 		for (java.util.Map.Entry<String, Integer> entry : mProductToCapacity.entrySet()) {
 			if (category.isBlank() || !categoryToProducts.get(category).containsKey(entry.getKey())
 					|| entry.getValue() < 0) {
 				throw new IllegalArgumentException("Invalid shelf inventory entry: " + entry.getKey());
 			}
-			mProductToCount.put(entry.getKey(), entry.getValue());
+
+			int minimumStock = (int) Math.ceil(entry.getValue() * Config.SHELF_MINIMUM_STOCK_PERCENTAGE);
+			int randomStock = random.nextInt(entry.getValue() - minimumStock + 1) + minimumStock;
+			mProductToCount.put(entry.getKey(), randomStock);
 		}
 	}
 
@@ -66,6 +72,17 @@ public class Shelf extends Tile {
 			return false;
 
 		mProductToCount.put(productName, count - 1);
+
+		float stockPercentage = (float) getProductCount(productName) / getProductCapacity(productName);
+
+		if (stockPercentage <= Config.SHELF_LOW_STOCK_PERCENTAGE) {
+			if (mIsMagazine) {
+				// TODO: Notify the Manager to buy more products for the magazine.
+			} else {
+				// TODO: Notify the Manager to send a Stocker to refill this shelf.
+			}
+		}
+
 		return true;
 	}
 
