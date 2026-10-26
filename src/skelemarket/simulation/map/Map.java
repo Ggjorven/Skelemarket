@@ -25,6 +25,8 @@ public class Map {
 	private final java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts;
 	private final java.util.Map<String, List<Shelf>> mCategoryToShelves = new HashMap<>();
 
+	private final AStarPathfinder mPathfinder = new AStarPathfinder();
+
 	///////////////////////////////////////////////////////////
 	// Methods
 
@@ -91,16 +93,18 @@ public class Map {
 	}
 
 	public List<Shelf> getShelvesForCategory(String category, boolean isMagazine) {
-		return mCategoryToShelves.getOrDefault(category, List.of()).stream()
+		return mCategoryToShelves.getOrDefault(category, new ArrayList<>()).stream()
 				.filter(shelf -> shelf.isMagazine() == isMagazine)
 				.toList();
 	}
 
 	public List<String> getProductNames() {
 		List<String> names = new ArrayList<>();
+
 		for (java.util.Map<String, ProductSpecification> products : mCategoryToProducts.values()) {
 			names.addAll(products.keySet());
 		}
+
 		return names;
 	}
 
@@ -139,6 +143,41 @@ public class Map {
 
 	public Optional<PathNode> getNode(int id) {
 		return Optional.ofNullable(mNodes.get(id));
+	}
+
+	public Optional<PathNode> getNearestNode(float x, float y) {
+		PathNode nearestNode = null;
+		double nearestDistance = Double.POSITIVE_INFINITY;
+
+		for (PathNode node : mNodes.values()) {
+			double deltaX = node.getLocation().getX() - x;
+			double deltaY = node.getLocation().getY() - y;
+
+			// NOTE: Safer way of: Math.sqrt(deltaX * deltaX + deltaY * deltaY)
+			double distance = Math.hypot(deltaX, deltaY);
+
+			if (distance < nearestDistance) {
+				nearestNode = node;
+				nearestDistance = distance;
+			}
+		}
+
+		return Optional.ofNullable(nearestNode);
+	}
+
+	public Optional<List<PathNode>> findPath(PathNode start, PathNode target) {
+		List<PathNode> path = mPathfinder.findPath(start, target);
+		return path.isEmpty() ? Optional.empty() : Optional.of(path);
+	}
+
+	public Optional<List<PathNode>> findPathToProduct(PathNode start, String productName, boolean isMagazine) {
+		Optional<PathNode> destination = getDestinationNodeForProduct(productName, isMagazine);
+
+		if (destination.isPresent()) {
+			return findPath(start, destination.get());
+		}
+
+		return Optional.empty();
 	}
 
 	public Optional<Tile> getTile(int id) {
