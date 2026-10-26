@@ -21,6 +21,7 @@ public class Customer extends Person {
 	private Carrier mCarrier = null;
 	private String mCurrentProduct  = null;
 	private Shelf mTargetShelf  = null;
+	private Checkout mTargetCheckout = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -87,10 +88,39 @@ public class Customer extends Person {
 			}
 		}
 
-		// TODO: wait in line
-		// TODO: Buy the products
-		// TODO: walk to the end point of the Store
-		// TODO: Customer Finished
+		if (mCurrentState == State.WalkToCheckout) {
+			stepTowardsDestination();
+
+			if (hasArrived()) {
+				mTargetCheckout.join(this);
+				mCurrentState = State.WaitInLine;
+			}
+		}
+
+		if (mCurrentState == State.WaitInLine) {
+			if (mTargetCheckout.isFirst(this)) {
+				startAction(Config.PAY_TICKS);
+				mCurrentState = State.Buy;
+			}
+		}
+
+		if (mCurrentState == State.Buy) {
+			tickAction();
+
+			if (isActionDone()) {
+				mCarrier.takeAll();
+				mTargetCheckout.leave(this);
+				chooseExit(mapRef);
+			}
+		}
+
+		if (mCurrentState == State.WalkToExit) {
+			stepTowardsDestination();
+
+			if (hasArrived()) {
+				mCurrentState = State.Finished;
+			}
+		}
 	}
 	private void takeCurrentProduct(Map mapRef) {
 		Optional<ProductSpecification> product = mapRef.getProduct(mCurrentProduct);
@@ -106,7 +136,7 @@ public class Customer extends Person {
 	}
 	private void chooseNextProduct(Map mapRef) {
 		if (mShoppingList.isEmpty()) {
-			mCurrentState = State.Finished;   // later: naar de kassa
+			chooseCheckout(mapRef);
 			return;
 		}
 
@@ -132,13 +162,65 @@ public class Customer extends Person {
 		mCurrentState = State.Walk;
 	}
 
+	private void chooseCheckout(Map mapRef) {
+		Checkout best = null;
+
+		for (Checkout checkout : mapRef.getCheckouts()) {
+			if (best == null || checkout.getQueueLength() < best.getQueueLength()) {
+				best = checkout;
+			}
+		}
+
+		if (best == null) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		mTargetCheckout = best;
+
+		Optional<PathNode> node = mapRef.getNodeForTile(mTargetCheckout.getID());
+		if (!node.isPresent()){
+			mCurrentState = State.Finished;
+			return;
+		}
+
+
+		// TODO: Use pathfinding route instead of walking straight to the checkout
+		Vec2i location = node.get().getLocation();
+		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2,
+				location.getY() - Config.CUSTOMER_HEIGHT));
+		mCurrentState = State.WalkToCheckout;
+	}
+
+	private void chooseExit(Map mapRef){
+		Exit exit = mapRef.getExit();
+		if (exit == null) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		Optional<PathNode> node = mapRef.getNodeForTile(exit.getID());
+		if (!node.isPresent()) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		// TODO: Use pathfinding route instead of walking straight to the exit
+		Vec2i location = node.get().getLocation();
+		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2,
+				location.getY() - Config.CUSTOMER_HEIGHT));
+		mCurrentState = State.WalkToExit;
+	}
+
 
 	private enum State {
 		TakeCart,
 		Walk,
 		TakeProduct,
+		WalkToCheckout,
 		WaitInLine,
 		Buy,
+		WalkToExit,
 		Finished
 	}
 }
