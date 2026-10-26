@@ -2,9 +2,12 @@ package skelemarket.simulation;
 
 public class Config {
 	public static final String MAP_FILE = "/map/map.json";
+
 	public static final int BASKET_CAPACITY = 50;
 	public static final int SHOPPING_CART_CAPACITY = 300;
 	public static final int ROLL_CONTAINER_CAPACITY = 1000;
+	public static final int STOCKER_COUNT = 3;
+	public static final int STOCKER_MAX_TASKS_PER_TRIP = 3;
 
 	public static final int CUSTOMER_WIDTH = 21;
 	public static final int CUSTOMER_HEIGHT = 48;
@@ -30,5 +33,5 @@ public class Config {
 
 	public static final int MAX_CUSTOMERS = 50;
 	public static final int CUSTOMER_SPAWN_INTERVAL_TICKS = 240;
-	public static final float PERSON_SPEED = 1.0f; // pixels per tick
+	public static final float PERSON_SPEED = 1.0f; // Pixels per tick
 }
