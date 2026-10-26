@@ -115,9 +115,7 @@ public class Customer extends Person {
 		}
 
 		if (mCurrentState == State.WalkToExit) {
-			stepTowardsDestination();
-
-			if (hasArrived()) {
+			if (stepAlongPath()) {
 				mCurrentState = State.Finished;
 			}
 		}
