@@ -14,6 +14,7 @@ public class Config {
 	public static final int CUSTOMER_TEXTURE_WIDTH = 7;
 	public static final int CUSTOMER_TEXTURE_HEIGHT = 16;
 	public static final int TAKE_PRODUCT_TICKS = 60;
+	public static final int PAY_TICKS = 180;
 	public static final int MAX_SHOPPING_LIST_SIZE = 5;
 
 	public static final int MAX_CUSTOMERS = 50;

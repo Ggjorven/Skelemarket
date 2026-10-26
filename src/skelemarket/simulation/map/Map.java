@@ -200,4 +200,24 @@ public class Map {
 		Logger.error("No MapLayer had an Entrance.");
 		return null;
 	}
+
+	public List<Checkout> getCheckouts() {
+		List<Checkout> checkouts = new ArrayList<>();
+
+		for (MapLayer layer : mLayers) {
+			checkouts.addAll(layer.getCheckouts());
+		}
+
+		return checkouts;
+	}
+
+	public Exit getExit() {
+		for (MapLayer layer : mLayers) {
+			if (layer.getExit() != null)
+				return layer.getExit();
+		}
+
+		Logger.error("No MapLayer had an Exit.");
+		return null;
+	}
 }

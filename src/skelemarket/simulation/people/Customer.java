@@ -7,12 +7,19 @@ import java.util.Random;
 
 import skelemarket.core.Logger;
 import skelemarket.core.Vec2f;
+import skelemarket.core.Vec2i;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
+import skelemarket.simulation.map.Map;
+import skelemarket.simulation.map.Shelf;
+import skelemarket.simulation.map.Checkout;
+import skelemarket.simulation.map.ProductSpecification;
+import skelemarket.simulation.map.PathNode;
+import skelemarket.simulation.map.Exit;
+import skelemarket.simulation.map.Tile;
 import skelemarket.simulation.carrier.Basket;
 import skelemarket.simulation.carrier.Carrier;
 import skelemarket.simulation.carrier.ShoppingCart;
-import skelemarket.simulation.map.*;
 import skelemarket.simulation.Config;
 
 public class Customer extends Person {
@@ -24,6 +31,7 @@ public class Customer extends Person {
 	private Carrier mCarrier = null;
 	private String mCurrentProduct = null;
 	private Shelf mTargetShelf = null;
+	private Checkout mTargetCheckout = null;
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -82,10 +90,37 @@ public class Customer extends Person {
 			}
 		}
 
-		// TODO: Wait in line
-		// TODO: Buy the products
-		// TODO: walk to the end point of the Store
-		// TODO: Customer Finished
+		if (mCurrentState == State.WalkToCheckout) {
+			if (stepAlongPath()) {
+				mTargetCheckout.join(this);
+				mCurrentState = State.WaitInLine;
+			}
+		}
+
+		if (mCurrentState == State.WaitInLine) {
+			if (mTargetCheckout.isFirst(this)) {
+				startAction(Config.PAY_TICKS);
+				mCurrentState = State.Buy;
+			}
+		}
+
+		if (mCurrentState == State.Buy) {
+			tickAction();
+
+			if (isActionDone()) {
+				mCarrier.takeAll();
+				mTargetCheckout.leave(this);
+				chooseExit(mapRef);
+			}
+		}
+
+		if (mCurrentState == State.WalkToExit) {
+			stepTowardsDestination();
+
+			if (hasArrived()) {
+				mCurrentState = State.Finished;
+			}
+		}
 	}
 
 	private void takeCurrentProduct(Map mapRef) {
@@ -104,7 +139,7 @@ public class Customer extends Person {
 
 	private void chooseNextProduct(Map mapRef) {
 		if (mShoppingList.isEmpty()) {
-			mCurrentState = State.Finished; // later: naar de kassa
+			chooseCheckout(mapRef);
 			return;
 		}
 
@@ -131,27 +166,63 @@ public class Customer extends Person {
 		}
 	}
 
-	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map mapRef) {
-		if (!mShoppingList.isEmpty()) {
-			String nextProduct = mShoppingList.get(0);
-			Optional<PathNode> destination = mapRef.getDestinationNodeForProduct(nextProduct, false);
+	private void chooseCheckout(Map mapRef) {
+		Checkout best = null;
 
-			if (destination.isEmpty()) {
-				Logger.error("Attempted to find the Node for %s, but there is none.", nextProduct);
+		for (Checkout checkout : mapRef.getCheckouts()) {
+			if (best == null || checkout.getQueueLength() < best.getQueueLength()) {
+				best = checkout;
 			}
-
-			return destination;
 		}
 
-		return Optional.empty();
+		if (best == null) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		mTargetCheckout = best;
+
+		Optional<PathNode> node = mapRef.getNodeForTile(mTargetCheckout.getID());
+		if (!node.isPresent()) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		if (planPath(mapRef, node.get())) {
+			mCurrentState = State.WalkToCheckout;
+		} else {
+			mCurrentState = State.Finished;
+		}
+	}
+
+	private void chooseExit(Map mapRef) {
+		Exit exit = mapRef.getExit();
+		if (exit == null) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		Optional<PathNode> node = mapRef.getNodeForTile(exit.getID());
+		if (!node.isPresent()) {
+			mCurrentState = State.Finished;
+			return;
+		}
+
+		// TODO: Use pathfinding route instead of walking straight to the exit
+		Vec2i location = node.get().getLocation();
+		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2,
+				location.getY() - Config.CUSTOMER_HEIGHT));
+		mCurrentState = State.WalkToExit;
 	}
 
 	private enum State {
 		TakeCart,
 		Walk,
 		TakeProduct,
+		WalkToCheckout,
 		WaitInLine,
 		Buy,
+		WalkToExit,
 		Finished
 	}
 }
