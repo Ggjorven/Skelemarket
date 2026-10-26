@@ -2,9 +2,9 @@ package skelemarket.simulation;
 
 public class Config {
 	public static final String MAP_FILE = "/map/map.json";
-	public static final int BASKET_CAPACITY = 5;
-	public static final int SHOPPING_CART_CAPACITY = 15;
-	public static final int ROLL_CONTAINER_CAPACITY = 20;
+	public static final int BASKET_CAPACITY = 50;
+	public static final int SHOPPING_CART_CAPACITY = 300;
+	public static final int ROLL_CONTAINER_CAPACITY = 1000;
 
 	public static final int CUSTOMER_WIDTH = 21;
 	public static final int CUSTOMER_HEIGHT = 48;
@@ -13,6 +13,15 @@ public class Config {
 	public static final int CUSTOMER_TEXTURE_Y = 0;
 	public static final int CUSTOMER_TEXTURE_WIDTH = 7;
 	public static final int CUSTOMER_TEXTURE_HEIGHT = 16;
+
+	public static final int STOCKER_WIDTH = 21;
+	public static final int STOCKER_HEIGHT = 48;
+	public static final String STOCKER_TEXTURE = "/textures/carbonova-supermarket/employee.png";
+	public static final int STOCKER_TEXTURE_X = 0;
+	public static final int STOCKER_TEXTURE_Y = 0;
+	public static final int STOCKER_TEXTURE_WIDTH = 7;
+	public static final int STOCKER_TEXTURE_HEIGHT = 16;
+
 	public static final int TAKE_PRODUCT_TICKS = 60;
 	public static final int PAY_TICKS = 180;
 	public static final int MAX_SHOPPING_LIST_SIZE = 5;
