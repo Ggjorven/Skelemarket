@@ -14,7 +14,7 @@ import skelemarket.simulation.people.PeopleRegister;
 public class Map {
 	///////////////////////////////////////////////////////////
 	// Variables
-	///////////////////////////////////////////////////////////
+	/// ////////////////////////////////////////////////////////
 	private final Colour mBackgroundColour;
 	private final List<MapLayer> mLayers;
 
@@ -27,10 +27,11 @@ public class Map {
 
 	///////////////////////////////////////////////////////////
 	// Methods
-	///////////////////////////////////////////////////////////
+
+	/// ////////////////////////////////////////////////////////
 	public Map(List<MapLayer> layers, Colour backgroundColour,
-			java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts,
-			java.util.Map<Integer, PathNode> nodes) {
+			   java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts,
+			   java.util.Map<Integer, PathNode> nodes) {
 		mLayers = layers;
 		mBackgroundColour = backgroundColour;
 
@@ -95,9 +96,9 @@ public class Map {
 				.toList();
 	}
 
-	public List<String> getProductNames(){
+	public List<String> getProductNames() {
 		List<String> names = new ArrayList<>();
-		for (java.util.Map<String, ProductSpecification> products : mCategoryToProducts.values()){
+		for (java.util.Map<String, ProductSpecification> products : mCategoryToProducts.values()) {
 			names.addAll(products.keySet());
 		}
 		return names;
@@ -159,6 +160,25 @@ public class Map {
 		}
 
 		Logger.error("No MapLayer had an Entrance.");
+		return null;
+	}
+
+	public List<Checkout> getCheckouts() {
+		List<Checkout> checkouts = new ArrayList<>();
+
+		for (MapLayer layer : mLayers) {
+			checkouts.addAll(layer.getCheckouts());
+		}
+
+		return checkouts;
+	}
+
+	public Exit getExit() {
+		for (MapLayer layer : mLayers) {
+			if (layer.getExit() != null)
+				return layer.getExit();
+		}
+		Logger.error("No MapLayer had an Exit.");
 		return null;
 	}
 }
