@@ -122,7 +122,7 @@ public class Map {
 			List<Shelf> shelves = getShelvesForCategory(category.get(), isMagazine);
 
 			for (Shelf shelf : shelves) {
-				if (shelf.getProductCapacity(productName) == 0)
+				if (shelf.getProductCount(productName) == 0)
 					continue;
 
 				Optional<PathNode> node = getNodeForShelf(shelf);
@@ -130,6 +130,7 @@ public class Map {
 					return node;
 			}
 
+			Logger.warn("No node/shelf has %s's", productName);
 			return Optional.empty();
 		}
 
