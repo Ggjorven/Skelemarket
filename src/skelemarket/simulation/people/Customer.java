@@ -7,12 +7,20 @@ import java.util.Random;
 
 import skelemarket.core.Logger;
 import skelemarket.core.Vec2f;
+import skelemarket.core.Vec2i;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
+import skelemarket.simulation.map.Map;
+import skelemarket.simulation.map.Shelf;
+import skelemarket.simulation.map.Checkout;
+import skelemarket.simulation.map.ProductSpecification;
+import skelemarket.simulation.map.PathNode;
+import skelemarket.simulation.map.Exit;
+import skelemarket.simulation.map.Tile;
+import skelemarket.simulation.people.Customer;
 import skelemarket.simulation.carrier.Basket;
 import skelemarket.simulation.carrier.Carrier;
 import skelemarket.simulation.carrier.ShoppingCart;
-import skelemarket.simulation.map.*;
 import skelemarket.simulation.Config;
 
 public class Customer extends Person {
@@ -22,8 +30,8 @@ public class Customer extends Person {
 	private State mCurrentState = State.TakeCart;
 	private final List<String> mShoppingList = new ArrayList<>();
 	private Carrier mCarrier = null;
-	private String mCurrentProduct  = null;
-	private Shelf mTargetShelf  = null;
+	private String mCurrentProduct = null;
+	private Shelf mTargetShelf = null;
 	private Checkout mTargetCheckout = null;
 
 	///////////////////////////////////////////////////////////
@@ -178,11 +186,10 @@ public class Customer extends Person {
 		mTargetCheckout = best;
 
 		Optional<PathNode> node = mapRef.getNodeForTile(mTargetCheckout.getID());
-		if (!node.isPresent()){
+		if (!node.isPresent()) {
 			mCurrentState = State.Finished;
 			return;
 		}
-
 
 		// TODO: Use pathfinding route instead of walking straight to the checkout
 		Vec2i location = node.get().getLocation();
@@ -191,7 +198,7 @@ public class Customer extends Person {
 		mCurrentState = State.WalkToCheckout;
 	}
 
-	private void chooseExit(Map mapRef){
+	private void chooseExit(Map mapRef) {
 		Exit exit = mapRef.getExit();
 		if (exit == null) {
 			mCurrentState = State.Finished;
