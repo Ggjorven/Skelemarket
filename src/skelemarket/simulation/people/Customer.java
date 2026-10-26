@@ -218,21 +218,6 @@ public class Customer extends Person {
 		mCurrentState = State.WalkToExit;
 	}
 
-	public Optional<PathNode> getNextDestination(skelemarket.simulation.map.Map mapRef) {
-		if (!mShoppingList.isEmpty()) {
-			String nextProduct = mShoppingList.get(0);
-			Optional<PathNode> destination = mapRef.getDestinationNodeForProduct(nextProduct, false);
-
-			if (destination.isEmpty()) {
-				Logger.error("Attempted to find the Node for %s, but there is none.", nextProduct);
-			}
-
-			return destination;
-		}
-
-		return Optional.empty();
-	}
-
 	private enum State {
 		TakeCart,
 		Walk,
