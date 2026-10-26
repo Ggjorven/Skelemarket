@@ -14,7 +14,7 @@ import skelemarket.simulation.people.PeopleRegister;
 public class Map {
 	///////////////////////////////////////////////////////////
 	// Variables
-	/// ////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 	private final Colour mBackgroundColour;
 	private final List<MapLayer> mLayers;
 
@@ -29,8 +29,7 @@ public class Map {
 
 	///////////////////////////////////////////////////////////
 	// Methods
-
-	/// ////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////
 	public Map(List<MapLayer> layers, Colour backgroundColour,
 			   java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts,
 			   java.util.Map<Integer, PathNode> nodes) {
@@ -217,6 +216,7 @@ public class Map {
 			if (layer.getExit() != null)
 				return layer.getExit();
 		}
+		
 		Logger.error("No MapLayer had an Exit.");
 		return null;
 	}
