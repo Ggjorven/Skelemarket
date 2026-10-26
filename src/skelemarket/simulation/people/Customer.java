@@ -17,7 +17,6 @@ import skelemarket.simulation.map.ProductSpecification;
 import skelemarket.simulation.map.PathNode;
 import skelemarket.simulation.map.Exit;
 import skelemarket.simulation.map.Tile;
-import skelemarket.simulation.people.Customer;
 import skelemarket.simulation.carrier.Basket;
 import skelemarket.simulation.carrier.Carrier;
 import skelemarket.simulation.carrier.ShoppingCart;
@@ -92,9 +91,7 @@ public class Customer extends Person {
 		}
 
 		if (mCurrentState == State.WalkToCheckout) {
-			stepTowardsDestination();
-
-			if (hasArrived()) {
+			if (stepAlongPath()) {
 				mTargetCheckout.join(this);
 				mCurrentState = State.WaitInLine;
 			}
@@ -191,11 +188,11 @@ public class Customer extends Person {
 			return;
 		}
 
-		// TODO: Use pathfinding route instead of walking straight to the checkout
-		Vec2i location = node.get().getLocation();
-		setDestination(new Vec2f(location.getX() - Config.CUSTOMER_WIDTH / 2,
-				location.getY() - Config.CUSTOMER_HEIGHT));
-		mCurrentState = State.WalkToCheckout;
+		if (planPath(mapRef, node.get())) {
+			mCurrentState = State.WalkToCheckout;
+		} else {
+			mCurrentState = State.Finished;
+		}
 	}
 
 	private void chooseExit(Map mapRef) {
