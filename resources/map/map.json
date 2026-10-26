@@ -46,12 +46,223 @@
   ],
   "categories": [
     "FRUIT",
-    "VEGETABLES"
+    "VEGETABLES",
+    "DAIRY",
+    "BAKERY",
+    "MEAT",
+    "SEAFOOD",
+    "BEVERAGES",
+    "SNACKS",
+    "PANTRY"
   ],
   "items": [
     {
       "name": "PUMPKIN",
       "category": "VEGETABLES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CARROT",
+      "category": "VEGETABLES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "APPLE",
+      "category": "FRUIT",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BANANA",
+      "category": "FRUIT",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "MILK",
+      "category": "DAIRY",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHEESE",
+      "category": "DAIRY",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BREAD",
+      "category": "BAKERY",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CROISSANT",
+      "category": "BAKERY",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHICKEN",
+      "category": "MEAT",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BEEF",
+      "category": "MEAT",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "SALMON",
+      "category": "SEAFOOD",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "TUNA",
+      "category": "SEAFOOD",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "WATER",
+      "category": "BEVERAGES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "JUICE",
+      "category": "BEVERAGES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHIPS",
+      "category": "SNACKS",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "COOKIES",
+      "category": "SNACKS",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "RICE",
+      "category": "PANTRY",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "PASTA",
+      "category": "PANTRY",
       "weight": 5,
       "image": "/textures/enhanced/pumpkin_sheet.png",
       "source": [
@@ -5930,13 +6141,17 @@
         {
           "item": "PUMPKIN",
           "capacity": 4
+        },
+        {
+          "item": "CARROT",
+          "capacity": 4
         }
       ]
     },
     {
       "id": 119,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "FRUIT",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -5956,7 +6171,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "APPLE",
+          "capacity": 4
+        },
+        {
+          "item": "BANANA",
           "capacity": 4
         }
       ]
@@ -5964,7 +6183,7 @@
     {
       "id": 402,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "DAIRY",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -5984,7 +6203,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "MILK",
+          "capacity": 4
+        },
+        {
+          "item": "CHEESE",
           "capacity": 4
         }
       ]
@@ -5992,7 +6215,7 @@
     {
       "id": 403,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "BAKERY",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6012,7 +6235,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "BREAD",
+          "capacity": 4
+        },
+        {
+          "item": "CROISSANT",
           "capacity": 4
         }
       ]
@@ -6035,12 +6262,16 @@
         96
       ],
       "location": [
-        800,
+        832,
         384
       ],
       "inventory": [
         {
           "item": "PUMPKIN",
+          "capacity": 4
+        },
+        {
+          "item": "CARROT",
           "capacity": 4
         }
       ]
@@ -6048,7 +6279,7 @@
     {
       "id": 469,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "FRUIT",
       "magazine": true,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6068,7 +6299,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "APPLE",
+          "capacity": 4
+        },
+        {
+          "item": "BANANA",
           "capacity": 4
         }
       ]
@@ -6076,7 +6311,7 @@
     {
       "id": 470,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "DAIRY",
       "magazine": true,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6096,7 +6331,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "MILK",
+          "capacity": 4
+        },
+        {
+          "item": "CHEESE",
           "capacity": 4
         }
       ]
@@ -6104,7 +6343,7 @@
     {
       "id": 471,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "BAKERY",
       "magazine": true,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6124,35 +6363,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "BREAD",
           "capacity": 4
-        }
-      ]
-    },
-    {
-      "id": 472,
-      "type": "SHELF",
-      "category": "VEGETABLES",
-      "magazine": true,
-      "image": "/textures/pumpkin/sheet.png",
-      "layer": 4,
-      "source": [
-        192,
-        64,
-        32,
-        96
-      ],
-      "size": [
-        32,
-        96
-      ],
-      "location": [
-        1216,
-        448
-      ],
-      "inventory": [
+        },
         {
-          "item": "PUMPKIN",
+          "item": "CROISSANT",
           "capacity": 4
         }
       ]
@@ -6160,7 +6375,7 @@
     {
       "id": 473,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "MEAT",
       "magazine": true,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6180,7 +6395,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "CHICKEN",
+          "capacity": 4
+        },
+        {
+          "item": "BEEF",
           "capacity": 4
         }
       ]
@@ -6188,7 +6407,7 @@
     {
       "id": 474,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "MEAT",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6208,7 +6427,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "CHICKEN",
+          "capacity": 4
+        },
+        {
+          "item": "BEEF",
           "capacity": 4
         }
       ]
@@ -6216,7 +6439,7 @@
     {
       "id": 475,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "SEAFOOD",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6236,7 +6459,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "SALMON",
+          "capacity": 4
+        },
+        {
+          "item": "TUNA",
           "capacity": 4
         }
       ]
@@ -6244,7 +6471,7 @@
     {
       "id": 476,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "BEVERAGES",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6264,7 +6491,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "WATER",
+          "capacity": 4
+        },
+        {
+          "item": "JUICE",
           "capacity": 4
         }
       ]
@@ -6272,7 +6503,7 @@
     {
       "id": 477,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "SNACKS",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6292,7 +6523,11 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "CHIPS",
+          "capacity": 4
+        },
+        {
+          "item": "COOKIES",
           "capacity": 4
         }
       ]
@@ -6300,7 +6535,7 @@
     {
       "id": 478,
       "type": "SHELF",
-      "category": "VEGETABLES",
+      "category": "PANTRY",
       "magazine": false,
       "image": "/textures/pumpkin/sheet.png",
       "layer": 4,
@@ -6320,7 +6555,139 @@
       ],
       "inventory": [
         {
-          "item": "PUMPKIN",
+          "item": "RICE",
+          "capacity": 4
+        },
+        {
+          "item": "PASTA",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 483,
+      "type": "SHELF",
+      "category": "SEAFOOD",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        1184,
+        384
+      ],
+      "inventory": [
+        {
+          "item": "SALMON",
+          "capacity": 4
+        },
+        {
+          "item": "TUNA",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 472,
+      "type": "SHELF",
+      "category": "BEVERAGES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        1216,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "WATER",
+          "capacity": 4
+        },
+        {
+          "item": "JUICE",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 484,
+      "type": "SHELF",
+      "category": "SNACKS",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        864,
+        512
+      ],
+      "inventory": [
+        {
+          "item": "CHIPS",
+          "capacity": 4
+        },
+        {
+          "item": "COOKIES",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 485,
+      "type": "SHELF",
+      "category": "PANTRY",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        992,
+        512
+      ],
+      "inventory": [
+        {
+          "item": "RICE",
+          "capacity": 4
+        },
+        {
+          "item": "PASTA",
           "capacity": 4
         }
       ]
@@ -6695,7 +7062,7 @@
       {
         "id": 6,
         "location": [
-          478,
+          471,
           160
         ],
         "targets": []
@@ -6703,8 +7070,8 @@
       {
         "id": 7,
         "location": [
-          446,
-          158
+          406,
+          128
         ],
         "targets": [
           "t402"
@@ -6713,8 +7080,8 @@
       {
         "id": 8,
         "location": [
-          445,
-          251
+          403,
+          257
         ],
         "targets": [
           "t403"
@@ -6795,8 +7162,8 @@
       {
         "id": 20,
         "location": [
-          640,
-          125
+          639,
+          117
         ],
         "targets": [
           "t119"
@@ -6806,7 +7173,7 @@
         "id": 21,
         "location": [
           478,
-          117
+          113
         ],
         "targets": [
           "t117"
@@ -6815,7 +7182,7 @@
       {
         "id": 22,
         "location": [
-          831,
+          840,
           158
         ],
         "targets": [
@@ -6825,16 +7192,16 @@
       {
         "id": 23,
         "location": [
-          608,
-          288
+          610,
+          252
         ],
         "targets": []
       },
       {
         "id": 24,
         "location": [
-          447,
-          384
+          473,
+          383
         ],
         "targets": []
       },
@@ -6857,8 +7224,8 @@
       {
         "id": 27,
         "location": [
-          1126,
-          509
+          1125,
+          501
         ],
         "targets": []
       },
@@ -6873,8 +7240,8 @@
       {
         "id": 29,
         "location": [
-          848,
-          619
+          844,
+          623
         ],
         "targets": [
           "t471"
@@ -6883,19 +7250,16 @@
       {
         "id": 30,
         "location": [
-          844,
-          514
+          865,
+          500
         ],
-        "targets": [
-          "t468",
-          "t470"
-        ]
+        "targets": []
       },
       {
         "id": 31,
         "location": [
-          996,
-          511
+          989,
+          501
         ],
         "targets": [
           "t469"
@@ -6904,8 +7268,8 @@
       {
         "id": 32,
         "location": [
-          1168,
-          509
+          1197,
+          523
         ],
         "targets": [
           "t472"
@@ -6914,8 +7278,8 @@
       {
         "id": 33,
         "location": [
-          1168,
-          606
+          1195,
+          593
         ],
         "targets": [
           "t473"
@@ -7005,8 +7369,90 @@
           117,
           127
         ],
+        "targets": []
+      },
+      {
+        "id": 44,
+        "location": [
+          1193,
+          483
+        ],
+        "targets": [
+          "t483"
+        ]
+      },
+      {
+        "id": 45,
+        "location": [
+          836,
+          501
+        ],
+        "targets": [
+          "t470"
+        ]
+      },
+      {
+        "id": 46,
+        "location": [
+          865,
+          480
+        ],
+        "targets": [
+          "t468"
+        ]
+      },
+      {
+        "id": 47,
+        "location": [
+          820,
+          617
+        ],
+        "targets": []
+      },
+      {
+        "id": 48,
+        "location": [
+          97,
+          82
+        ],
         "targets": [
           "t391"
+        ]
+      },
+      {
+        "id": 49,
+        "location": [
+          895,
+          627
+        ],
+        "targets": []
+      },
+      {
+        "id": 50,
+        "location": [
+          894,
+          613
+        ],
+        "targets": [
+          "t484"
+        ]
+      },
+      {
+        "id": 51,
+        "location": [
+          1027,
+          629
+        ],
+        "targets": []
+      },
+      {
+        "id": 52,
+        "location": [
+          1026,
+          610
+        ],
+        "targets": [
+          "t485"
         ]
       }
     ],
@@ -7144,10 +7590,6 @@
         "n30"
       ],
       [
-        "n30",
-        "n29"
-      ],
-      [
         "n27",
         "n28"
       ],
@@ -7178,6 +7620,46 @@
       [
         "n40",
         "n43"
+      ],
+      [
+        "n43",
+        "n48"
+      ],
+      [
+        "n30",
+        "n45"
+      ],
+      [
+        "n45",
+        "n29"
+      ],
+      [
+        "n29",
+        "n49"
+      ],
+      [
+        "n49",
+        "n51"
+      ],
+      [
+        "n51",
+        "n28"
+      ],
+      [
+        "n51",
+        "n52"
+      ],
+      [
+        "n49",
+        "n50"
+      ],
+      [
+        "n30",
+        "n46"
+      ],
+      [
+        "n27",
+        "n44"
       ]
     ]
   }

@@ -119,7 +119,19 @@ public class Map {
 		Optional<String> category = getCategoryForProduct(productName);
 
 		if (category.isPresent()) {
-			return getDestinationNodeForCategory(category.get(), isMagazine);
+			List<Shelf> shelves = getShelvesForCategory(category.get(), isMagazine);
+
+			for (Shelf shelf : shelves) {
+				if (shelf.getProductCount(productName) == 0)
+					continue;
+
+				Optional<PathNode> node = getNodeForShelf(shelf);
+				if (node.isPresent())
+					return node;
+			}
+
+			Logger.warn("No node/shelf has %s's", productName);
+			return Optional.empty();
 		}
 
 		Logger.warn("Tried retrieving a node for product: %s, but there is no category present.", productName);
