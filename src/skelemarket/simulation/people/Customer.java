@@ -47,7 +47,7 @@ public class Customer extends Person {
 			Random random = new Random();
 
 			if (!productNames.isEmpty()) {
-				// Collections.shuffle(productNames, random);
+				Collections.shuffle(productNames, random);
 				int amount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size())) + 1;
 
 				for (String name : productNames) {
