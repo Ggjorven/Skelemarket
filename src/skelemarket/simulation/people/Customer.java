@@ -1,13 +1,13 @@
 package skelemarket.simulation.people;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 import skelemarket.core.Logger;
 import skelemarket.core.Vec2f;
-import skelemarket.core.Vec2i;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.simulation.map.Map;
@@ -42,20 +42,24 @@ public class Customer extends Person {
 		int totalUnits = 0;
 
 		if (mapRef != null) {
-			List<String> productNames = mapRef.getProductNames();
+			List<String> productNames = new ArrayList<>(mapRef.getProductNames());
+
+			Random random = new Random();
 
 			if (!productNames.isEmpty()) {
-				Random random = new Random();
-				int amount = random.nextInt(Config.MAX_SHOPPING_LIST_SIZE) + 1;
+				// Collections.shuffle(productNames, random);
+				int amount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size())) + 1;
 
-				for (int i = 0; i < amount; i++) {
-					String name = productNames.get(random.nextInt(productNames.size()));
-					mShoppingList.add(name);
+				for (String name : productNames) {
+					if (mShoppingList.size() == amount)
+						break;
 
 					Optional<ProductSpecification> product = mapRef.getProduct(name);
-					if (product.isPresent()) {
-						totalUnits = totalUnits + product.get().getWeight();
-					}
+					if (product.isEmpty() || totalUnits + product.get().getWeight() > Config.SHOPPING_CART_CAPACITY)
+						continue;
+
+					mShoppingList.add(name);
+					totalUnits += product.get().getWeight();
 				}
 			}
 		}
@@ -84,8 +88,8 @@ public class Customer extends Person {
 			tickAction();
 
 			if (isActionDone()) {
-				takeCurrentProduct(mapRef);
-				mShoppingList.remove(0);
+				if (takeCurrentProduct(mapRef))
+					mShoppingList.remove(0);
 				chooseNextProduct(mapRef);
 			}
 		}
@@ -121,14 +125,21 @@ public class Customer extends Person {
 		}
 	}
 
-	private void takeCurrentProduct(Map mapRef) {
+	private boolean takeCurrentProduct(Map mapRef) {
 		Optional<ProductSpecification> product = mapRef.getProduct(mCurrentProduct);
 
 		if (product.isPresent() && mTargetShelf != null
 				&& mCarrier.canAdd(product.get())
 				&& mTargetShelf.takeProduct(mCurrentProduct)) {
 			mCarrier.add(product.get());
+			return true;
 		}
+
+		return false;
+	}
+
+	public List<String> getShoppingList() {
+		return List.copyOf(mShoppingList);
 	}
 
 	public boolean isFinished() {
@@ -144,7 +155,11 @@ public class Customer extends Person {
 		mCurrentProduct = mShoppingList.get(0);
 
 		Optional<PathNode> node = mapRef.getDestinationNodeForProduct(mCurrentProduct, false);
+		if (node.isEmpty())
+			node = mapRef.getDestinationNodeForProduct(mCurrentProduct, true);
+
 		if (!node.isPresent()) {
+			Logger.warn("Skipping unavailable product: %s.", mCurrentProduct);
 			mShoppingList.remove(0);
 			chooseNextProduct(mapRef);
 			return;
