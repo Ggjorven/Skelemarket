@@ -6035,7 +6035,7 @@
         96
       ],
       "location": [
-        800,
+        832,
         384
       ],
       "inventory": [
@@ -6121,34 +6121,6 @@
       "location": [
         768,
         544
-      ],
-      "inventory": [
-        {
-          "item": "PUMPKIN",
-          "capacity": 4
-        }
-      ]
-    },
-    {
-      "id": 472,
-      "type": "SHELF",
-      "category": "VEGETABLES",
-      "magazine": true,
-      "image": "/textures/pumpkin/sheet.png",
-      "layer": 4,
-      "source": [
-        192,
-        64,
-        32,
-        96
-      ],
-      "size": [
-        32,
-        96
-      ],
-      "location": [
-        1216,
-        448
       ],
       "inventory": [
         {
@@ -6317,6 +6289,118 @@
       "location": [
         256,
         544
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 483,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        1184,
+        384
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 472,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        1216,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 484,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        864,
+        512
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 4
+        }
+      ]
+    },
+    {
+      "id": 485,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        992,
+        512
       ],
       "inventory": [
         {
@@ -6695,7 +6779,7 @@
       {
         "id": 6,
         "location": [
-          478,
+          471,
           160
         ],
         "targets": []
@@ -6703,8 +6787,8 @@
       {
         "id": 7,
         "location": [
-          446,
-          158
+          406,
+          128
         ],
         "targets": [
           "t402"
@@ -6713,8 +6797,8 @@
       {
         "id": 8,
         "location": [
-          445,
-          251
+          403,
+          257
         ],
         "targets": [
           "t403"
@@ -6795,8 +6879,8 @@
       {
         "id": 20,
         "location": [
-          640,
-          125
+          639,
+          117
         ],
         "targets": [
           "t119"
@@ -6806,7 +6890,7 @@
         "id": 21,
         "location": [
           478,
-          117
+          113
         ],
         "targets": [
           "t117"
@@ -6815,7 +6899,7 @@
       {
         "id": 22,
         "location": [
-          831,
+          840,
           158
         ],
         "targets": [
@@ -6825,16 +6909,16 @@
       {
         "id": 23,
         "location": [
-          608,
-          288
+          610,
+          252
         ],
         "targets": []
       },
       {
         "id": 24,
         "location": [
-          447,
-          384
+          473,
+          383
         ],
         "targets": []
       },
@@ -6857,8 +6941,8 @@
       {
         "id": 27,
         "location": [
-          1126,
-          509
+          1125,
+          501
         ],
         "targets": []
       },
@@ -6873,8 +6957,8 @@
       {
         "id": 29,
         "location": [
-          848,
-          619
+          844,
+          623
         ],
         "targets": [
           "t471"
@@ -6883,19 +6967,16 @@
       {
         "id": 30,
         "location": [
-          844,
-          514
+          865,
+          500
         ],
-        "targets": [
-          "t468",
-          "t470"
-        ]
+        "targets": []
       },
       {
         "id": 31,
         "location": [
-          996,
-          511
+          989,
+          501
         ],
         "targets": [
           "t469"
@@ -6904,8 +6985,8 @@
       {
         "id": 32,
         "location": [
-          1168,
-          509
+          1197,
+          523
         ],
         "targets": [
           "t472"
@@ -6914,8 +6995,8 @@
       {
         "id": 33,
         "location": [
-          1168,
-          606
+          1195,
+          593
         ],
         "targets": [
           "t473"
@@ -7005,8 +7086,90 @@
           117,
           127
         ],
+        "targets": []
+      },
+      {
+        "id": 44,
+        "location": [
+          1193,
+          483
+        ],
+        "targets": [
+          "t483"
+        ]
+      },
+      {
+        "id": 45,
+        "location": [
+          836,
+          501
+        ],
+        "targets": [
+          "t470"
+        ]
+      },
+      {
+        "id": 46,
+        "location": [
+          865,
+          480
+        ],
+        "targets": [
+          "t468"
+        ]
+      },
+      {
+        "id": 47,
+        "location": [
+          820,
+          617
+        ],
+        "targets": []
+      },
+      {
+        "id": 48,
+        "location": [
+          97,
+          82
+        ],
         "targets": [
           "t391"
+        ]
+      },
+      {
+        "id": 49,
+        "location": [
+          895,
+          627
+        ],
+        "targets": []
+      },
+      {
+        "id": 50,
+        "location": [
+          894,
+          613
+        ],
+        "targets": [
+          "t484"
+        ]
+      },
+      {
+        "id": 51,
+        "location": [
+          1027,
+          629
+        ],
+        "targets": []
+      },
+      {
+        "id": 52,
+        "location": [
+          1026,
+          610
+        ],
+        "targets": [
+          "t485"
         ]
       }
     ],
@@ -7144,10 +7307,6 @@
         "n30"
       ],
       [
-        "n30",
-        "n29"
-      ],
-      [
         "n27",
         "n28"
       ],
@@ -7178,6 +7337,46 @@
       [
         "n40",
         "n43"
+      ],
+      [
+        "n43",
+        "n48"
+      ],
+      [
+        "n30",
+        "n45"
+      ],
+      [
+        "n45",
+        "n29"
+      ],
+      [
+        "n29",
+        "n49"
+      ],
+      [
+        "n49",
+        "n51"
+      ],
+      [
+        "n51",
+        "n28"
+      ],
+      [
+        "n51",
+        "n52"
+      ],
+      [
+        "n49",
+        "n50"
+      ],
+      [
+        "n30",
+        "n46"
+      ],
+      [
+        "n27",
+        "n44"
       ]
     ]
   }
