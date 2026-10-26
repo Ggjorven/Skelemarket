@@ -109,7 +109,9 @@ public class MapLoader {
 
 			Texture texture = requireTexture(item, "image");
 			UV uv = requireUV(item, "source");
+
 			result.get(category).put(name, new ProductSpecification(name, weight, category, texture, uv));
+			Logger.trace("Added product: %s, with weight: %d in category %s.", name, weight, category);
 		}
 
 		return result;
