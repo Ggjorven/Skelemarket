@@ -216,7 +216,7 @@ public class Map {
 			if (layer.getExit() != null)
 				return layer.getExit();
 		}
-		
+
 		Logger.error("No MapLayer had an Exit.");
 		return null;
 	}
