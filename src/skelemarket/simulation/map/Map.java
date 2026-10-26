@@ -95,6 +95,14 @@ public class Map {
 				.toList();
 	}
 
+	public List<String> getProductNames(){
+		List<String> names = new ArrayList<>();
+		for (java.util.Map<String, ProductSpecification> products : mCategoryToProducts.values()){
+			names.addAll(products.keySet());
+		}
+		return names;
+	}
+
 	public Optional<PathNode> getNodeForTile(int tileID) {
 		return Optional.ofNullable(mTileToNode.get(tileID));
 	}

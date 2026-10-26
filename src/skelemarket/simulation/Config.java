@@ -13,7 +13,10 @@ public class Config {
 	public static final int CUSTOMER_TEXTURE_Y = 0;
 	public static final int CUSTOMER_TEXTURE_WIDTH = 7;
 	public static final int CUSTOMER_TEXTURE_HEIGHT = 16;
+	public static final int TAKE_PRODUCT_TICKS = 60;
+	public static final int MAX_SHOPPING_LIST_SIZE = 5;
 
 	public static final int MAX_CUSTOMERS = 50;
 	public static final int CUSTOMER_SPAWN_INTERVAL_TICKS = 240;
+	public static final float PERSON_SPEED = 1.0f; // pixels per tick
 }
