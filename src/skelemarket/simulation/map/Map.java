@@ -31,8 +31,8 @@ public class Map {
 	// Methods
 	///////////////////////////////////////////////////////////
 	public Map(List<MapLayer> layers, Colour backgroundColour,
-			   java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts,
-			   java.util.Map<Integer, PathNode> nodes) {
+			java.util.Map<String, java.util.Map<String, ProductSpecification>> categoryToProducts,
+			java.util.Map<Integer, PathNode> nodes) {
 		mLayers = layers;
 		mBackgroundColour = backgroundColour;
 
