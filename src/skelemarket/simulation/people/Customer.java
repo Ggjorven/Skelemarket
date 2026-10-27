@@ -30,6 +30,7 @@ public class Customer extends Person {
 	private final List<String> mShoppingList = new ArrayList<>();
 	private Carrier mCarrier = null;
 	private String mCurrentProduct = null;
+	private String mCurrentCheckoutProduct = null;
 	private Shelf mTargetShelf = null;
 	private Checkout mTargetCheckout = null;
 
@@ -101,19 +102,24 @@ public class Customer extends Person {
 		}
 
 		if (mCurrentState == State.WaitInLine) {
-			if (mTargetCheckout.isFirst(this)) {
-				startAction(mTargetCheckout.getPaymentTicks(mCarrier.getProductTypeCount()));
-				mCurrentState = State.Buy;
-			}
+			if (mTargetCheckout.isFirst(this))
+				startCheckoutProduct(mapRef);
 		}
 
 		if (mCurrentState == State.Buy) {
 			tickAction();
 
 			if (isActionDone()) {
-				mCarrier.takeAll();
-				mTargetCheckout.leave(this);
-				chooseExit(mapRef);
+				List<ProductSpecification> checkedOutProducts = mCarrier.takeProducts(mCurrentCheckoutProduct);
+				Logger.trace("Customer checked out %d %s at %s checkout %d. Remaining products: %s.",
+						checkedOutProducts.size(), mCurrentCheckoutProduct,
+						mTargetCheckout.isSelfService() ? "self-service" : "manned", mTargetCheckout.getID(),
+						mCarrier.getProductCounts());
+
+				if (mCarrier.hasProducts())
+					startCheckoutProduct(mapRef);
+				else
+					finishCheckout(mapRef);
 			}
 		}
 
@@ -206,10 +212,29 @@ public class Customer extends Person {
 
 		if (planPath(mapRef, node.get())) {
 			mTargetCheckout.join(this);
+			Logger.trace("Customer reserved %s checkout %d. Queue length: %d.",
+					mTargetCheckout.isSelfService() ? "self-service" : "manned", mTargetCheckout.getID(),
+					mTargetCheckout.getQueueLength());
 			mCurrentState = State.WalkToCheckout;
 		} else {
 			mCurrentState = State.Finished;
 		}
+	}
+
+	private void startCheckoutProduct(Map mapRef) {
+		mCurrentCheckoutProduct = mCarrier.getNextProductName();
+		if (mCurrentCheckoutProduct == null) {
+			finishCheckout(mapRef);
+			return;
+		}
+
+		startAction(mTargetCheckout.getPaymentTicks(1));
+		mCurrentState = State.Buy;
+	}
+
+	private void finishCheckout(Map mapRef) {
+		mTargetCheckout.leave(this);
+		chooseExit(mapRef);
 	}
 
 	private void chooseExit(Map mapRef) {

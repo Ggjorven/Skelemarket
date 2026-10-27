@@ -3,9 +3,9 @@ package skelemarket.simulation.carrier;
 import skelemarket.simulation.map.ProductSpecification;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public abstract class Carrier {
     ///////////////////////////////////////////////////////////
@@ -29,14 +29,6 @@ public abstract class Carrier {
         return total;
     }
 
-    public int getProductTypeCount() {
-        Set<String> productNames = new HashSet<>();
-        for (ProductSpecification product : mProducts)
-            productNames.add(product.getName());
-
-        return productNames.size();
-    }
-
     public boolean canAdd(ProductSpecification product){
         return getTotalWeight() + product.getWeight() <= mMaxCapacity;
     }
@@ -48,6 +40,34 @@ public abstract class Carrier {
         }
 
         return false;
+    }
+
+    public boolean hasProducts() {
+        return !mProducts.isEmpty();
+    }
+
+    public String getNextProductName() {
+        return mProducts.isEmpty() ? null : mProducts.get(0).getName();
+    }
+
+    public List<ProductSpecification> takeProducts(String productName) {
+        List<ProductSpecification> products = new ArrayList<>();
+        for (ProductSpecification product : takeAll()) {
+            if (product.getName().equals(productName))
+                products.add(product);
+            else
+                mProducts.add(product);
+        }
+
+        return products;
+    }
+
+    public Map<String, Integer> getProductCounts() {
+        Map<String, Integer> productCounts = new HashMap<>();
+        for (ProductSpecification product : mProducts)
+            productCounts.merge(product.getName(), 1, Integer::sum);
+
+        return Map.copyOf(productCounts);
     }
 
     public void add(ProductSpecification product) {
