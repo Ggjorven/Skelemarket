@@ -94,8 +94,8 @@ public class Customer extends Person {
 					startAction(Config.TAKE_PRODUCT_TICKS);
 					mCurrentState = State.TakeProduct;
 				}
+				break;
 			}
-			break;
 
 			case TakeProduct: {
 				tickAction();
@@ -104,20 +104,20 @@ public class Customer extends Person {
 						mShoppingList.remove(0);
 					chooseNextProduct(mapRef);
 				}
+				break;
 			}
-			break;
 
 			case WalkToCheckout: {
 				if (stepAlongPath())
 					mCurrentState = State.WaitInLine;
+				break;
 			}
-			break;
 
 			case WaitInLine: {
 				if (mTargetCheckout.isFirst(this))
 					startCheckoutProduct(mapRef);
+				break;
 			}
-			break;
 
 			case Buy: {
 				tickAction();
@@ -134,14 +134,14 @@ public class Customer extends Person {
 					else
 						finishCheckout(mapRef);
 				}
+				break;
 			}
-			break;
 
 			case WalkToExit: {
 				if (stepAlongPath())
 					mCurrentState = State.Finished;
+				break;
 			}
-			break;
 
 			case Finished: Logger.error("Switch case should not come here!");
 				break;
