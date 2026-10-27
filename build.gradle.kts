@@ -5,7 +5,7 @@ plugins {
 
     id("org.javamodularity.moduleplugin") version "2.1.0"
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.beryx.jlink") version "4.1.1"
 }
 
 java {
