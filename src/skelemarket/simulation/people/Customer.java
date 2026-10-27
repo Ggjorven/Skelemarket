@@ -27,9 +27,10 @@ public class Customer extends Person {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private State mCurrentState = State.TakeCart;
-	private final List<String> mShoppingList = new ArrayList<>();
+	private final List<ShoppingListItem> mShoppingList = new ArrayList<>();
 	private Carrier mCarrier = null;
 	private String mCurrentProduct = null;
+	private int mCurrentProductAmount;
 	private String mCurrentCheckoutProduct = null;
 	private Shelf mTargetShelf = null;
 	private Checkout mTargetCheckout = null;
@@ -40,7 +41,7 @@ public class Customer extends Person {
 	public Customer(Vec2f position, Vec2f size, Texture textureRef, UV coords, Map mapRef) {
 		super(position, size, textureRef, coords);
 
-		int totalUnits = 0;
+		int totalWeight = 0;
 
 		if (mapRef != null) {
 			List<String> productNames = new ArrayList<>(mapRef.getProductNames());
@@ -49,23 +50,30 @@ public class Customer extends Person {
 
 			if (!productNames.isEmpty()) {
 				Collections.shuffle(productNames, random);
-				int amount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size())) + 1;
+				int productTypeAmount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size())) + 1;
 
 				for (String name : productNames) {
-					if (mShoppingList.size() == amount)
+					if (mShoppingList.size() == productTypeAmount)
 						break;
 
 					Optional<ProductSpecification> product = mapRef.getProduct(name);
-					if (product.isEmpty() || totalUnits + product.get().getWeight() > Config.SHOPPING_CART_CAPACITY)
+					if (product.isEmpty())
 						continue;
 
-					mShoppingList.add(name);
-					totalUnits += product.get().getWeight();
+					int availableCapacity = Config.SHOPPING_CART_CAPACITY - totalWeight;
+					int maximumAmount = Math.min(Config.MAX_PRODUCTS_PER_TYPE,
+							availableCapacity / product.get().getWeight());
+					if (maximumAmount == 0)
+						continue;
+
+					int productAmount = random.nextInt(maximumAmount) + 1;
+					mShoppingList.add(new ShoppingListItem(name, productAmount));
+					totalWeight += product.get().getWeight() * productAmount;
 				}
 			}
 		}
 
-		if (totalUnits <= Config.BASKET_CAPACITY) {
+		if (totalWeight <= Config.BASKET_CAPACITY) {
 			mCarrier = new Basket();
 		} else {
 			mCarrier = new ShoppingCart();
@@ -133,23 +141,29 @@ public class Customer extends Person {
 	private boolean takeCurrentProduct(Map mapRef) {
 		Optional<ProductSpecification> product = mapRef.getProduct(mCurrentProduct);
 
-		if (product.isPresent() && mTargetShelf != null && mCarrier.canAdd(product.get())) {
-			boolean tookProduct = mTargetShelf.takeProduct(mCurrentProduct);
-			Logger.trace("Customer wanted 1 %s from %s shelf %d and took %d. Remaining products: %s.",
-					mCurrentProduct, mTargetShelf.isMagazine() ? "magazine" : "normal", mTargetShelf.getID(),
-					tookProduct ? 1 : 0, mTargetShelf.getProductCounts());
+		if (product.isPresent() && mTargetShelf != null) {
+			int taken = 0;
+			while (taken < mCurrentProductAmount && mCarrier.canAdd(product.get())
+					&& mTargetShelf.takeProduct(mCurrentProduct)) {
+				mCarrier.add(product.get());
+				taken++;
+			}
 
-			if (!tookProduct)
+			Logger.trace("Customer wanted %d %s from %s shelf %d and took %d. Remaining products: %s.",
+					mCurrentProductAmount,
+					mCurrentProduct, mTargetShelf.isMagazine() ? "magazine" : "normal", mTargetShelf.getID(),
+					taken, mTargetShelf.getProductCounts());
+
+			if (taken == 0)
 				return false;
 
-			mCarrier.add(product.get());
 			return true;
 		}
 
 		return false;
 	}
 
-	public List<String> getShoppingList() {
+	public List<ShoppingListItem> getShoppingList() {
 		return List.copyOf(mShoppingList);
 	}
 
@@ -163,7 +177,9 @@ public class Customer extends Person {
 			return;
 		}
 
-		mCurrentProduct = mShoppingList.get(0);
+		ShoppingListItem nextProduct = mShoppingList.get(0);
+		mCurrentProduct = nextProduct.productName();
+		mCurrentProductAmount = nextProduct.amount();
 
 		Optional<PathNode> node = mapRef.getDestinationNodeForProduct(mCurrentProduct, false);
 
@@ -266,5 +282,8 @@ public class Customer extends Person {
 		Buy,
 		WalkToExit,
 		Finished
+	}
+
+	public record ShoppingListItem(String productName, int amount) {
 	}
 }
