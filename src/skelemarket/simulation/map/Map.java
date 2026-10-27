@@ -25,7 +25,7 @@ public class Map {
 	private final java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts;
 	private final java.util.Map<String, List<Shelf>> mCategoryToShelves = new HashMap<>();
 
-	private final AStarPathfinder mPathfinder = new AStarPathfinder();
+	private final Pathfinder mPathfinder = new Pathfinder();
 
 	///////////////////////////////////////////////////////////
 	// Methods
