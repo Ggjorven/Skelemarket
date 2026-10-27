@@ -96,7 +96,6 @@ public class Customer extends Person {
 
 		if (mCurrentState == State.WalkToCheckout) {
 			if (stepAlongPath()) {
-				mTargetCheckout.join(this);
 				mCurrentState = State.WaitInLine;
 			}
 		}
@@ -206,6 +205,7 @@ public class Customer extends Person {
 		}
 
 		if (planPath(mapRef, node.get())) {
+			mTargetCheckout.join(this);
 			mCurrentState = State.WalkToCheckout;
 		} else {
 			mCurrentState = State.Finished;

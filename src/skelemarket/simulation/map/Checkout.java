@@ -49,7 +49,8 @@ public class Checkout extends Tile {
 	}
 
 	public void join(Customer customer) {
-		mQueue.add(customer);
+		if (!mQueue.contains(customer))
+			mQueue.add(customer);
 	}
 
 	public boolean isFirst(Customer customer) {
