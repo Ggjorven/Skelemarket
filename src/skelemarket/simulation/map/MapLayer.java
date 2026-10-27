@@ -24,9 +24,9 @@ public class MapLayer {
 	public MapLayer() {
 	}
 
-	public void update(Map mapRef, PeopleRegister peopleRegister) {
+	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 		for (Tile tile : mIDToTiles.values()) {
-			tile.update(mapRef, peopleRegister);
+			tile.update(mapRef, peopleRegisterRef);
 		}
 	}
 

@@ -72,7 +72,7 @@ public class Customer extends Person {
 	}
 
 	@Override
-	public void update(Map mapRef) {
+	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 		if (mCurrentState == State.TakeCart) {
 			chooseNextProduct(mapRef);
 		}
@@ -155,8 +155,6 @@ public class Customer extends Person {
 		mCurrentProduct = mShoppingList.get(0);
 
 		Optional<PathNode> node = mapRef.getDestinationNodeForProduct(mCurrentProduct, false);
-		if (node.isEmpty())
-			node = mapRef.getDestinationNodeForProduct(mCurrentProduct, true);
 
 		if (!node.isPresent()) {
 			Logger.warn("Skipping unavailable product: %s.", mCurrentProduct);

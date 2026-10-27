@@ -29,7 +29,7 @@ public class Tile {
 	}
 
 	// NOTE: Can be overwritten by the deriving class
-	public void update(Map mapRef, PeopleRegister peopleRegister) {
+	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 	}
 
 	public void render(Renderer rendererRef) {

@@ -3,11 +3,18 @@ package skelemarket.simulation.people;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import skelemarket.core.Renderer;
 import skelemarket.core.Texture;
+import skelemarket.core.UV;
+import skelemarket.core.Vec2f;
+import skelemarket.core.Vec2i;
 import skelemarket.simulation.Config;
 import skelemarket.simulation.map.Map;
+import skelemarket.simulation.map.PathNode;
+import skelemarket.simulation.map.Shelf;
+import skelemarket.simulation.map.Tile;
 
 public class PeopleRegister {
 	///////////////////////////////////////////////////////////
@@ -16,29 +23,53 @@ public class PeopleRegister {
 	private final java.util.Map<String, Texture> mTextures = new HashMap<>();
 
 	private final List<Customer> mCustomers = new ArrayList<>();
-	// TODO: Add a list of employees once employee spawning is implemented.
+	private final List<Stocker> mStockers = new ArrayList<>();
+	private final Manager mManager = new Manager();
+	private final Random mRandom = new Random();
 
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
 	public PeopleRegister(Map mapRef) {
 		mTextures.put(Config.CUSTOMER_TEXTURE, new Texture(Config.CUSTOMER_TEXTURE));
+		mTextures.put(Config.STOCKER_TEXTURE, new Texture(Config.STOCKER_TEXTURE));
 
-		// TODO: Create manager
+		List<Shelf> storageShelves = new ArrayList<>();
+		for (skelemarket.simulation.map.MapLayer layer : mapRef.getLayers()) {
+			for (Tile tile : layer.getTiles()) {
+				if (tile instanceof Shelf shelf && shelf.isMagazine() && mapRef.getNodeForShelf(shelf).isPresent())
+					storageShelves.add(shelf);
+			}
+		}
 
-		// TODO: Spawn cashier
+		for (int i = 0; i < Config.STOCKER_COUNT; i++) {
+			Vec2f spawnPosition = new Vec2f();
+			if (!storageShelves.isEmpty()) {
+				Shelf storageShelf = storageShelves.get(mRandom.nextInt(storageShelves.size()));
+				PathNode storageNode = mapRef.getNodeForShelf(storageShelf).orElse(null);
+				if (storageNode != null) {
+					Vec2i location = storageNode.getLocation();
+					spawnPosition = new Vec2f(location.getX() - Config.STOCKER_WIDTH / 2.0f,
+							location.getY() - Config.STOCKER_HEIGHT);
+				}
+			}
 
-		// TODO: Spawn 3 random stockers
+			mStockers.add(new Stocker(spawnPosition,
+					new Vec2f(Config.STOCKER_WIDTH, Config.STOCKER_HEIGHT), mTextures.get(Config.STOCKER_TEXTURE),
+					new UV(Config.STOCKER_TEXTURE_X, Config.STOCKER_TEXTURE_Y, Config.STOCKER_TEXTURE_WIDTH,
+							Config.STOCKER_TEXTURE_HEIGHT)));
+		}
 	}
 
 	public void update(Map mapRef) {
 		for (Customer customer : mCustomers) {
-			customer.update(mapRef);
+			customer.update(mapRef, this);
 		}
 
 		mCustomers.removeIf(Customer::isFinished);
 
-		// TODO: Update all employees.
+		for (Stocker stocker : mStockers)
+			stocker.update(mapRef, this);
 	}
 
 	public void render(Renderer rendererRef) {
@@ -46,7 +77,8 @@ public class PeopleRegister {
 			customer.render(rendererRef);
 		}
 
-		// TODO: Render all employees.
+		for (Stocker stocker : mStockers)
+			stocker.render(rendererRef);
 	}
 
 	public int getCustomerCount() {
@@ -59,5 +91,13 @@ public class PeopleRegister {
 
 	public Texture getCustomerTexture() {
 		return mTextures.get(Config.CUSTOMER_TEXTURE);
+	}
+
+	public void notifyLowStock(Shelf shelf) {
+		mManager.notifyLowStock(shelf);
+	}
+
+	public Manager getManager() {
+		return mManager;
 	}
 }

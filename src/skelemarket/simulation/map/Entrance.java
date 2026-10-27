@@ -25,12 +25,12 @@ public class Entrance extends Tile {
 	}
 
 	@Override
-	public void update(Map mapRef, PeopleRegister peopleRegister) {
+	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 		if (mCountDownTick > 0) {
 			mCountDownTick--;
 		}
 
-		if (peopleRegister.getCustomerCount() < Config.MAX_CUSTOMERS && isReadyToSpawn()) {
+		if (peopleRegisterRef.getCustomerCount() < Config.MAX_CUSTOMERS && isReadyToSpawn()) {
 			Optional<PathNode> entranceNode = mapRef.getNodeForTile(getID());
 
 			if (entranceNode.isPresent()) {
@@ -41,12 +41,12 @@ public class Entrance extends Tile {
 						nodeLocation.getY() - Config.CUSTOMER_HEIGHT);
 
 				Customer customer = new Customer(spawnPosition,
-						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), peopleRegister.getCustomerTexture(),
+						new Vec2f(Config.CUSTOMER_WIDTH, Config.CUSTOMER_HEIGHT), peopleRegisterRef.getCustomerTexture(),
 						new UV(Config.CUSTOMER_TEXTURE_X, Config.CUSTOMER_TEXTURE_Y, Config.CUSTOMER_TEXTURE_WIDTH,
 								Config.CUSTOMER_TEXTURE_HEIGHT),
 						mapRef);
 
-				peopleRegister.addCustomer(customer);
+				peopleRegisterRef.addCustomer(customer);
 			}
 		}
 	}
