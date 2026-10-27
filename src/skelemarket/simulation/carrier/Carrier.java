@@ -41,6 +41,15 @@ public abstract class Carrier {
         return getTotalWeight() + product.getWeight() <= mMaxCapacity;
     }
 
+    public boolean hasProduct(String productName) {
+        for (ProductSpecification product : mProducts) {
+            if (product.getName().equals(productName))
+                return true;
+        }
+
+        return false;
+    }
+
     public void add(ProductSpecification product) {
         mProducts.add(product);
     }

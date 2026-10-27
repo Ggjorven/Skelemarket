@@ -62,9 +62,25 @@ public class Stocker extends Employee {
 		}
 
 		if (mCurrentState == State.WalkToShelf && stepAlongPath()) {
-			deliverToShelf(mStops.get(mNextStopIndex - 1));
-			if (planNextStop(mapRef))
+			startAction(Config.RESTOCK_PRODUCT_TICKS);
+			mCurrentState = State.RestockShelf;
+		}
+
+		if (mCurrentState == State.RestockShelf) {
+			tickAction();
+			if (!isActionDone())
 				return;
+
+			Shelf targetShelf = mStops.get(mNextStopIndex - 1);
+			if (restockNextProduct(targetShelf) && hasProductsForTarget(targetShelf)) {
+				startAction(Config.RESTOCK_PRODUCT_TICKS);
+				return;
+			}
+
+			if (planNextStop(mapRef)) {
+				mCurrentState = State.WalkToShelf;
+				return;
+			}
 
 			if (hasMissingProducts() && prepareStorageStops(mapRef)) {
 				mCurrentState = State.WalkToStorage;
@@ -162,26 +178,46 @@ public class Stocker extends Employee {
 		}
 	}
 
-	private void deliverToShelf(Shelf targetShelf) {
+	private boolean restockNextProduct(Shelf targetShelf) {
 		List<ProductSpecification> remainingProducts = new ArrayList<>();
+		String productName = null;
+		int restocked = 0;
 		for (ProductSpecification product : mRollContainer.takeAll()) {
-			if (mProductTargets.get(product.getName()) != targetShelf) {
+			if (productName == null && mProductTargets.get(product.getName()) == targetShelf)
+				productName = product.getName();
+
+			if (!product.getName().equals(productName)) {
 				remainingProducts.add(product);
 				continue;
 			}
 
-			int restocked = targetShelf.addProduct(product.getName(), 1);
-			if (restocked == 0) {
+			int added = targetShelf.addProduct(product.getName(), 1);
+			if (added == 0) {
 				remainingProducts.add(product);
 				continue;
 			}
 
-			Logger.trace("Stocker restocked %d %s on normal shelf %d. Remaining products: %s.", restocked,
-					product.getName(), targetShelf.getID(), targetShelf.getProductCounts());
+			restocked += added;
 		}
 
 		for (ProductSpecification product : remainingProducts)
 			mRollContainer.add(product);
+
+		if (restocked == 0)
+			return false;
+
+		Logger.trace("Stocker restocked %d %s on normal shelf %d. Remaining products: %s.", restocked,
+				productName, targetShelf.getID(), targetShelf.getProductCounts());
+		return true;
+	}
+
+	private boolean hasProductsForTarget(Shelf targetShelf) {
+		for (java.util.Map.Entry<String, Shelf> productTarget : mProductTargets.entrySet()) {
+			if (productTarget.getValue() == targetShelf && mRollContainer.hasProduct(productTarget.getKey()))
+				return true;
+		}
+
+		return false;
 	}
 
 	private boolean hasMissingProducts() {
@@ -207,6 +243,7 @@ public class Stocker extends Employee {
 	private enum State {
 		Idle,
 		WalkToStorage,
-		WalkToShelf
+		WalkToShelf,
+		RestockShelf
 	}
 }
