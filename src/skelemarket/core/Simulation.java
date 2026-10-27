@@ -23,6 +23,9 @@ public class Simulation {
 	private Renderer mRenderer = null;
 	private Supermarket mSupermarket = null;
 
+	private long mLastFrameTime;
+	private long mUpdateAccumulator;
+
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
@@ -57,15 +60,27 @@ public class Simulation {
 	public void run() {
 		Logger.info("Started simulation");
 
-		// Update & render
+		mLastFrameTime = System.nanoTime();
+
 		new Timer() {
 			@Override
 			public void handle(long now) {
-				mSupermarket.update();
+				update(now);
 
 				mRenderer.clear();
 				mSupermarket.render(mRenderer);
 			}
 		}.start();
+	}
+
+	private void update(long now) {
+		long updateInterval = 1_000_000_000L / Config.UPDATE_TICKS_PER_SECOND;
+		mUpdateAccumulator += now - mLastFrameTime;
+		mLastFrameTime = now;
+
+		while (mUpdateAccumulator >= updateInterval) {
+			mSupermarket.update();
+			mUpdateAccumulator -= updateInterval;
+		}
 	}
 }

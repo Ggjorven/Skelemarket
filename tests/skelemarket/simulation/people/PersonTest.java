@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import skelemarket.core.Vec2f;
+import skelemarket.simulation.Config;
 
 public class PersonTest {
     @Test
@@ -12,13 +13,14 @@ public class PersonTest {
         Customer customer = new Customer(new Vec2f(0, 0), new Vec2f(), null, null, null);
         customer.setDestination(new Vec2f(10, 0));
 
-        for (int i = 0; i < 9; i++) {
+		int steps = (int) Math.ceil(10.0f / Config.PERSON_SPEED);
+		for (int i = 0; i < steps - 1; i++) {
             customer.stepTowardsDestination();
         }
-        assertFalse(customer.hasArrived(), "Should not have arrived after 9 steps.");
+		assertFalse(customer.hasArrived(), "Should not have arrived before the final step.");
 
         customer.stepTowardsDestination();
-        assertTrue(customer.hasArrived(), "Should have arrived after 10 steps.");
+		assertTrue(customer.hasArrived(), "Should have arrived after the expected number of steps.");
     }
 
     @Test
@@ -28,8 +30,10 @@ public class PersonTest {
 
         customer.stepTowardsDestination();
 
-        assertEquals(0.6f, customer.mPosition.getX(), 0.0001f, "X should move 0.6 for a diagonal step.");
-        assertEquals(0.8f, customer.mPosition.getY(), 0.0001f, "Y should move 0.8 for a diagonal step.");
+		assertEquals(Config.PERSON_SPEED * 0.6f, customer.mPosition.getX(), 0.0001f,
+				"X should move at the configured speed for a diagonal step.");
+		assertEquals(Config.PERSON_SPEED * 0.8f, customer.mPosition.getY(), 0.0001f,
+				"Y should move at the configured speed for a diagonal step.");
     }
 
     @Test

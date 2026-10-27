@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import skelemarket.core.Colour;
 import skelemarket.core.Logger;
@@ -25,7 +26,7 @@ public class Map {
 	private final java.util.Map<String, java.util.Map<String, ProductSpecification>> mCategoryToProducts;
 	private final java.util.Map<String, List<Shelf>> mCategoryToShelves = new HashMap<>();
 
-	private final AStarPathfinder mPathfinder = new AStarPathfinder();
+	private final Pathfinder mPathfinder = new Pathfinder();
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -60,9 +61,9 @@ public class Map {
 		}
 	}
 
-	public void update(PeopleRegister peopleRegister) {
+	public void update(PeopleRegister peopleRegisterRef) {
 		for (MapLayer layerRef : mLayers) {
-			layerRef.update(this, peopleRegister);
+			layerRef.update(this, peopleRegisterRef);
 		}
 	}
 
@@ -95,6 +96,29 @@ public class Map {
 		return mCategoryToShelves.getOrDefault(category, new ArrayList<>()).stream()
 				.filter(shelf -> shelf.isMagazine() == isMagazine)
 				.toList();
+	}
+
+	public List<Shelf> getLowestStockShelves(Set<Integer> excludedShelfIDs) {
+		List<Shelf> lowestStockShelves = new ArrayList<>();
+		float lowestStockPercentage = Float.POSITIVE_INFINITY;
+
+		for (List<Shelf> shelves : mCategoryToShelves.values()) {
+			for (Shelf shelf : shelves) {
+				if (shelf.isMagazine() || !shelf.hasMissingProducts() || excludedShelfIDs.contains(shelf.getID()))
+					continue;
+
+				float stockPercentage = shelf.getLowestStockPercentage();
+				if (stockPercentage < lowestStockPercentage) {
+					lowestStockPercentage = stockPercentage;
+					lowestStockShelves.clear();
+				}
+
+				if (stockPercentage == lowestStockPercentage)
+					lowestStockShelves.add(shelf);
+			}
+		}
+
+		return lowestStockShelves;
 	}
 
 	public List<String> getProductNames() {

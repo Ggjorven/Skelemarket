@@ -52,8 +52,9 @@ public class Shelf extends Tile {
 	}
 
 	@Override
-	public void update(Map mapRef, PeopleRegister peopleRegister) {
-		// TODO: Update map
+	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
+		if (!mIsMagazine && needsRestock())
+			peopleRegisterRef.notifyLowStock(this);
 	}
 
 	public int addProduct(String productName, int amount) {
@@ -73,16 +74,6 @@ public class Shelf extends Tile {
 
 		mProductToCount.put(productName, count - 1);
 
-		float stockPercentage = (float) getProductCount(productName) / getProductCapacity(productName);
-
-		if (stockPercentage <= Config.SHELF_LOW_STOCK_PERCENTAGE) {
-			if (mIsMagazine) {
-				// TODO: Notify the Manager to buy more products for the magazine.
-			} else {
-				// TODO: Notify the Manager to send a Stocker to refill this shelf.
-			}
-		}
-
 		return true;
 	}
 
@@ -94,8 +85,35 @@ public class Shelf extends Tile {
 		return mProductToCapacity.getOrDefault(productName, 0);
 	}
 
+	public boolean needsRestock() {
+		return getLowestStockPercentage() <= Config.SHELF_LOW_STOCK_PERCENTAGE;
+	}
+
+	public boolean hasMissingProducts() {
+		for (String productName : mProductToCapacity.keySet()) {
+			if (getProductCount(productName) < getProductCapacity(productName))
+				return true;
+		}
+
+		return false;
+	}
+
+	public float getLowestStockPercentage() {
+		float lowestStockPercentage = 1.0f;
+		for (String productName : mProductToCapacity.keySet()) {
+			float stockPercentage = (float) getProductCount(productName) / getProductCapacity(productName);
+			lowestStockPercentage = Math.min(lowestStockPercentage, stockPercentage);
+		}
+
+		return lowestStockPercentage;
+	}
+
 	public java.util.Map<String, Integer> getProductCapacities() {
 		return java.util.Map.copyOf(mProductToCapacity);
+	}
+
+	public java.util.Map<String, Integer> getProductCounts() {
+		return java.util.Map.copyOf(mProductToCount);
 	}
 
 	public String getCategory() {

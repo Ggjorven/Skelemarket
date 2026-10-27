@@ -35,7 +35,7 @@ public abstract class Person {
 		mTextureCoords = coords;
 	}
 
-	public abstract void update(Map mapRef);
+	public abstract void update(Map mapRef, PeopleRegister peopleRegisterRef);
 
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);

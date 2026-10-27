@@ -3,7 +3,9 @@ package skelemarket.simulation.carrier;
 import skelemarket.simulation.map.ProductSpecification;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Carrier {
     ///////////////////////////////////////////////////////////
@@ -29,6 +31,43 @@ public abstract class Carrier {
 
     public boolean canAdd(ProductSpecification product){
         return getTotalWeight() + product.getWeight() <= mMaxCapacity;
+    }
+
+    public boolean hasProduct(String productName) {
+        for (ProductSpecification product : mProducts) {
+            if (product.getName().equals(productName))
+                return true;
+        }
+
+        return false;
+    }
+
+    public boolean hasProducts() {
+        return !mProducts.isEmpty();
+    }
+
+    public String getNextProductName() {
+        return mProducts.isEmpty() ? null : mProducts.get(0).getName();
+    }
+
+    public List<ProductSpecification> takeProducts(String productName) {
+        List<ProductSpecification> products = new ArrayList<>();
+        for (ProductSpecification product : takeAll()) {
+            if (product.getName().equals(productName))
+                products.add(product);
+            else
+                mProducts.add(product);
+        }
+
+        return products;
+    }
+
+    public Map<String, Integer> getProductCounts() {
+        Map<String, Integer> productCounts = new HashMap<>();
+        for (ProductSpecification product : mProducts)
+            productCounts.merge(product.getName(), 1, Integer::sum);
+
+        return Map.copyOf(productCounts);
     }
 
     public void add(ProductSpecification product) {

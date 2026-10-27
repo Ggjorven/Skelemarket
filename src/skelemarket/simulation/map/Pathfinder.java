@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class AStarPathfinder {
+public class Pathfinder {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
-	public AStarPathfinder() {
+	public Pathfinder() {
 	}
 
 	// NOTE: Returns a list from start to finish, empty if not reachable
