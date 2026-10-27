@@ -143,8 +143,10 @@ public class Customer extends Person {
 				break;
 			}
 
-			case Finished: Logger.error("Switch case should not come here!");
+			case Finished: {
+				Logger.error("Switch case should not come here!");
 				break;
+			}
 		}
 	}
 
