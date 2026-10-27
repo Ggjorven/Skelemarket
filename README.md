@@ -4,7 +4,7 @@
 
 ## Preview
 
-// TODO: Preview images
+![Preview](./doc/images/window.png)
 
 ## Features
 
