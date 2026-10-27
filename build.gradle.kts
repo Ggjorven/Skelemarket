@@ -3,9 +3,9 @@ plugins {
     id("application")
     id("eclipse")
 
-    id("org.javamodularity.moduleplugin") version "1.8.15"
+    id("org.javamodularity.moduleplugin") version "2.1.0"
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.beryx.jlink") version "4.1.1"
 }
 
 java {
@@ -39,9 +39,9 @@ javafx {
 dependencies {
 	implementation("io.github.kusoroadeolu:ferrous:1.0.1")
 
-	implementation("com.fasterxml.jackson.core:jackson-databind:2.22.3")
+	implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4")
 
-    testImplementation(platform("org.junit:junit-bom:5.12.1"))
+    testImplementation(platform("org.junit:junit-bom:6.1.3"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
