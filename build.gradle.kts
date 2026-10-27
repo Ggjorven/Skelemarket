@@ -3,7 +3,7 @@ plugins {
     id("application")
     id("eclipse")
 
-    id("org.javamodularity.moduleplugin") version "1.8.15"
+    id("org.javamodularity.moduleplugin") version "2.1.0"
     id("org.openjfx.javafxplugin") version "0.1.0"
     id("org.beryx.jlink") version "2.25.0"
 }
