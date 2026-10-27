@@ -9,8 +9,10 @@
 ## Features
 
 - **Path Finding** – Different customers follow different paths based on an algorithm
-- **Expiry Dates** – Products that have been on the shelves too long will expire
 - **Restocking** – Warehouse employees that restock the shelves
+- **Customer queueing** – Customers queue at the checkouts
+- **Dynamic map loading** – Load any map from a file
+- **Custom map builder** – Custom web-based map builder
 
 ## Getting Started
 
