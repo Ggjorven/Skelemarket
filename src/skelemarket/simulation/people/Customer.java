@@ -27,11 +27,13 @@ public class Customer extends Person {
 	// Variables
 	///////////////////////////////////////////////////////////
 	private State mCurrentState = State.TakeCart;
+
 	private final List<ShoppingListItem> mShoppingList = new ArrayList<>();
 	private Carrier mCarrier = null;
+
 	private String mCurrentProduct = null;
 	private int mCurrentProductAmount;
-	private String mCurrentCheckoutProduct = null;
+
 	private Shelf mTargetShelf = null;
 	private Checkout mTargetCheckout = null;
 
@@ -50,7 +52,8 @@ public class Customer extends Person {
 
 			if (!productNames.isEmpty()) {
 				Collections.shuffle(productNames, random);
-				int productTypeAmount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size())) + 1;
+				int productTypeAmount = random.nextInt(Math.min(Config.MAX_SHOPPING_LIST_SIZE, productNames.size()))
+						+ 1;
 
 				for (String name : productNames) {
 					if (mShoppingList.size() == productTypeAmount)
@@ -118,9 +121,9 @@ public class Customer extends Person {
 			tickAction();
 
 			if (isActionDone()) {
-				List<ProductSpecification> checkedOutProducts = mCarrier.takeProducts(mCurrentCheckoutProduct);
+				List<ProductSpecification> checkedOutProducts = mCarrier.takeProducts(mCurrentProduct);
 				Logger.trace("Customer checked out %d %s at %s checkout %d. Remaining products: %s.",
-						checkedOutProducts.size(), mCurrentCheckoutProduct,
+						checkedOutProducts.size(), mCurrentProduct,
 						mTargetCheckout.isSelfService() ? "self-service" : "manned", mTargetCheckout.getID(),
 						mCarrier.getProductCounts());
 
@@ -238,8 +241,8 @@ public class Customer extends Person {
 	}
 
 	private void startCheckoutProduct(Map mapRef) {
-		mCurrentCheckoutProduct = mCarrier.getNextProductName();
-		if (mCurrentCheckoutProduct == null) {
+		mCurrentProduct = mCarrier.getNextProductName();
+		if (mCurrentProduct == null) {
 			finishCheckout(mapRef);
 			return;
 		}
