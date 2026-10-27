@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import skelemarket.simulation.Config;
 public class MapLoaderTest {
 	private static final String MAP = """
 			{
@@ -100,5 +101,15 @@ public class MapLoaderTest {
 		assertEquals(magazineShelfMap.getNode(2).orElseThrow(),
 				magazineShelfMap.getDestinationNodeForProduct("APPLE", true).orElseThrow());
 		assertTrue(magazineShelfMap.getDestinationNodeForProduct("APPLE", false).isEmpty());
+	}
+
+	@Test
+	void mannedCheckoutsTakeLongerThanSelfCheckouts() throws Exception {
+		Checkout selfCheckout = (Checkout) load(MAP).getTile(4).orElseThrow();
+		Checkout mannedCheckout = (Checkout) load(MAP.replace("SELF_CHECKOUT", "MANNED_CHECKOUT")).getTile(4)
+				.orElseThrow();
+
+		assertEquals(Config.SELF_CHECKOUT_PAY_TICKS, selfCheckout.getPaymentTicks());
+		assertEquals(Config.MANNED_CHECKOUT_PAY_TICKS, mannedCheckout.getPaymentTicks());
 	}
 }

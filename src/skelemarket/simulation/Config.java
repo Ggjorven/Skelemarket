@@ -26,7 +26,8 @@ public class Config {
 	public static final int STOCKER_TEXTURE_HEIGHT = 16;
 
 	public static final int TAKE_PRODUCT_TICKS = 60;
-	public static final int PAY_TICKS = 180;
+	public static final int SELF_CHECKOUT_PAY_TICKS = 180;
+	public static final int MANNED_CHECKOUT_PAY_TICKS = 210;
 	public static final int MAX_SHOPPING_LIST_SIZE = 5;
 	public static final float SHELF_MINIMUM_STOCK_PERCENTAGE = 0.20f;
 	public static final float SHELF_LOW_STOCK_PERCENTAGE = 0.30f;
