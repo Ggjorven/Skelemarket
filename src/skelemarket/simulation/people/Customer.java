@@ -86,16 +86,18 @@ public class Customer extends Person {
 	@Override
 	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 		switch (mCurrentState) {
-            case TakeCart -> chooseNextProduct(mapRef);
+			case TakeCart: chooseNextProduct(mapRef);
+			break;
 
-			case Walk -> {
+			case Walk: {
 				if (stepAlongPath()) {
 					startAction(Config.TAKE_PRODUCT_TICKS);
 					mCurrentState = State.TakeProduct;
 				}
 			}
+			break;
 
-			case TakeProduct -> {
+			case TakeProduct: {
 				tickAction();
 				if (isActionDone()) {
 					if (takeCurrentProduct(mapRef))
@@ -103,18 +105,21 @@ public class Customer extends Person {
 					chooseNextProduct(mapRef);
 				}
 			}
+			break;
 
-			case WalkToCheckout -> {
+			case WalkToCheckout: {
 				if (stepAlongPath())
 					mCurrentState = State.WaitInLine;
 			}
+			break;
 
-			case WaitInLine -> {
+			case WaitInLine: {
 				if (mTargetCheckout.isFirst(this))
 					startCheckoutProduct(mapRef);
 			}
+			break;
 
-            case Buy -> {
+			case Buy: {
 				tickAction();
 
 				if (isActionDone()) {
@@ -130,14 +135,16 @@ public class Customer extends Person {
 						finishCheckout(mapRef);
 				}
 			}
+			break;
 
-			case WalkToExit -> {
+			case WalkToExit: {
 				if (stepAlongPath())
 					mCurrentState = State.Finished;
 			}
+			break;
 
-            case Finished -> Logger.error("Switch case should not come here!");
-
+			case Finished: Logger.error("Switch case should not come here!");
+				break;
 		}
 	}
 
