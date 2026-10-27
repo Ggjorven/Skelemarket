@@ -3,7 +3,9 @@ package skelemarket.simulation.carrier;
 import skelemarket.simulation.map.ProductSpecification;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class Carrier {
     ///////////////////////////////////////////////////////////
@@ -25,6 +27,14 @@ public abstract class Carrier {
             total = total + product.getWeight();
         }
         return total;
+    }
+
+    public int getProductTypeCount() {
+        Set<String> productNames = new HashSet<>();
+        for (ProductSpecification product : mProducts)
+            productNames.add(product.getName());
+
+        return productNames.size();
     }
 
     public boolean canAdd(ProductSpecification product){

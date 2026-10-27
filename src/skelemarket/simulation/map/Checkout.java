@@ -43,8 +43,9 @@ public class Checkout extends Tile {
 			renderCashier(rendererRef);
 	}
 
-	public int getPaymentTicks() {
-		return mIsSelfService ? Config.SELF_CHECKOUT_PAY_TICKS : Config.MANNED_CHECKOUT_PAY_TICKS;
+	public int getPaymentTicks(int productTypeCount) {
+		int ticksPerProductType = mIsSelfService ? Config.SELF_CHECKOUT_PAY_TICKS : Config.MANNED_CHECKOUT_PAY_TICKS;
+		return ticksPerProductType * productTypeCount;
 	}
 
 	public void join(Customer customer) {

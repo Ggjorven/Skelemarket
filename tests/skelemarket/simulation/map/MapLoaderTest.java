@@ -109,7 +109,7 @@ public class MapLoaderTest {
 		Checkout mannedCheckout = (Checkout) load(MAP.replace("SELF_CHECKOUT", "MANNED_CHECKOUT")).getTile(4)
 				.orElseThrow();
 
-		assertEquals(Config.SELF_CHECKOUT_PAY_TICKS, selfCheckout.getPaymentTicks());
-		assertEquals(Config.MANNED_CHECKOUT_PAY_TICKS, mannedCheckout.getPaymentTicks());
+		assertEquals(Config.SELF_CHECKOUT_PAY_TICKS * 3, selfCheckout.getPaymentTicks(3));
+		assertEquals(Config.MANNED_CHECKOUT_PAY_TICKS * 3, mannedCheckout.getPaymentTicks(3));
 	}
 }

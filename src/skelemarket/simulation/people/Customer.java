@@ -103,7 +103,7 @@ public class Customer extends Person {
 
 		if (mCurrentState == State.WaitInLine) {
 			if (mTargetCheckout.isFirst(this)) {
-				startAction(mTargetCheckout.getPaymentTicks());
+				startAction(mTargetCheckout.getPaymentTicks(mCarrier.getProductTypeCount()));
 				mCurrentState = State.Buy;
 			}
 		}
