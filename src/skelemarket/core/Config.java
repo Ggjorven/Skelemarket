@@ -5,5 +5,5 @@ public class Config {
 	public static final int HEIGHT = 738; // 13 tiles
 	public static final String TITLE = "Skelemarket simulation";
 
-	public static final int SIMULATION_FPS = 120;
+	public static final int UPDATE_TICKS_PER_SECOND = 60;
 }
