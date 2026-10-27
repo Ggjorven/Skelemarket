@@ -1,16 +1,18 @@
 # Skelemarket
 
-**Skelemarket** is a simple supermarket simulation written in Java for school using JavaFX. It includes keeping track of expiry dates, restocking and path finding of customers.
+**Skelemarket** is a simple supermarket simulation written in Java for school using JavaFX. It includes keeping restocking, path finding & more...
 
 ## Preview
 
-// TODO: Preview images
+![Preview](./doc/images/window.png)
 
 ## Features
 
 - **Path Finding** – Different customers follow different paths based on an algorithm
-- **Expiry Dates** – Products that have been on the shelves too long will expire
 - **Restocking** – Warehouse employees that restock the shelves
+- **Customer queueing** – Customers queue at the checkouts
+- **Dynamic map loading** – Load any map from a file
+- **Custom map builder** – Custom web-based map builder
 
 ## Getting Started
 
@@ -36,6 +38,3 @@ You may not copy, modify, distribute, or use any part of this code without expli
 ## Contributing
 
 Contributions are welcome! Please fork the repository and create a pull request with your changes.
-
-> [!NOTE]
-> If you use IntelliJ use the [Swing UI Designer Plugin](https://www.jetbrains.com/help/idea/design-gui-using-swing.html#-509p4f_36) to edit the GUI forms

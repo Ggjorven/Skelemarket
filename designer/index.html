@@ -1,0 +1,366 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Supermarket Map Designer</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-view="map">
+<div class="app">
+
+  <!-- ================= Toolbar ================= -->
+  <header class="toolbar">
+    <div class="brand" title="Supermarket Map Designer"><span class="dot"></span><span class="name">Supermarket Map Designer</span></div>
+
+    <nav class="tabs" id="viewTabs">
+      <button data-view="map" class="on" title="Tiles, categories and inventory">Map</button>
+      <button data-view="items" title="Categories and items">Items</button>
+      <button data-view="paths" title="Path nodes">Paths</button>
+    </nav>
+
+    <div class="tbgroup canvas-only">
+      <div class="seg map-only" id="toolSeg">
+        <button data-tool="select" class="on" title="Select, move and resize (V)">Select</button>
+        <button data-tool="place" title="Place one tile (B)">Place</button>
+        <button data-tool="paint" title="Paint tiles on the grid (P)">Paint</button>
+      </div>
+      <div class="seg paths-only" id="ptoolSeg">
+        <button data-ptool="select" class="on" title="Select and move nodes (V)">Select</button>
+        <button data-ptool="node" title="Add nodes (N)">Node</button>
+        <button data-ptool="link" title="Connect nodes and objects (L)">Link</button>
+      </div>
+    </div>
+
+    <div class="tbgroup">
+      <button class="ghost icon" id="undoBtn" title="Undo (Ctrl+Z)" aria-label="Undo" disabled>↶</button>
+      <button class="ghost icon" id="redoBtn" title="Redo (Ctrl+Y)" aria-label="Redo" disabled>↷</button>
+    </div>
+
+    <div class="tbgroup canvas-only">
+      <label class="chk"><input type="checkbox" id="snapChk" checked> Snap</label>
+      <label class="chk" title="Show grid lines"><input type="checkbox" id="gridChk" checked> Grid</label>
+      <input type="number" id="gridX" class="num3" value="32" min="1" title="Grid width (X)">
+      <span class="muted2">×</span>
+      <input type="number" id="gridY" class="num3" value="32" min="1" title="Grid height (Y)">
+    </div>
+
+    <div class="tbgroup canvas-only">
+      <span class="lbl">Map</span>
+      <input type="number" id="mapW" class="num4" value="1280" min="1" title="Map width">
+      <span class="muted2">×</span>
+      <input type="number" id="mapH" class="num4" value="738" min="1" title="Map height">
+      <span class="lbl gap">Background</span>
+      <input type="color" id="bgColor" value="#ffffff" title="Map background colour (RGB)">
+      <input type="number" id="bgAlpha" class="num3" value="255" min="0" max="255" title="Background alpha, 0 to 255">
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="tbgroup noborder">
+      <button class="ghost" id="folderBtn" title="Open your resources folder (or project folder) to load every image with its real path">Open folder</button>
+      <button class="ghost" id="importBtn" title="Import a map JSON">Import</button>
+      <button class="primary" id="exportBtn" title="Export the map as JSON">Export</button>
+    </div>
+  </header>
+
+  <!-- ================= Map + Paths views (shared canvas) ================= -->
+  <main class="body canvas-only">
+    <aside class="panel left">
+      <!-- Map: tile palette -->
+      <section class="lsec grow map-only">
+        <div class="phead">
+          <span>Tiles</span>
+          <div class="inline">
+            <button class="ghost" id="sliceBtn" title="Slice a spritesheet into tiles">✂ Sheet</button>
+            <button id="uploadBtn">+ Upload</button>
+          </div>
+        </div>
+        <div class="pbody">
+          <div class="field">
+            <label>Resource root folder</label>
+            <input type="text" id="resRoot" value="resources" spellcheck="false">
+            <div class="hintline">Paths are exported relative to this folder: resources/textures/tileA.png becomes /textures/tileA.png.</div>
+          </div>
+          <div class="field">
+            <label>Tile types</label>
+            <div class="inline">
+              <input type="text" id="typeNew" placeholder="e.g. SHELF" spellcheck="false">
+              <button id="typeAdd">Add</button>
+            </div>
+            <div class="attrchips" id="typeChips"></div>
+            <div class="hintline">A palette tile needs a type before it can be placed. Double-click a type to rename it.</div>
+          </div>
+          <div class="divider"></div>
+          <div id="assetList" class="assets"></div>
+          <div id="assetEmpty" class="empty">No tiles yet.<br>Upload a PNG/JPG or slice a spritesheet.</div>
+        </div>
+      </section>
+
+      <!-- Paths: tool help -->
+      <section class="lsec grow paths-only">
+        <div class="phead"><span>Paths</span></div>
+        <div class="pbody">
+          <div class="stats">
+            <div class="stat"><b id="psNodes">0</b><span>Nodes</span></div>
+            <div class="stat"><b id="psEdges">0</b><span>Edges</span></div>
+            <div class="stat"><b id="psTargets">0</b><span>Targets</span></div>
+          </div>
+          <div class="help">
+            <p><b>Select (V)</b> — drag nodes to move them. Drag on empty space to box-select.</p>
+            <p><b>Node (N)</b> — click to add a node. <kbd>Shift</kbd>-click empty space to add one connected to the selected node. <kbd>Shift</kbd>-click an existing node to connect or disconnect it.</p>
+            <p><b>Link (L)</b> — click a node, then another node to connect them (click again to disconnect). Click an object on the map to make it a target of that node.</p>
+          </div>
+          <label class="chk"><input type="checkbox" id="dimChk" checked> Dim tiles</label>
+          <button class="danger ghost" id="clearPaths">Clear all paths</button>
+        </div>
+      </section>
+
+      <!-- Both: layers -->
+      <section class="lsec layers">
+        <div class="phead">
+          <span>Layers</span>
+          <button class="ghost map-only" id="addLayerBtn">+ Layer</button>
+        </div>
+        <div class="pbody" id="layerList" style="gap:3px"></div>
+      </section>
+    </aside>
+
+    <div class="workspace" id="workspace">
+      <canvas id="stage" tabindex="0"></canvas>
+      <div class="hint" id="hint"></div>
+      <div class="zoombar">
+        <button id="zoomOut" title="Zoom out">−</button>
+        <span class="zval" id="zoomVal">100%</span>
+        <button id="zoomIn" title="Zoom in">+</button>
+        <button id="fitBtn" title="Fit map to view (F)">Fit</button>
+      </div>
+    </div>
+
+    <aside class="panel right">
+      <div class="phead"><span>Inspector</span></div>
+
+      <!-- Map inspector -->
+      <div class="pbody map-only" id="inspector">
+        <div id="assetProps" class="block hidden">
+          <div class="subhead">Selected palette tile</div>
+          <div class="field"><label>Type</label><select id="aType"></select><div class="hintline" id="aTypeHint"></div></div>
+          <div class="field"><label>Image path</label><input type="text" id="aPath" spellcheck="false" title="Type /textures/tileA.png, or paste a full path such as C:/…/resources/textures/tileA.png"><div class="warn hidden" id="aPathWarn"></div></div>
+          <div class="hintline">Type /textures/… or paste a full disk path to fix it. Every tile and item using this image follows.</div>
+          <div class="row2">
+            <div class="field"><label>Place width</label><input type="number" id="aW" min="1"></div>
+            <div class="field"><label>Place height</label><input type="number" id="aH" min="1"></div>
+          </div>
+          <div class="field"><label>Source region [x, y, w, h]</label><div class="srcline" id="aSource">—</div></div>
+          <div class="hintline">New tiles use this size and go on the active layer.</div>
+        </div>
+
+        <div id="tileEdit" class="block hidden">
+          <div class="subhead">Tile <span class="idtag" id="tId"></span></div>
+          <div class="field"><label>Type (set on its palette tile)</label><div class="srcline" id="tType">—</div></div>
+          <div class="row2"><div class="field"><label>X</label><input type="number" id="tX"></div><div class="field"><label>Y</label><input type="number" id="tY"></div></div>
+          <div class="row2"><div class="field"><label>Width</label><input type="number" id="tW" min="1"></div><div class="field"><label>Height</label><input type="number" id="tH" min="1"></div></div>
+          <div class="field"><label>Source region [x, y, w, h]</label><div class="srcline" id="tSource">—</div></div>
+          <div class="field"><label>Targeted by path nodes</label><div class="srcline" id="tLinks">—</div></div>
+        </div>
+
+        <div id="catBlock" class="block hidden">
+          <div class="subhead">Category</div>
+          <select id="tCat" title="Item category this tile holds"></select>
+          <div class="hintline" id="tCatHint"></div>
+        </div>
+
+        <div id="magBlock" class="block hidden">
+          <label class="chk"><input type="checkbox" id="tMagazine"> Magazine</label>
+          <div class="hintline" id="tMagHint"></div>
+        </div>
+
+        <div id="invBlock" class="block hidden">
+          <div class="subhead">Inventory</div>
+          <div class="invlist" id="invList"></div>
+          <div class="inline">
+            <select id="invItem"></select>
+            <input type="number" id="invCapacity" class="w52" value="1" min="1" title="Capacity">
+            <button id="invAdd">Add</button>
+          </div>
+          <div class="hintline" id="invHint"></div>
+        </div>
+
+        <div id="selActions" class="block hidden">
+          <div class="subhead" id="selCount">1 selected</div>
+          <div class="zbtns">
+            <button id="toFront">Bring to front</button>
+            <button id="toBack">Send to back</button>
+            <button id="dupBtn">Duplicate</button>
+            <button class="danger" id="delTile">Delete</button>
+          </div>
+          <select id="moveLayerSel" title="Move the selected tiles to another layer"></select>
+        </div>
+
+        <div id="noSel" class="noselect">Nothing selected.<br>Click a tile to edit it, drag to box-select, or pick a palette tile to place.</div>
+
+        <div class="subhead">Map</div>
+        <button id="clearBtn" class="danger ghost">Clear all tiles</button>
+      </div>
+
+      <!-- Paths inspector -->
+      <div class="pbody paths-only" id="pinspector">
+        <div id="pNodeEdit" class="block hidden">
+          <div class="subhead">Node <span class="idtag" id="pNodeId"></span></div>
+          <div class="row2"><div class="field"><label>X</label><input type="number" id="pX"></div><div class="field"><label>Y</label><input type="number" id="pY"></div></div>
+          <div class="sublabel">Connected nodes</div>
+          <div class="attrchips" id="pEdges"></div>
+          <div class="sublabel">Targets on the map</div>
+          <div class="attrchips" id="pTargets"></div>
+        </div>
+        <div id="pSelActions" class="block hidden">
+          <div class="subhead" id="pSelCount"></div>
+          <div class="zbtns">
+            <button id="pLinkChain" title="Connect the selected nodes in the order you selected them">Link in order</button>
+            <button class="danger" id="pDelete">Delete</button>
+          </div>
+        </div>
+        <div id="pNoSel" class="noselect">No node selected.<br>Use <b>Node</b> to place nodes and <b>Link</b> to connect them.</div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ================= Items view ================= -->
+  <main class="itemsView items-only">
+    <aside class="panel left">
+      <div class="phead"><span>Categories</span></div>
+      <div class="pbody">
+        <div class="inline">
+          <input type="text" id="catNew" placeholder="e.g. FRUIT" spellcheck="false">
+          <button id="catAdd">Add</button>
+        </div>
+        <div id="catList" class="catlist"></div>
+        <div id="catEmpty" class="empty">No categories yet.<br>Add one above. Items and tile attributes both use them.</div>
+      </div>
+    </aside>
+
+    <section class="itemsMain">
+      <div class="itemsHead">
+        <h2 id="itemsTitle">All items</h2>
+        <input type="text" id="itemSearch" placeholder="Search items" spellcheck="false">
+        <button class="primary" id="itemNew">+ New item</button>
+      </div>
+      <div class="itemGrid" id="itemGrid"></div>
+      <div class="empty" id="itemEmpty"></div>
+    </section>
+
+    <aside class="panel right">
+      <div class="phead"><span>Item</span></div>
+      <div class="pbody">
+        <div id="iEdit" class="hidden" style="display:flex;flex-direction:column;gap:10px">
+          <div class="field">
+            <label>Name — must be unique, inventories refer to it</label>
+            <input type="text" id="iName" spellcheck="false">
+            <div class="err hidden" id="iNameErr"></div>
+          </div>
+          <div class="field">
+            <label>Category</label>
+            <select id="iCat"></select>
+            <div class="hintline hidden" id="iCatHint">Add a category on the left first.</div>
+          </div>
+          <div class="field">
+            <label>Weight (whole number, 1 or more)</label>
+            <input type="number" id="iWeight" min="1" step="1" value="1">
+          </div>
+          <div class="divider"></div>
+          <div class="subhead">Sprite</div>
+          <div class="spritebox checker" id="iSprite"></div>
+          <div class="field"><label>Source region [x, y, w, h]</label><div class="srcline" id="iSrc">—</div></div>
+          <div class="field"><label>Image path</label><div class="srcline" id="iPath">—</div></div>
+          <div class="zbtns">
+            <button id="iPick">Pick from sheet…</button>
+            <button class="ghost" id="iClear">Clear sprite</button>
+          </div>
+          <select id="iFromTile" title="Reuse a sprite from the tile palette"></select>
+          <div class="divider"></div>
+          <div class="hintline" id="iUsage"></div>
+          <button class="danger ghost" id="iDelete">Delete item</button>
+        </div>
+        <div id="iNoSel" class="noselect">Select an item, or click <b>+ New item</b>.</div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ================= Status bar ================= -->
+  <footer class="status">
+    <span>Cursor <b id="stCursor">0, 0</b></span>
+    <span>Zoom <b id="stZoom">100%</b></span>
+    <span>Tiles <b id="stCount">0</b></span>
+    <span>Items <b id="stItems">0</b></span>
+    <span>Nodes <b id="stNodes">0</b></span>
+    <span>Layer <b id="stLayer">—</b></span>
+    <span class="sp"></span>
+    <span id="stMode">Select mode</span>
+  </footer>
+</div>
+
+<!-- ================= Export / import modal ================= -->
+<div class="modal" id="modal">
+  <div class="card">
+    <div class="chead"><h3 id="modalTitle">Export JSON</h3><button class="ghost" id="modalClose" title="Close">✕</button></div>
+    <div class="cbody">
+      <pre class="json" id="jsonView"></pre>
+      <textarea class="json hidden" id="jsonInput" spellcheck="false" placeholder="Paste a map JSON here"></textarea>
+    </div>
+    <div class="cfoot" id="modalFoot"></div>
+  </div>
+</div>
+
+<!-- ================= Spritesheet slicer modal ================= -->
+<div class="modal" id="sliceModal">
+  <div class="card wide">
+    <div class="chead"><h3 id="sliceTitle">Slice spritesheet</h3><button class="ghost" id="sliceClose" title="Close">✕</button></div>
+    <div class="cbody">
+      <div class="inline wrap">
+        <div class="field" style="min-width:190px"><label>Sheet</label><select id="sheetSel"></select></div>
+        <button id="sheetUpload">Upload sheet…</button>
+        <span class="spacer"></span>
+        <label class="chk"><input type="checkbox" id="slGrid" checked> Snap to grid</label>
+      </div>
+      <div class="inline wrap" style="gap:8px">
+        <div class="field"><label>Cell W</label><input type="number" id="slCW" class="w70" value="32" min="1"></div>
+        <div class="field"><label>Cell H</label><input type="number" id="slCH" class="w70" value="32" min="1"></div>
+        <div class="field"><label>Offset X</label><input type="number" id="slOX" class="w70" value="0" min="0"></div>
+        <div class="field"><label>Offset Y</label><input type="number" id="slOY" class="w70" value="0" min="0"></div>
+        <div class="field"><label>Spacing X</label><input type="number" id="slGX" class="w70" value="0" min="0"></div>
+        <div class="field"><label>Spacing Y</label><input type="number" id="slGY" class="w70" value="0" min="0"></div>
+      </div>
+      <div class="slicewrap"><canvas id="sliceCanvas"></canvas></div>
+
+      <!-- Palette mode: add sprites as tiles -->
+      <div class="inline wrap" id="slAddRow">
+        <span class="srcline bare" id="slSelInfo">Region: — (click a cell or drag)</span>
+        <div class="field" style="min-width:150px"><label>Type for new tiles</label><select id="slType"></select></div>
+        <div class="field" style="min-width:150px"><label>Sprite name</label><input type="text" id="slName" placeholder="sprite" spellcheck="false"></div>
+        <button class="primary" id="slAdd">Add region</button>
+        <button id="slAddWhole">Add whole image</button>
+        <button id="slAddAll">Add all cells</button>
+        <span class="spacer"></span>
+        <span class="srcline bare" id="slCountLbl">0 sprites added</span>
+      </div>
+
+      <!-- Item mode: pick one sprite for the selected item -->
+      <div class="inline wrap hidden" id="slPickRow">
+        <span class="srcline bare" id="slPickInfo">Region: — (click a cell or drag)</span>
+        <span class="spacer"></span>
+        <button id="slUseWhole">Use whole image</button>
+        <button class="primary" id="slUse">Use region</button>
+      </div>
+    </div>
+    <div class="cfoot"><button class="primary" id="sliceDone">Done</button></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<input type="file" id="fileInput" accept="image/png,image/jpeg" multiple class="hidden">
+<input type="file" id="sheetFileInput" accept="image/png,image/jpeg" class="hidden">
+<input type="file" id="folderInput" webkitdirectory multiple class="hidden">
+
+<script src="script.js"></script>
+</body>
+</html>

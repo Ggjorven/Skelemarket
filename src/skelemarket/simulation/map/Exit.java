@@ -1,0 +1,18 @@
+package skelemarket.simulation.map;
+
+import skelemarket.core.Texture;
+import skelemarket.core.UV;
+import skelemarket.core.Vec2i;
+
+public class Exit extends Tile {
+	///////////////////////////////////////////////////////////
+	// Variables
+	///////////////////////////////////////////////////////////
+
+	///////////////////////////////////////////////////////////
+	// Methods
+	///////////////////////////////////////////////////////////
+	public Exit(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords) {
+		super(tileID, position, size, textureRef, coords);
+	}
+}

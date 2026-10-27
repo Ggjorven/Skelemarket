@@ -1,15 +1,7 @@
 package skelemarket;
 
-import javafx.application.Application;
-import javafx.stage.Stage;
-
-public class Main extends Application {
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void start(Stage primaryStage) {
-        System.out.println("Hello, world");
-    }
+public class Main {
+	public static void main(String[] args) {
+		javafx.application.Application.launch(Application.class, args);
+	}
 }

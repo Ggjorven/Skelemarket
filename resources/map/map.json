@@ -1,0 +1,7674 @@
+{
+  "width": 1280,
+  "height": 738,
+  "background": [
+    128,
+    138,
+    163,
+    255
+  ],
+  "layers": [
+    {
+      "name": "Ground",
+      "visible": true
+    },
+    {
+      "name": "Walls",
+      "visible": true
+    },
+    {
+      "name": "Entrance & Exit",
+      "visible": true
+    },
+    {
+      "name": "Checkouts",
+      "visible": true
+    },
+    {
+      "name": "Shelves",
+      "visible": true
+    },
+    {
+      "name": "Decorations",
+      "visible": true
+    }
+  ],
+  "types": [
+    "GROUND",
+    "SHELF",
+    "WALL",
+    "ENTRANCE",
+    "EXIT",
+    "MANNED_CHECKOUT",
+    "SELF_CHECKOUT",
+    "DECORATION",
+    "FLOOR"
+  ],
+  "categories": [
+    "FRUIT",
+    "VEGETABLES",
+    "DAIRY",
+    "BAKERY",
+    "MEAT",
+    "SEAFOOD",
+    "BEVERAGES",
+    "SNACKS",
+    "PANTRY"
+  ],
+  "items": [
+    {
+      "name": "PUMPKIN",
+      "category": "VEGETABLES",
+      "weight": 5,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CARROT",
+      "category": "VEGETABLES",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "APPLE",
+      "category": "FRUIT",
+      "weight": 1,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BANANA",
+      "category": "FRUIT",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "MILK",
+      "category": "DAIRY",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHEESE",
+      "category": "DAIRY",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BREAD",
+      "category": "BAKERY",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CROISSANT",
+      "category": "BAKERY",
+      "weight": 1,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHICKEN",
+      "category": "MEAT",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "BEEF",
+      "category": "MEAT",
+      "weight": 4,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "SALMON",
+      "category": "SEAFOOD",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "TUNA",
+      "category": "SEAFOOD",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "WATER",
+      "category": "BEVERAGES",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "JUICE",
+      "category": "BEVERAGES",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "CHIPS",
+      "category": "SNACKS",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "COOKIES",
+      "category": "SNACKS",
+      "weight": 2,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "RICE",
+      "category": "PANTRY",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    },
+    {
+      "name": "PASTA",
+      "category": "PANTRY",
+      "weight": 3,
+      "image": "/textures/enhanced/pumpkin_sheet.png",
+      "source": [
+        256,
+        352,
+        32,
+        32
+      ]
+    }
+  ],
+  "tiles": [
+    {
+      "id": 120,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 121,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        224,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 122,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 123,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        224,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 124,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 125,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        448,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 126,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        320
+      ],
+      "inventory": []
+    },
+    {
+      "id": 127,
+      "type": "GROUND",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 0,
+      "source": [
+        256,
+        416,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        544,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 35,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 38,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        128,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 39,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        160,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 40,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        192,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 41,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 42,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 43,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 44,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 45,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 46,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 47,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 48,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 49,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 50,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        512,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 51,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        544,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 52,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        576,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 53,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        608,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 54,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        640,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 55,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        672,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 56,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        704,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 57,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 58,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        768,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 59,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 60,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 61,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        864,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 62,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 63,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 64,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        960,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 65,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        992,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 66,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1024,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 67,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1056,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 72,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 74,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        16,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 78,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        16,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 79,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 82,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        128,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 83,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        160,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 84,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        192,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 85,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 86,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 87,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 88,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 89,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 90,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 91,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 92,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 93,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 94,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        512,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 95,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        544,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 96,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        576,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 97,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        608,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 98,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        640,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 99,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        672,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 100,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        704,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 101,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 102,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        768,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 103,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 104,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 105,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        864,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 106,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 107,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 108,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        960,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 109,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        992,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 110,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1024,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 111,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1056,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 116,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        80,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 142,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 143,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 144,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        96,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 145,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        128,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 148,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        128,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 149,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        96,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 150,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 151,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 152,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 154,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        160,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 155,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        192,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 156,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 157,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 158,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 159,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 160,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 161,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 162,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 163,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 164,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 165,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        512,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 166,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        544,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 167,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        576,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 168,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        608,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 169,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        640,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 170,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        672,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 171,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        704,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 173,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        768,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 174,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 175,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 176,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        864,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 177,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 178,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 179,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        960,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 180,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        992,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 181,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1024,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 182,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1056,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 183,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1088,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 184,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1120,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 185,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1152,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 186,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 187,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 189,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 207,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        160,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 208,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        192,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 209,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 210,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 211,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 212,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 213,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 214,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        384,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 215,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        416,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 216,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        448,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 217,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        480,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 218,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        512,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 219,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        544,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 220,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        576,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 221,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        608,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 222,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        640,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 223,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        672,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 224,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        704,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 225,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 226,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        768,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 227,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 228,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 229,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        864,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 230,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 231,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 232,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        960,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 233,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        992,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 234,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1024,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 235,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1056,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 236,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1088,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 237,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1120,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 238,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1152,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 239,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 240,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 241,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        704
+      ],
+      "inventory": []
+    },
+    {
+      "id": 242,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 243,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        640
+      ],
+      "inventory": []
+    },
+    {
+      "id": 244,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        608
+      ],
+      "inventory": []
+    },
+    {
+      "id": 245,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        576
+      ],
+      "inventory": []
+    },
+    {
+      "id": 246,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 247,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        512
+      ],
+      "inventory": []
+    },
+    {
+      "id": 248,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        480
+      ],
+      "inventory": []
+    },
+    {
+      "id": 249,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        448
+      ],
+      "inventory": []
+    },
+    {
+      "id": 250,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 252,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        352
+      ],
+      "inventory": []
+    },
+    {
+      "id": 253,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        320
+      ],
+      "inventory": []
+    },
+    {
+      "id": 254,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 255,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 256,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        224
+      ],
+      "inventory": []
+    },
+    {
+      "id": 257,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 258,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 259,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        128
+      ],
+      "inventory": []
+    },
+    {
+      "id": 260,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 261,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 269,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 271,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 272,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        640
+      ],
+      "inventory": []
+    },
+    {
+      "id": 273,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        608
+      ],
+      "inventory": []
+    },
+    {
+      "id": 274,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        576
+      ],
+      "inventory": []
+    },
+    {
+      "id": 275,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 276,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        512
+      ],
+      "inventory": []
+    },
+    {
+      "id": 277,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        480
+      ],
+      "inventory": []
+    },
+    {
+      "id": 278,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        448
+      ],
+      "inventory": []
+    },
+    {
+      "id": 279,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 280,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 281,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        352
+      ],
+      "inventory": []
+    },
+    {
+      "id": 282,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        320
+      ],
+      "inventory": []
+    },
+    {
+      "id": 285,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        224
+      ],
+      "inventory": []
+    },
+    {
+      "id": 286,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 287,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 288,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        128
+      ],
+      "inventory": []
+    },
+    {
+      "id": 289,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 290,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 311,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 313,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 314,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 315,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        96,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 317,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 318,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 319,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 320,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        256
+      ],
+      "inventory": []
+    },
+    {
+      "id": 321,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        224
+      ],
+      "inventory": []
+    },
+    {
+      "id": 322,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 323,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 324,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        128
+      ],
+      "inventory": []
+    },
+    {
+      "id": 325,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 326,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 327,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        672
+      ],
+      "inventory": []
+    },
+    {
+      "id": 328,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        640
+      ],
+      "inventory": []
+    },
+    {
+      "id": 329,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        576
+      ],
+      "inventory": []
+    },
+    {
+      "id": 331,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        544
+      ],
+      "inventory": []
+    },
+    {
+      "id": 332,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        512
+      ],
+      "inventory": []
+    },
+    {
+      "id": 333,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        480
+      ],
+      "inventory": []
+    },
+    {
+      "id": 334,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        448
+      ],
+      "inventory": []
+    },
+    {
+      "id": 335,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        416
+      ],
+      "inventory": []
+    },
+    {
+      "id": 341,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        768,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 343,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        832,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 344,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 345,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        864,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 346,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 347,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        960,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 351,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 352,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 353,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        48,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1248,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 354,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        992,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 355,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1024,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 356,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1056,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 363,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 364,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 365,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        96,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 366,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        224,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 367,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        256,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 368,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        288,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 369,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 370,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        0,
+        288
+      ],
+      "inventory": []
+    },
+    {
+      "id": 388,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        16,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 389,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        112,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        384
+      ],
+      "inventory": []
+    },
+    {
+      "id": 425,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1152,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 426,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        64,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        32
+      ],
+      "inventory": []
+    },
+    {
+      "id": 427,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1152,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 428,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/dungeon/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        64,
+        16,
+        16
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 457,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 458,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 459,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        128
+      ],
+      "inventory": []
+    },
+    {
+      "id": 460,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 462,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        96,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        928,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 463,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        288,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        192
+      ],
+      "inventory": []
+    },
+    {
+      "id": 464,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 465,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        128
+      ],
+      "inventory": []
+    },
+    {
+      "id": 466,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 467,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        896,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 479,
+      "type": "WALL",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 1,
+      "source": [
+        32,
+        256,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        736,
+        608
+      ],
+      "inventory": []
+    },
+    {
+      "id": 391,
+      "type": "EXIT",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 2,
+      "source": [
+        128,
+        832,
+        64,
+        64
+      ],
+      "size": [
+        64,
+        64
+      ],
+      "location": [
+        64,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 392,
+      "type": "ENTRANCE",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/walls_floor.png",
+      "layer": 2,
+      "source": [
+        256,
+        832,
+        64,
+        64
+      ],
+      "size": [
+        64,
+        64
+      ],
+      "location": [
+        1088,
+        0
+      ],
+      "inventory": []
+    },
+    {
+      "id": 307,
+      "type": "MANNED_CHECKOUT",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/tiles.png",
+      "layer": 3,
+      "source": [
+        192,
+        0,
+        32,
+        64
+      ],
+      "size": [
+        32,
+        64
+      ],
+      "location": [
+        64,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 308,
+      "type": "SELF_CHECKOUT",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/tiles.png",
+      "layer": 3,
+      "source": [
+        192,
+        0,
+        32,
+        64
+      ],
+      "size": [
+        32,
+        64
+      ],
+      "location": [
+        160,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 309,
+      "type": "SELF_CHECKOUT",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/enhanced/tiles.png",
+      "layer": 3,
+      "source": [
+        192,
+        0,
+        32,
+        64
+      ],
+      "size": [
+        32,
+        64
+      ],
+      "location": [
+        256,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 117,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        448,
+        0
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 10
+        },
+        {
+          "item": "CARROT",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "id": 119,
+      "type": "SHELF",
+      "category": "FRUIT",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        608,
+        0
+      ],
+      "inventory": [
+        {
+          "item": "APPLE",
+          "capacity": 100
+        },
+        {
+          "item": "BANANA",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "id": 402,
+      "type": "SHELF",
+      "category": "DAIRY",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        352,
+        64
+      ],
+      "inventory": [
+        {
+          "item": "MILK",
+          "capacity": 30
+        },
+        {
+          "item": "CHEESE",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "id": 403,
+      "type": "SHELF",
+      "category": "BAKERY",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        352,
+        192
+      ],
+      "inventory": [
+        {
+          "item": "BREAD",
+          "capacity": 30
+        },
+        {
+          "item": "CROISSANT",
+          "capacity": 100
+        }
+      ]
+    },
+    {
+      "id": 468,
+      "type": "SHELF",
+      "category": "VEGETABLES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        832,
+        384
+      ],
+      "inventory": [
+        {
+          "item": "PUMPKIN",
+          "capacity": 50
+        },
+        {
+          "item": "CARROT",
+          "capacity": 250
+        }
+      ]
+    },
+    {
+      "id": 469,
+      "type": "SHELF",
+      "category": "FRUIT",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        960,
+        384
+      ],
+      "inventory": [
+        {
+          "item": "APPLE",
+          "capacity": 500
+        },
+        {
+          "item": "BANANA",
+          "capacity": 250
+        }
+      ]
+    },
+    {
+      "id": 470,
+      "type": "SHELF",
+      "category": "DAIRY",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        768,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "MILK",
+          "capacity": 150
+        },
+        {
+          "item": "CHEESE",
+          "capacity": 250
+        }
+      ]
+    },
+    {
+      "id": 471,
+      "type": "SHELF",
+      "category": "BAKERY",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        224,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        768,
+        544
+      ],
+      "inventory": [
+        {
+          "item": "BREAD",
+          "capacity": 150
+        },
+        {
+          "item": "CROISSANT",
+          "capacity": 500
+        }
+      ]
+    },
+    {
+      "id": 473,
+      "type": "SHELF",
+      "category": "MEAT",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        1216,
+        544
+      ],
+      "inventory": [
+        {
+          "item": "CHICKEN",
+          "capacity": 150
+        },
+        {
+          "item": "BEEF",
+          "capacity": 100
+        }
+      ]
+    },
+    {
+      "id": 474,
+      "type": "SHELF",
+      "category": "MEAT",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        864,
+        96
+      ],
+      "inventory": [
+        {
+          "item": "CHICKEN",
+          "capacity": 30
+        },
+        {
+          "item": "BEEF",
+          "capacity": 20
+        }
+      ]
+    },
+    {
+      "id": 475,
+      "type": "SHELF",
+      "category": "SEAFOOD",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        672,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "SALMON",
+          "capacity": 30
+        },
+        {
+          "item": "TUNA",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "id": 476,
+      "type": "SHELF",
+      "category": "BEVERAGES",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        128
+      ],
+      "size": [
+        32,
+        128
+      ],
+      "location": [
+        672,
+        576
+      ],
+      "inventory": [
+        {
+          "item": "WATER",
+          "capacity": 30
+        },
+        {
+          "item": "JUICE",
+          "capacity": 30
+        }
+      ]
+    },
+    {
+      "id": 477,
+      "type": "SHELF",
+      "category": "SNACKS",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        448,
+        544
+      ],
+      "inventory": [
+        {
+          "item": "CHIPS",
+          "capacity": 50
+        },
+        {
+          "item": "COOKIES",
+          "capacity": 50
+        }
+      ]
+    },
+    {
+      "id": 478,
+      "type": "SHELF",
+      "category": "PANTRY",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        256,
+        544
+      ],
+      "inventory": [
+        {
+          "item": "RICE",
+          "capacity": 30
+        },
+        {
+          "item": "PASTA",
+          "capacity": 30
+        }
+      ]
+    },
+    {
+      "id": 483,
+      "type": "SHELF",
+      "category": "SEAFOOD",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        160,
+        224,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        1184,
+        384
+      ],
+      "inventory": [
+        {
+          "item": "SALMON",
+          "capacity": 150
+        },
+        {
+          "item": "TUNA",
+          "capacity": 250
+        }
+      ]
+    },
+    {
+      "id": 472,
+      "type": "SHELF",
+      "category": "BEVERAGES",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        192,
+        64,
+        32,
+        96
+      ],
+      "size": [
+        32,
+        96
+      ],
+      "location": [
+        1216,
+        448
+      ],
+      "inventory": [
+        {
+          "item": "WATER",
+          "capacity": 150
+        },
+        {
+          "item": "JUICE",
+          "capacity": 150
+        }
+      ]
+    },
+    {
+      "id": 484,
+      "type": "SHELF",
+      "category": "SNACKS",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        864,
+        512
+      ],
+      "inventory": [
+        {
+          "item": "CHIPS",
+          "capacity": 250
+        },
+        {
+          "item": "COOKIES",
+          "capacity": 250
+        }
+      ]
+    },
+    {
+      "id": 485,
+      "type": "SHELF",
+      "category": "PANTRY",
+      "magazine": true,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 4,
+      "source": [
+        64,
+        96,
+        64,
+        96
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "location": [
+        992,
+        512
+      ],
+      "inventory": [
+        {
+          "item": "RICE",
+          "capacity": 150
+        },
+        {
+          "item": "PASTA",
+          "capacity": 150
+        }
+      ]
+    },
+    {
+      "id": 429,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        224,
+        384,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1216,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 430,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        224,
+        384,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1184,
+        640
+      ],
+      "inventory": []
+    },
+    {
+      "id": 431,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        224,
+        384,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        160,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 432,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        224,
+        384,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        32,
+        320
+      ],
+      "inventory": []
+    },
+    {
+      "id": 433,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 434,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        96,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 435,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        64,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 436,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1088,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 437,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1120,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 438,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        416,
+        224,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        1088,
+        96
+      ],
+      "inventory": []
+    },
+    {
+      "id": 439,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        192,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        512,
+        64
+      ],
+      "inventory": []
+    },
+    {
+      "id": 440,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        192,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        352,
+        160
+      ],
+      "inventory": []
+    },
+    {
+      "id": 441,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        192,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        320,
+        576
+      ],
+      "inventory": []
+    },
+    {
+      "id": 442,
+      "type": "DECORATION",
+      "category": "",
+      "magazine": false,
+      "image": "/textures/pumpkin/sheet.png",
+      "layer": 5,
+      "source": [
+        128,
+        320,
+        32,
+        32
+      ],
+      "size": [
+        32,
+        32
+      ],
+      "location": [
+        800,
+        480
+      ],
+      "inventory": []
+    }
+  ],
+  "paths": {
+    "nodes": [
+      {
+        "id": 1,
+        "location": [
+          1120,
+          64
+        ],
+        "targets": [
+          "t392"
+        ]
+      },
+      {
+        "id": 2,
+        "location": [
+          1120,
+          287
+        ],
+        "targets": []
+      },
+      {
+        "id": 3,
+        "location": [
+          799,
+          287
+        ],
+        "targets": []
+      },
+      {
+        "id": 4,
+        "location": [
+          799,
+          160
+        ],
+        "targets": []
+      },
+      {
+        "id": 5,
+        "location": [
+          639,
+          160
+        ],
+        "targets": []
+      },
+      {
+        "id": 6,
+        "location": [
+          471,
+          160
+        ],
+        "targets": []
+      },
+      {
+        "id": 7,
+        "location": [
+          406,
+          128
+        ],
+        "targets": [
+          "t402"
+        ]
+      },
+      {
+        "id": 8,
+        "location": [
+          403,
+          257
+        ],
+        "targets": [
+          "t403"
+        ]
+      },
+      {
+        "id": 12,
+        "location": [
+          178,
+          304
+        ],
+        "targets": []
+      },
+      {
+        "id": 13,
+        "location": [
+          179,
+          652
+        ],
+        "targets": []
+      },
+      {
+        "id": 14,
+        "location": [
+          285,
+          654
+        ],
+        "targets": [
+          "t478"
+        ]
+      },
+      {
+        "id": 15,
+        "location": [
+          482,
+          652
+        ],
+        "targets": [
+          "t477"
+        ]
+      },
+      {
+        "id": 16,
+        "location": [
+          588,
+          642
+        ],
+        "targets": []
+      },
+      {
+        "id": 17,
+        "location": [
+          645,
+          640
+        ],
+        "targets": [
+          "t476"
+        ]
+      },
+      {
+        "id": 18,
+        "location": [
+          588,
+          508
+        ],
+        "targets": []
+      },
+      {
+        "id": 19,
+        "location": [
+          645,
+          506
+        ],
+        "targets": [
+          "t475"
+        ]
+      },
+      {
+        "id": 20,
+        "location": [
+          639,
+          117
+        ],
+        "targets": [
+          "t119"
+        ]
+      },
+      {
+        "id": 21,
+        "location": [
+          478,
+          113
+        ],
+        "targets": [
+          "t117"
+        ]
+      },
+      {
+        "id": 22,
+        "location": [
+          840,
+          158
+        ],
+        "targets": [
+          "t474"
+        ]
+      },
+      {
+        "id": 23,
+        "location": [
+          610,
+          252
+        ],
+        "targets": []
+      },
+      {
+        "id": 24,
+        "location": [
+          473,
+          383
+        ],
+        "targets": []
+      },
+      {
+        "id": 25,
+        "location": [
+          176,
+          385
+        ],
+        "targets": []
+      },
+      {
+        "id": 26,
+        "location": [
+          609,
+          385
+        ],
+        "targets": []
+      },
+      {
+        "id": 27,
+        "location": [
+          1125,
+          501
+        ],
+        "targets": []
+      },
+      {
+        "id": 28,
+        "location": [
+          1125,
+          622
+        ],
+        "targets": []
+      },
+      {
+        "id": 29,
+        "location": [
+          844,
+          623
+        ],
+        "targets": [
+          "t471"
+        ]
+      },
+      {
+        "id": 30,
+        "location": [
+          865,
+          500
+        ],
+        "targets": []
+      },
+      {
+        "id": 31,
+        "location": [
+          989,
+          501
+        ],
+        "targets": [
+          "t469"
+        ]
+      },
+      {
+        "id": 32,
+        "location": [
+          1197,
+          523
+        ],
+        "targets": [
+          "t472"
+        ]
+      },
+      {
+        "id": 33,
+        "location": [
+          1195,
+          593
+        ],
+        "targets": [
+          "t473"
+        ]
+      },
+      {
+        "id": 34,
+        "location": [
+          472,
+          252
+        ],
+        "targets": []
+      },
+      {
+        "id": 35,
+        "location": [
+          115,
+          246
+        ],
+        "targets": []
+      },
+      {
+        "id": 36,
+        "location": [
+          210,
+          247
+        ],
+        "targets": []
+      },
+      {
+        "id": 37,
+        "location": [
+          304,
+          252
+        ],
+        "targets": []
+      },
+      {
+        "id": 38,
+        "location": [
+          318,
+          193
+        ],
+        "targets": [
+          "t309"
+        ]
+      },
+      {
+        "id": 39,
+        "location": [
+          222,
+          191
+        ],
+        "targets": [
+          "t308"
+        ]
+      },
+      {
+        "id": 40,
+        "location": [
+          126,
+          189
+        ],
+        "targets": [
+          "t307"
+        ]
+      },
+      {
+        "id": 41,
+        "location": [
+          297,
+          122
+        ],
+        "targets": []
+      },
+      {
+        "id": 42,
+        "location": [
+          210,
+          120
+        ],
+        "targets": []
+      },
+      {
+        "id": 43,
+        "location": [
+          117,
+          127
+        ],
+        "targets": []
+      },
+      {
+        "id": 44,
+        "location": [
+          1193,
+          483
+        ],
+        "targets": [
+          "t483"
+        ]
+      },
+      {
+        "id": 45,
+        "location": [
+          836,
+          501
+        ],
+        "targets": [
+          "t470"
+        ]
+      },
+      {
+        "id": 46,
+        "location": [
+          865,
+          480
+        ],
+        "targets": [
+          "t468"
+        ]
+      },
+      {
+        "id": 47,
+        "location": [
+          820,
+          617
+        ],
+        "targets": []
+      },
+      {
+        "id": 48,
+        "location": [
+          97,
+          82
+        ],
+        "targets": [
+          "t391"
+        ]
+      },
+      {
+        "id": 49,
+        "location": [
+          895,
+          627
+        ],
+        "targets": []
+      },
+      {
+        "id": 50,
+        "location": [
+          894,
+          613
+        ],
+        "targets": [
+          "t484"
+        ]
+      },
+      {
+        "id": 51,
+        "location": [
+          1027,
+          629
+        ],
+        "targets": []
+      },
+      {
+        "id": 52,
+        "location": [
+          1026,
+          610
+        ],
+        "targets": [
+          "t485"
+        ]
+      }
+    ],
+    "edges": [
+      [
+        "n1",
+        "n2"
+      ],
+      [
+        "n2",
+        "n3"
+      ],
+      [
+        "n3",
+        "n4"
+      ],
+      [
+        "n4",
+        "n5"
+      ],
+      [
+        "n5",
+        "n6"
+      ],
+      [
+        "n6",
+        "n34"
+      ],
+      [
+        "n34",
+        "n24"
+      ],
+      [
+        "n34",
+        "n23"
+      ],
+      [
+        "n23",
+        "n26"
+      ],
+      [
+        "n26",
+        "n18"
+      ],
+      [
+        "n18",
+        "n16"
+      ],
+      [
+        "n16",
+        "n15"
+      ],
+      [
+        "n15",
+        "n14"
+      ],
+      [
+        "n14",
+        "n13"
+      ],
+      [
+        "n13",
+        "n25"
+      ],
+      [
+        "n25",
+        "n12"
+      ],
+      [
+        "n12",
+        "n35"
+      ],
+      [
+        "n12",
+        "n36"
+      ],
+      [
+        "n36",
+        "n37"
+      ],
+      [
+        "n37",
+        "n38"
+      ],
+      [
+        "n36",
+        "n39"
+      ],
+      [
+        "n35",
+        "n40"
+      ],
+      [
+        "n16",
+        "n17"
+      ],
+      [
+        "n18",
+        "n19"
+      ],
+      [
+        "n24",
+        "n25"
+      ],
+      [
+        "n34",
+        "n8"
+      ],
+      [
+        "n6",
+        "n7"
+      ],
+      [
+        "n6",
+        "n21"
+      ],
+      [
+        "n5",
+        "n20"
+      ],
+      [
+        "n4",
+        "n22"
+      ],
+      [
+        "n2",
+        "n27"
+      ],
+      [
+        "n27",
+        "n31"
+      ],
+      [
+        "n31",
+        "n30"
+      ],
+      [
+        "n27",
+        "n28"
+      ],
+      [
+        "n28",
+        "n33"
+      ],
+      [
+        "n27",
+        "n32"
+      ],
+      [
+        "n38",
+        "n41"
+      ],
+      [
+        "n41",
+        "n42"
+      ],
+      [
+        "n42",
+        "n43"
+      ],
+      [
+        "n39",
+        "n42"
+      ],
+      [
+        "n40",
+        "n43"
+      ],
+      [
+        "n43",
+        "n48"
+      ],
+      [
+        "n30",
+        "n45"
+      ],
+      [
+        "n45",
+        "n29"
+      ],
+      [
+        "n29",
+        "n49"
+      ],
+      [
+        "n49",
+        "n51"
+      ],
+      [
+        "n51",
+        "n28"
+      ],
+      [
+        "n51",
+        "n52"
+      ],
+      [
+        "n49",
+        "n50"
+      ],
+      [
+        "n30",
+        "n46"
+      ],
+      [
+        "n27",
+        "n44"
+      ],
+      [
+        "n3",
+        "n26"
+      ],
+      [
+        "n26",
+        "n24"
+      ]
+    ]
+  }
+}
