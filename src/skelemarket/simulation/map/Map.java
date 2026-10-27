@@ -75,7 +75,7 @@ public class Map {
 			layerRef.render(rendererRef);
 
 		// TODO: Remove this line to hide path nodes and their target links
-		PathNodeDebugRenderer.render(rendererRef, mNodes.values());
+		// PathNodeDebugRenderer.render(rendererRef, mNodes.values());
 	}
 
 	public Optional<ProductSpecification> getProduct(String productName) {
