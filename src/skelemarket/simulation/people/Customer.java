@@ -85,59 +85,59 @@ public class Customer extends Person {
 
 	@Override
 	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
-		if (mCurrentState == State.TakeCart) {
-			chooseNextProduct(mapRef);
-		}
+		switch (mCurrentState) {
+            case TakeCart -> chooseNextProduct(mapRef);
 
-		if (mCurrentState == State.Walk) {
-			if (stepAlongPath()) {
-				startAction(Config.TAKE_PRODUCT_TICKS);
-				mCurrentState = State.TakeProduct;
+			case Walk -> {
+				if (stepAlongPath()) {
+					startAction(Config.TAKE_PRODUCT_TICKS);
+					mCurrentState = State.TakeProduct;
+				}
 			}
-		}
 
-		if (mCurrentState == State.TakeProduct) {
-			tickAction();
-
-			if (isActionDone()) {
-				if (takeCurrentProduct(mapRef))
-					mShoppingList.remove(0);
-				chooseNextProduct(mapRef);
+			case TakeProduct -> {
+				tickAction();
+				if (isActionDone()) {
+					if (takeCurrentProduct(mapRef))
+						mShoppingList.remove(0);
+					chooseNextProduct(mapRef);
+				}
 			}
-		}
 
-		if (mCurrentState == State.WalkToCheckout) {
-			if (stepAlongPath()) {
-				mCurrentState = State.WaitInLine;
+			case WalkToCheckout -> {
+				if (stepAlongPath())
+					mCurrentState = State.WaitInLine;
 			}
-		}
 
-		if (mCurrentState == State.WaitInLine) {
-			if (mTargetCheckout.isFirst(this))
-				startCheckoutProduct(mapRef);
-		}
-
-		if (mCurrentState == State.Buy) {
-			tickAction();
-
-			if (isActionDone()) {
-				List<ProductSpecification> checkedOutProducts = mCarrier.takeProducts(mCurrentProduct);
-				Logger.trace("Customer checked out %d %s at %s checkout %d. Remaining products: %s.",
-						checkedOutProducts.size(), mCurrentProduct,
-						mTargetCheckout.isSelfService() ? "self-service" : "manned", mTargetCheckout.getID(),
-						mCarrier.getProductCounts());
-
-				if (mCarrier.hasProducts())
+			case WaitInLine -> {
+				if (mTargetCheckout.isFirst(this))
 					startCheckoutProduct(mapRef);
-				else
-					finishCheckout(mapRef);
 			}
-		}
 
-		if (mCurrentState == State.WalkToExit) {
-			if (stepAlongPath()) {
-				mCurrentState = State.Finished;
+            case Buy -> {
+				tickAction();
+
+				if (isActionDone()) {
+					List<ProductSpecification> checkedOutProducts = mCarrier.takeProducts(mCurrentProduct);
+					Logger.trace("Customer checked out %d %s at %s checkout %d. Remaining products: %s.",
+							checkedOutProducts.size(), mCurrentProduct,
+							mTargetCheckout.isSelfService() ? "self-service" : "manned", mTargetCheckout.getID(),
+							mCarrier.getProductCounts());
+
+					if (mCarrier.hasProducts())
+						startCheckoutProduct(mapRef);
+					else
+						finishCheckout(mapRef);
+				}
 			}
+
+			case WalkToExit -> {
+				if (stepAlongPath())
+					mCurrentState = State.Finished;
+			}
+
+            case Finished -> Logger.error("Switch case should not come here!");
+
 		}
 	}
 
