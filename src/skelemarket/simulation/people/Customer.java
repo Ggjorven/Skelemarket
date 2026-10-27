@@ -128,9 +128,15 @@ public class Customer extends Person {
 	private boolean takeCurrentProduct(Map mapRef) {
 		Optional<ProductSpecification> product = mapRef.getProduct(mCurrentProduct);
 
-		if (product.isPresent() && mTargetShelf != null
-				&& mCarrier.canAdd(product.get())
-				&& mTargetShelf.takeProduct(mCurrentProduct)) {
+		if (product.isPresent() && mTargetShelf != null && mCarrier.canAdd(product.get())) {
+			boolean tookProduct = mTargetShelf.takeProduct(mCurrentProduct);
+			Logger.trace("Customer wanted 1 %s from %s shelf %d and took %d. Remaining products: %s.",
+					mCurrentProduct, mTargetShelf.isMagazine() ? "magazine" : "normal", mTargetShelf.getID(),
+					tookProduct ? 1 : 0, mTargetShelf.getProductCounts());
+
+			if (!tookProduct)
+				return false;
+
 			mCarrier.add(product.get());
 			return true;
 		}

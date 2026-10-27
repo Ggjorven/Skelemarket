@@ -112,6 +112,10 @@ public class Shelf extends Tile {
 		return java.util.Map.copyOf(mProductToCapacity);
 	}
 
+	public java.util.Map<String, Integer> getProductCounts() {
+		return java.util.Map.copyOf(mProductToCount);
+	}
+
 	public String getCategory() {
 		return mCategory;
 	}

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
+import skelemarket.core.Logger;
 import skelemarket.core.Texture;
 import skelemarket.core.UV;
 import skelemarket.core.Vec2f;
@@ -146,11 +147,17 @@ public class Stocker extends Employee {
 					continue;
 
 				int missing = entry.getValue() - targetShelf.getProductCount(entry.getKey());
+				int loaded = 0;
 				while (missing > 0 && mRollContainer.canAdd(product) && storageShelf.takeProduct(entry.getKey())) {
 					mRollContainer.add(product);
 					mProductTargets.put(product.getName(), targetShelf);
 					missing--;
+					loaded++;
 				}
+
+				if (loaded > 0)
+					Logger.trace("Stocker loaded %d %s from magazine shelf %d. Remaining products: %s.", loaded,
+							product.getName(), storageShelf.getID(), storageShelf.getProductCounts());
 			}
 		}
 	}
@@ -158,10 +165,19 @@ public class Stocker extends Employee {
 	private void deliverToShelf(Shelf targetShelf) {
 		List<ProductSpecification> remainingProducts = new ArrayList<>();
 		for (ProductSpecification product : mRollContainer.takeAll()) {
-			if (mProductTargets.get(product.getName()) == targetShelf)
-				targetShelf.addProduct(product.getName(), 1);
-			else
+			if (mProductTargets.get(product.getName()) != targetShelf) {
 				remainingProducts.add(product);
+				continue;
+			}
+
+			int restocked = targetShelf.addProduct(product.getName(), 1);
+			if (restocked == 0) {
+				remainingProducts.add(product);
+				continue;
+			}
+
+			Logger.trace("Stocker restocked %d %s on normal shelf %d. Remaining products: %s.", restocked,
+					product.getName(), targetShelf.getID(), targetShelf.getProductCounts());
 		}
 
 		for (ProductSpecification product : remainingProducts)
