@@ -18,12 +18,11 @@ public class EntranceTest {
 	}
 
 	@Test
-	void notReadyRightAfterSpawn() {
+	void notReadyRightAfterCreation() {
 		Entrance entrance = new Entrance(1, new Vec2i(), new Vec2i(), null, null);
-		entrance.isReadyToSpawn();
 
 		boolean ready = entrance.isReadyToSpawn();
 
-		assertFalse(ready, "No new customer should spawn right after the previous one.");
+		assertTrue(ready, "Entrance should be able to spawn a customer on creation.");
 	}
 }

@@ -15,7 +15,7 @@ public class Entrance extends Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
-	private int mCountDownTick; // First customer instant spawn
+	private int mCountDownTick = 0; // First customer instant spawn
 
 	///////////////////////////////////////////////////////////
 	// Methods
@@ -31,6 +31,8 @@ public class Entrance extends Tile {
 		}
 
 		if (peopleRegisterRef.getCustomerCount() < Config.MAX_CUSTOMERS && isReadyToSpawn()) {
+			mCountDownTick = Config.CUSTOMER_SPAWN_INTERVAL_TICKS;
+
 			Optional<PathNode> entranceNode = mapRef.getNodeForTile(getID());
 
 			if (entranceNode.isPresent()) {
@@ -52,11 +54,6 @@ public class Entrance extends Tile {
 	}
 
 	public boolean isReadyToSpawn() {
-		if (mCountDownTick == 0) {
-			mCountDownTick = Config.CUSTOMER_SPAWN_INTERVAL_TICKS;
-			return true;
-		} else {
-			return false;
-		}
+		return mCountDownTick == 0;
 	}
 }
