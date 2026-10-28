@@ -86,8 +86,9 @@ public class Customer extends Person {
 	@Override
 	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
 		switch (mCurrentState) {
-			case TakeCart: chooseNextProduct(mapRef);
-			break;
+			case TakeCart:
+				chooseNextProduct(mapRef);
+				break;
 
 			case Walk: {
 				if (stepAlongPath()) {
@@ -101,7 +102,7 @@ public class Customer extends Person {
 				tickAction();
 				if (isActionDone()) {
 					if (takeCurrentProduct(mapRef))
-						mShoppingList.remove(0);
+						removeCurrentFromShoppingList();
 					chooseNextProduct(mapRef);
 				}
 				break;
@@ -197,7 +198,7 @@ public class Customer extends Person {
 
 		if (!node.isPresent()) {
 			Logger.warn("Skipping unavailable product: %s.", mCurrentProduct);
-			mShoppingList.remove(0);
+			removeCurrentFromShoppingList();
 			chooseNextProduct(mapRef);
 			return;
 		}
@@ -211,7 +212,7 @@ public class Customer extends Person {
 		if (planPath(mapRef, node.get())) {
 			mCurrentState = State.Walk;
 		} else {
-			mShoppingList.remove(0);
+			removeCurrentFromShoppingList();
 			chooseNextProduct(mapRef);
 		}
 	}
@@ -283,6 +284,10 @@ public class Customer extends Person {
 		} else {
 			mCurrentState = State.Finished;
 		}
+	}
+
+	private void removeCurrentFromShoppingList() {
+		mShoppingList.remove(0);
 	}
 
 	private enum State {
