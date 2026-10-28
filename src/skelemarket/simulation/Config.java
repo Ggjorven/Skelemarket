@@ -35,6 +35,6 @@ public class Config {
 	public static final float SHELF_LOW_STOCK_PERCENTAGE = 0.30f;
 
 	public static final int MAX_CUSTOMERS = 50;
-	public static final int CUSTOMER_SPAWN_INTERVAL_TICKS = 240;
+	public static final int CUSTOMER_SPAWN_INTERVAL_TICKS = 120;
 	public static final float PERSON_SPEED = 3.0f; // Pixels per tick
 }
