@@ -35,21 +35,6 @@ public class MapLayer {
 		for (java.util.Map.Entry<Integer, Tile> tile : mIDToTiles.entrySet()) {
 			tile.getValue().render(rendererRef);
 		}
-
-		if (mEntrance != null)
-			mEntrance.render(rendererRef);
-		if (mExit != null)
-			mExit.render(rendererRef);
-
-		for (Checkout checkout : mCheckouts) {
-			checkout.render(rendererRef);
-		}
-
-		for (java.util.Map.Entry<String, List<Shelf>> shelvesPerCategory : mCategoryToShelves.entrySet()) {
-			for (Shelf shelf : shelvesPerCategory.getValue()) {
-				shelf.render(rendererRef);
-			}
-		}
 	}
 
 	public void addTile(Tile tile) {
