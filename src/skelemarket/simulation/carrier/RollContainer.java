@@ -11,6 +11,7 @@ public class RollContainer extends Carrier {
     // Methods
     ///////////////////////////////////////////////////////////
     public RollContainer() {
+        // super calls the constructor of Carrier and sets a max capacity
         super(Config.ROLL_CONTAINER_CAPACITY);
     }
 }

@@ -7,6 +7,7 @@ public class Tile {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	//The unike number used to separate tiles
 	private int mID = 0;
 
 	private Vec2i mPosition = new Vec2i();
@@ -18,6 +19,7 @@ public class Tile {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
+	// Create tile with place, size and texture
 	public Tile(int tileID, Vec2i position, Vec2i size, Texture textureRef, UV coords) {
 		mID = tileID;
 
@@ -28,10 +30,12 @@ public class Tile {
 		mTextureCoords = coords;
 	}
 
-	// NOTE: Can be overwritten by the deriving class
+	// NOTE: Can be overwritten by the deriving class (for tiles with logics)
 	public void update(Map mapRef, PeopleRegister peopleRegisterRef) {
+		// empty cuz normal tile doesn't have logics
 	}
 
+	//Draws a specific tile on the window and send all necessary input to renderer
 	public void render(Renderer rendererRef) {
 		rendererRef.drawQuad(mTextureRef, mPosition, mSize, mTextureCoords);
 	}

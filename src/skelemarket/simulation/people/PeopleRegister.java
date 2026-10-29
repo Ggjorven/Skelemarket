@@ -16,15 +16,20 @@ import skelemarket.simulation.map.PathNode;
 import skelemarket.simulation.map.Shelf;
 import skelemarket.simulation.map.Tile;
 
+//This class will track all persons in the supermarket and arranges the creation, update of all persons
 public class PeopleRegister {
 	///////////////////////////////////////////////////////////
 	// Variables
 	///////////////////////////////////////////////////////////
+	// Place to store images of customers and employees
 	private final java.util.Map<String, Texture> mTextures = new HashMap<>();
 
+	// List with all activities for customers and Stockers
 	private final List<Customer> mCustomers = new ArrayList<>();
 	private final List<Stocker> mStockers = new ArrayList<>();
+	// For one manager
 	private final Manager mManager = new Manager();
+	// Random for example the start where a stocker will start filling
 	private final Random mRandom = new Random();
 
 	///////////////////////////////////////////////////////////

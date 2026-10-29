@@ -12,6 +12,8 @@ public class Colour {
 	///////////////////////////////////////////////////////////
 	// Methods
 	///////////////////////////////////////////////////////////
+
+	// Constructor for the colours
 	public Colour() {
 		mR = 0;
 		mG = 0;
@@ -19,6 +21,7 @@ public class Colour {
 		mA = 255;
 	}
 
+	// Constructor for colour basic colours
 	public Colour(int red, int green, int blue) {
 		this.setR(red);
 		this.setG(green);
@@ -26,6 +29,7 @@ public class Colour {
 		mA = 255;
 	}
 
+	// Constructor for colours + Transparency
 	public Colour(int red, int green, int blue, int alpha) {
 		this.setR(red);
 		this.setG(green);
@@ -34,6 +38,7 @@ public class Colour {
 	}
 
 	public void setR(int r) {
+		// If the int is not between 0 and 255 it will set the int between 0 and 255
 		mR = Math.clamp(r, 0, 255);
 	}
 
