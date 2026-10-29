@@ -39,10 +39,10 @@ public class Simulation {
 		mPane = new Pane(mCanvas);
 		mScene = new Scene(mPane);
 
-		stage.setScene(mScene);
-		stage.setTitle(Config.TITLE);
-		stage.setResizable(false);
-		stage.show();
+		mStageRef.setScene(mScene);
+		mStageRef.setTitle(Config.TITLE);
+		mStageRef.setResizable(false);
+		mStageRef.show();
 		Logger.info("Created scene & pane.");
 
 		mRenderer = new Renderer(mContext);
